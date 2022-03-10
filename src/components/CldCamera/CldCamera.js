@@ -23,7 +23,9 @@ const cld = new Cloudinary({
   }
 });
 
-const CldCamera = ({ ...props }) => {
+const CldCamera = ({ className, ...props }) => {
+  const cameraClassName = [styles.camera, className].filter(c => !!c).join(' ');
+
   const [cldData, setCldData] = useState();
 
   // const cldData = {
@@ -69,7 +71,7 @@ const CldCamera = ({ ...props }) => {
 
   return (
     <>
-      <Camera {...props} src={src} />
+      <Camera {...props} className={cameraClassName} src={src} />
 
       {cloudImage && (
         <div className={styles.effects}>
