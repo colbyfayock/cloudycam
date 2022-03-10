@@ -1,0 +1,68 @@
+@import "@styles/settings/__settings";
+
+.camera {
+
+}
+
+.stageContainer {
+  position: relative;
+  background-color: black;
+}
+
+.stage {
+
+  margin: auto;
+
+  video,
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+}
+
+.effects {
+
+}
+
+.filters {
+  display: grid;
+  grid-gap: .5em;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filterThumb {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  padding: 0.5em;
+  border-radius: 0.2em;
+  border: solid 2px $color-light-gray;
+  cursor: pointer;
+
+  &:hover {
+    border: solid 2px $color-purple;
+  }
+
+  [data-is-active-filter="true"] & {
+    border: solid 2px $color-purple;
+    box-shadow: 0 2px 15px rgba($color-purple, .5);
+  }
+
+  span,
+  img {
+    display: block;
+  }
+
+  img {
+    margin-bottom: .5em;
+  }
+
+}
