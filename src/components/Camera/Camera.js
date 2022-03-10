@@ -7,53 +7,66 @@ import { useCamera } from '@hooks/useCamera';
 
 import styles from './Camera.module.scss';
 
+const minWidth = 720;
+const minHeight = 720;
+const aspectRatio = minWidth / minHeight;
 
-const Camera = ({ className, src: defaultSrc }) => {
-  const webcamRef = useRef(null);
+const videoConstraints = {
+  width: {
+    min: minWidth
+  },
+  height: {
+    min: minHeight
+  },
+  aspectRatio
+};
 
-  const { image, updateCapture, resetCapture } = useCamera();
+const Camera = ({ className, src: defaultSrc, controls = true }) => {
+  const { ref, image, capture, reset } = useCamera();
+
+  const webcamRef = ref || useRef();
 
   const src = defaultSrc || image;
 
   const cameraClassName = [styles.camera, className].filter(c => !!c).join(' ');
 
-  /**
-   * handleOnCapture
-   */
-
-  function handleOnCapture() {
-    const imageSrc = webcamRef.current.getScreenshot();
-    updateCapture(imageSrc);
-  }
-
   return (
     <div className={cameraClassName}>
 
-      <div className={styles.stageContainer}>
+      <div className={styles.stageContainer} style={{
+        aspectRatio: `${minWidth} / ${minHeight}`
+      }}>
         <div className={styles.stage}>
           { src && (
             <img src={src} />
           )}
           {!src && (
-            <Webcam ref={webcamRef} />
+            <Webcam
+              ref={webcamRef}
+              videoConstraints={videoConstraints}
+              width={minWidth}
+              height={minHeight}
+            />
           )}
         </div>
       </div>
 
-      {/* <div className={styles.controls}>
-        <ul>
-          <li>
-            <Button onClick={handleOnCapture}>
-              Capture photo
-            </Button>
-          </li>
-          <li>
-            <Button onClick={resetCapture} color="red">
-              Reset
-            </Button>
-          </li>
-        </ul>
-      </div> */}
+      {controls && (
+        <div className={styles.controls}>
+          <ul>
+            <li>
+              <Button onClick={capture}>
+                Capture photo
+              </Button>
+            </li>
+            <li>
+              <Button onClick={reset} color="red">
+                Reset
+              </Button>
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

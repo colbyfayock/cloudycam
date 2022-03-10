@@ -1,5 +1,13 @@
 @import "@styles/settings/__settings";
 
+.container {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  width: 100vw;
+  height: 100vh;
+  background-color: $color-cloudinary-blue-500;
+}
+
 .stage {
 
   margin: auto;
@@ -12,6 +20,40 @@
   }
 
 }
+
+
+.controls {
+
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  padding: 1em;
+  margin: 0;
+
+}
+
+.control {
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5em;
+    height: 2.5em;
+    font-size: 1.2em;
+    padding: 0;
+    border-radius: 100%;
+  }
+
+}
+
+
+
+
+
+
+
+
 
 .effects {
 
@@ -57,3 +99,4 @@
   }
 
 }
+

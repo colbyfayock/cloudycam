@@ -27,4 +27,15 @@
 
   }
 
+  &[data-color="cloudinary-yellow"] {
+
+    color: rgba(black, .8);
+    background-color: $color-cloudinary-yellow-500;
+
+    &:hover {
+      background-color: lighten($color-cloudinary-yellow-500, 10);
+    }
+
+  }
+
 }

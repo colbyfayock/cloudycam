@@ -19,3 +19,13 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.sr-only {
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 0;
+  height: 0;
+}

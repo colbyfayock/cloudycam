@@ -6,12 +6,6 @@ import Layout from '@components/Layout';
 import Container from '@components/Container';
 import CldCamera from '@components/CldCamera';
 
-import styles from '@styles/Camera.module.scss'
-
-export default function Home() {
-  return (
-    <div>
-      <CldCamera className={styles.camera} />
-    </div>
-  )
+export default function Camera() {
+  return <CldCamera />
 }

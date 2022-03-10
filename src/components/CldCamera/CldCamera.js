@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Cloudinary } from '@cloudinary/url-gen';
+import { FaCamera, FaTimes } from 'react-icons/fa';
 
 import { useCamera } from '@hooks/useCamera';
 
 import Camera from '@components/Camera';
+import Button from '@components/Button';
 
 import { FILTERS_ART, FILTERS_OVERLAYS } from '@data/filters';
 
@@ -23,9 +25,7 @@ const cld = new Cloudinary({
   }
 });
 
-const CldCamera = ({ className, ...props }) => {
-  const cameraClassName = [styles.camera, className].filter(c => !!c).join(' ');
-
+const CldCamera = ({ ...props }) => {
   const [cldData, setCldData] = useState();
 
   // const cldData = {
@@ -35,7 +35,7 @@ const CldCamera = ({ className, ...props }) => {
 
   const [filter, setFilter] = useState();
 
-  const { image } = useCamera();
+  const { ref, image, capture, reset } = useCamera();
 
   const cloudImage = cldData && cld.image(cldData.public_id).format('auto').quality('auto');
   let src;
@@ -70,9 +70,31 @@ const CldCamera = ({ className, ...props }) => {
   }, [image]);
 
   return (
-    <>
-      <Camera {...props} className={cameraClassName} src={src} />
+    <div className={styles.container}>
+      <Camera {...props} className={styles.camera} src={src} controls={false} />
 
+      <div className={styles.actions}>
+        <ul className={styles.controls}>
+          {!image && (
+            <li className={styles.control}>
+              <Button onClick={capture} color="cloudinary-yellow">
+                <FaCamera />
+                <span className="sr-only">Capture Photo</span>
+              </Button>
+            </li>
+          )}
+          {image && (
+            <li className={styles.control}>
+              <Button onClick={reset} color="red">
+                <FaTimes />
+                <span className="sr-only">Reset Photo</span>
+              </Button>
+            </li>
+          )}
+
+        </ul>
+      </div>
+{/*
       {cloudImage && (
         <div className={styles.effects}>
           <h2>Overlays</h2>
@@ -119,8 +141,8 @@ const CldCamera = ({ className, ...props }) => {
             })}
           </ul>
         </div>
-      )}
-    </>
+      )} */}
+    </div>
   )
 }
 

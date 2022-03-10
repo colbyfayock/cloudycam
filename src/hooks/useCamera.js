@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useEffect } from 'react';
+import { useState, createContext, useContext, useEffect, useRef } from 'react';
 
 export const CameraContext = createContext();
 
@@ -12,20 +12,31 @@ export const CameraProvider = ({ children }) => {
 }
 
 export function useCameraState() {
+  const ref = useRef();
   const [image, setImage] = useState();
 
-  function updateCapture(src) {
-    setImage(src);
+  /**
+   * capture
+   */
+
+  function capture() {
+    const imageSrc = ref.current.getScreenshot();
+    setImage(imageSrc);
   }
 
-  function resetCapture() {
+  /**
+   * capture
+   */
+
+  function reset() {
     setImage(undefined);
   }
 
   return {
-    updateCapture,
-    resetCapture,
-    image
+    ref,
+    image,
+    capture,
+    reset,
   }
 }
 
