@@ -12,8 +12,8 @@ import { FILTERS_ART, FILTERS_OVERLAYS } from '@data/filters';
 
 import styles from './CldCamera.module.scss';
 
-const FILTER_THUMB_WIDTH = 100;
-const FILTER_THUMB_HEIGHT = 100;
+const FILTER_THUMB_WIDTH = 80;
+const FILTER_THUMB_HEIGHT = 80;
 
 const artFilters = FILTERS_ART.map(f => ({ name: f, type: 'art' }));
 

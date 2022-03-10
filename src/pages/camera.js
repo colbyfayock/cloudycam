@@ -7,5 +7,22 @@ import Container from '@components/Container';
 import CldCamera from '@components/CldCamera';
 
 export default function Camera() {
-  return <CldCamera />
+  return (
+    <>
+      <CldCamera />
+      <style global jsx>{`
+        html,
+        body {
+          width: 100vw;
+          height: 100vh;
+          max-height: -webkit-fill-available;
+          overflow: hidden;
+        }
+        #__next {
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
+    </>
+  )
 }

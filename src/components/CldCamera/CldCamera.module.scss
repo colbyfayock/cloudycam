@@ -3,8 +3,8 @@
 .container {
   display: grid;
   grid-template-rows: 1fr auto;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: $color-cloudinary-blue-500;
 }
 
