@@ -8,14 +8,14 @@ import { useCamera } from '@hooks/useCamera';
 import Camera from '@components/Camera';
 import Button from '@components/Button';
 
-import { FILTERS_ART, FILTERS_OVERLAYS } from '@data/filters';
+import { ALL_FILTERS, FILTER_TYPES, FILTERS_STYLES, FILTERS_EFFECTS } from '@data/filters';
 
 import styles from './CldCamera.module.scss';
 
 const FILTER_THUMB_WIDTH = 80;
 const FILTER_THUMB_HEIGHT = 80;
 
-const artFilters = FILTERS_ART.map(f => ({ name: f, type: 'art' }));
+const artFilters = FILTERS_STYLES.map(f => ({ name: f, type: 'art' }));
 
 const cld = new Cloudinary({
   cloud: {
@@ -30,31 +30,40 @@ const DEFAULT_CLD_DATA = {
   public_id: 'cloudycam-assets/default-photo'
 }
 
+const DEFAULT_FILTERS = {};
+
 const CldCamera = ({ ...props }) => {
   const [cldData, setCldData] = useState(DEFAULT_CLD_DATA);
-
-  const [filter, setFilter] = useState();
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   const { ref, image, capture, reset } = useCamera();
 
+  const hasFilters = Object.keys(filters).length > 0;
   const isDefaultPhoto = cldData?.public_id === DEFAULT_CLD_DATA.public_id;
   let src;
 
-  if ( cldData.public_id && ( !isDefaultPhoto || filter )  ) {
+  if ( cldData.public_id ) {
     const cloudImage = cld.image(cldData.public_id).format('auto').quality('auto');
 
-    if ( filter?.transformations ) {
-      filter.transformations.forEach(transformation => {
-        cloudImage.addTransformation(transformation);
-      });
-    } else if ( filter ) {
-      cloudImage.effect(`e_${filter.type}:${filter.name}`);
+    if ( hasFilters ) {
+
+      Object.keys(filters).forEach(filterKey => {
+        const filter = filters[filterKey];
+
+        filter.transformations?.forEach(transformation => {
+          cloudImage.addTransformation(transformation);
+        });
+
+        filter.effects?.forEach(effect => {
+          cloudImage.effect(effect);
+        });
+      })
     }
 
     src = cloudImage.toURL();
   }
 
-  const canCapture = !image && !(isDefaultPhoto && filter);
+  const canCapture = !image && !(isDefaultPhoto && hasFilters);
 
   useEffect(() => {
     if ( !image ) {
@@ -73,8 +82,54 @@ const CldCamera = ({ ...props }) => {
     })();
   }, [image]);
 
+  /**
+   * handleOnReset
+   */
+
   function handleOnReset() {
-    setFilter(undefined);
+    setFilters(DEFAULT_FILTERS);
+    reset();
+  }
+
+  /**
+   * handleOnFilterSelect
+   */
+
+  function handleOnFilterSelect(e) {
+    const filterId = e.currentTarget.dataset.filterId;
+    toggleFilter(filterId)
+  }
+
+  /**
+   * toggleFilter
+   */
+
+  function toggleFilter(filterId) {
+    const filter = ALL_FILTERS.find(({ id }) => id === filterId);
+
+    setFilters(prev => {
+      const next = {...prev};
+
+      // Clear all filters with the same type to avoid multiple
+      // overlapping filters that won't work properly
+
+      Object.keys(next).forEach(key => {
+        if ( next[key].type === filter.type ) {
+          delete next[key];
+        }
+      });
+
+      // If the previous state didn't have the new filter, make
+      // sure to add it, but we don't need to worry about deleting
+      // as it should be cleared in the above check
+
+      if ( !prev[filter.id] ) {
+        next[filter.id] = filter;
+      }
+
+      return next;
+    });
+
     reset();
   }
 
@@ -89,60 +144,47 @@ const CldCamera = ({ ...props }) => {
           <Tabs>
 
             <TabList className={styles.effectsHeaders}>
-              <Tab>Overlays</Tab>
-              <Tab>Art Filters</Tab>
+              {FILTER_TYPES.map(type => {
+                return <Tab key={type.id}>{ type.title }</Tab>
+              })}
             </TabList>
 
-            <TabPanel className={styles.effectsPanel}>
-              <ul className={styles.filters}>
-                {FILTERS_OVERLAYS.map(overlayFilter => {
-                  let thumb = cld.image(cldData.public_id)
-                                  .format('auto')
-                                  .quality('auto')
-                                  .resize(`w_${FILTER_THUMB_WIDTH},h_${FILTER_THUMB_HEIGHT}`);
+            {FILTER_TYPES.map(type => {
+              const availableFilters = ALL_FILTERS.filter(filter => filter.type === type.id);
+              return (
+                <TabPanel key={type.id} className={styles.effectsPanel}>
+                  <ul className={styles.filters}>
+                    {availableFilters.map(filter => {
+                      let thumb = cld.image(cldData.public_id)
+                                      .format('auto')
+                                      .quality('auto')
+                                      .resize(`w_${FILTER_THUMB_WIDTH * 2},h_${FILTER_THUMB_HEIGHT * 2}`);
 
-                  overlayFilter.transformations.forEach(transformation => {
-                    thumb.addTransformation(transformation);
-                  });
+                      filter.transformations?.forEach(transformation => {
+                        thumb.addTransformation(transformation);
+                      });
 
-                  thumb = thumb.toURL();
+                      filter.effects?.forEach(effect => {
+                        thumb.effect(effect);
+                      });
 
-                  return (
-                    <li key={overlayFilter.title} data-is-active-filter={overlayFilter.title === filter?.title}>
-                      <button className={styles.filterThumb} onClick={() => setFilter(overlayFilter)}>
-                        <span className={styles.filterThumbImage}>
-                          <img width={FILTER_THUMB_WIDTH} height={FILTER_THUMB_HEIGHT} src={thumb} alt={overlayFilter.name} />
-                        </span>
-                        <span>{ overlayFilter.title }</span>
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </TabPanel>
+                      thumb = thumb.toURL();
 
-            <TabPanel className={styles.effectsPanel}>
-              <ul className={styles.filters}>
-                {artFilters.map(artFilter => {
-                  const thumb = cld.image(cldData.public_id)
-                                  .format('auto')
-                                  .quality('auto')
-                                  .resize(`w_${FILTER_THUMB_WIDTH},h_${FILTER_THUMB_HEIGHT}`)
-                                  .effect(`e_${artFilter.type}:${artFilter.name}`)
-                                  .toURL();
-                  return (
-                    <li key={artFilter.name} data-is-active-filter={artFilter.name === filter?.name}>
-                      <button className={styles.filterThumb} onClick={() => setFilter(artFilter)}>
-                        <span className={styles.filterThumbImage}>
-                          <img width={FILTER_THUMB_WIDTH} height={FILTER_THUMB_HEIGHT} src={thumb} alt={artFilter.name} />
-                        </span>
-                        <span>{ artFilter.name }</span>
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </TabPanel>
+                      return (
+                        <li key={filter.id} data-is-active-filter={!!filters[filter.id]}>
+                          <button className={styles.filterThumb} data-filter-id={filter.id} onClick={handleOnFilterSelect}>
+                            <span className={styles.filterThumbImage}>
+                              <img width={FILTER_THUMB_WIDTH} height={FILTER_THUMB_HEIGHT} src={thumb} alt={filter.name} />
+                            </span>
+                            <span>{ filter.title }</span>
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </TabPanel>
+              );
+            })}
 
           </Tabs>
         </div>
