@@ -59,13 +59,80 @@
 
 }
 
-.filters {
-  display: grid;
-  grid-gap: .5em;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+.effectsHeaders {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
   list-style: none;
   padding: 0;
+  border-top: solid 1px rgba(white, .2);
+  border-bottom: solid 1px rgba(white, .2);
+  margin: 1em 0 .5em;
+
+  li {
+
+    position: relative;
+    font-size: .8em;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: .5em .8em;
+    margin: 0;
+
+    &[aria-selected="true"] {
+
+      color: $color-cloudinary-yellow-500;
+
+      &:after {
+        display: block;
+      }
+
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:after {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      content: '';
+      width: .5em;
+      height: .5em;
+      background-color: $color-cloudinary-yellow-500;
+      border-radius: 100%;
+      transform: translate3d(-.25em, -.25em, 0);
+    }
+
+  }
+
+}
+
+.effectsPanel {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.filters {
+
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  list-style: none;
+  padding: 0 .5em .5em;
   margin: 0;
+
+  li {
+    display: inline-block;
+  }
+
 }
 
 .filterThumb {
@@ -74,28 +141,35 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: white;
   background: none;
   padding: 0.5em;
-  border-radius: 0.2em;
-  border: solid 2px $color-light-gray;
+  border: none;
   cursor: pointer;
-
-  &:hover {
-    border: solid 2px $color-purple;
-  }
-
-  [data-is-active-filter="true"] & {
-    border: solid 2px $color-purple;
-    box-shadow: 0 2px 15px rgba($color-purple, .5);
-  }
 
   span,
   img {
     display: block;
   }
 
+}
+
+.filterThumbImage {
+
+  display: block;
+  overflow: hidden;
+  background-color: $color-cloudinary-blue-500;
+  border: solid 3px transparent;
+  border-radius: .4em;
+  margin-bottom: .5em;
+
   img {
-    margin-bottom: .5em;
+    display: block;
+  }
+
+  [data-is-active-filter="true"] & {
+    border: solid 3px $color-cloudinary-yellow-500;
+    box-shadow: 0 2px 15px rgba($color-cloudinary-yellow-500, .6);
   }
 
 }
