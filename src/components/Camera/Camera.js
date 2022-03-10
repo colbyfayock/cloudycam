@@ -24,8 +24,6 @@ const videoConstraints = {
 const Camera = ({ className, src: defaultSrc, controls = true }) => {
   const { ref, image, capture, reset } = useCamera();
 
-  const webcamRef = ref || useRef();
-
   const src = defaultSrc || image;
 
   const cameraClassName = [styles.camera, className].filter(c => !!c).join(' ');
@@ -42,7 +40,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
           )}
           {!src && (
             <Webcam
-              ref={webcamRef}
+              ref={ref}
               videoConstraints={videoConstraints}
               width={minWidth}
               height={minHeight}
