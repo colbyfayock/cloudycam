@@ -1,3 +1,5 @@
+import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+
 export const FILTER_TYPES = [
   {
     id: 'effects',
@@ -6,7 +8,12 @@ export const FILTER_TYPES = [
   {
     id: 'styles',
     title: 'Styles'
-  }
+  },
+  {
+    id: 'backgrounds',
+    title: 'Backgrounds',
+    checkActive: (cldData) => !!cldData.transparent?.public_id
+  },
 ];
 
 export const FILTERS_EFFECTS = [
@@ -15,7 +22,7 @@ export const FILTERS_EFFECTS = [
     title: 'Vader',
     type: 'effects',
     transformations: [
-      'l_vader-helmet_oxjh4x,g_faces,h_1.0,fl_region_relative'
+      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,g_faces,h_1.0,fl_region_relative`
     ]
   },
   {
@@ -23,7 +30,7 @@ export const FILTERS_EFFECTS = [
     title: 'Deal With It',
     type: 'effects',
     transformations: [
-      'l_deal-with-it_s5jd3v,g_faces,w_0.7,y_-0.05,fl_region_relative'
+      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative`
     ]
   },
 ]
@@ -52,4 +59,16 @@ export const FILTERS_STYLES = [
   { type: 'styles', id: 'zorro', title: 'Zorro', effects: [ 'e_art:zorro' ] },
 ];
 
-export const ALL_FILTERS = [...FILTERS_STYLES, ...FILTERS_EFFECTS];
+
+export const FILTERS_BACKGROUNDS = [
+  {
+    id: 'moon',
+    title: 'Moon',
+    type: 'backgrounds',
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative`
+    ]
+  }
+]
+
+export const ALL_FILTERS = [...FILTERS_STYLES, ...FILTERS_EFFECTS, ...FILTERS_BACKGROUNDS];

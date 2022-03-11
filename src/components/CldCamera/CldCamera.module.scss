@@ -80,6 +80,10 @@
     padding: .5em .8em;
     margin: 0;
 
+    &[aria-disabled="true"] {
+      color: rgba(white, .5);
+    }
+
     &[aria-selected="true"] {
 
       color: $color-cloudinary-yellow-500;

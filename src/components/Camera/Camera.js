@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 
 import Button from '@components/Button';
@@ -22,7 +22,7 @@ const videoConstraints = {
 };
 
 const Camera = ({ className, src: defaultSrc, controls = true }) => {
-  const { ref, image, capture, reset } = useCamera();
+  const { ref, image, isActive, capture, reset, onUserMedia } = useCamera();
 
   const src = defaultSrc || image;
 
@@ -34,7 +34,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
       <div className={styles.stageContainer} style={{
         aspectRatio: `${minWidth} / ${minHeight}`
       }}>
-        <div className={styles.stage}>
+        <div className={styles.stage} data-is-active-webcam={isActive}>
           { src && (
             <img src={src} />
           )}
@@ -44,6 +44,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
               videoConstraints={videoConstraints}
               width={minWidth}
               height={minHeight}
+              onUserMedia={onUserMedia}
             />
           )}
         </div>
