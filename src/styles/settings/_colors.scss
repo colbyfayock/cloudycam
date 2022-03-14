@@ -1,11 +1,11 @@
 $color-aqua: #25bebc;
-$color-blue-light: #397dff;
-$color-blue-medium: #397dff;
 $color-deep-blue: #0b0535;
 $color-purple: #9c5bc3;
-$color-blue-shadow: $color-blue-medium;
 $color-light-gray: #CBD2FF;
 $color-red: #bc493a;
+
+$color-cloudinary-blue-500: #354CBE;
+$color-cloudinary-yellow-500: #EEBD41;
 
 $color-gray-50: #eef0f3;
 $color-gray-100: #cfd7de;
@@ -18,10 +18,19 @@ $color-gray-700: #333e4a;
 $color-gray-800: #1e242b;
 $color-gray-900: #090b0d;
 
+$color-blue-50: #e8ebf9;
+$color-blue-100: #ced4f1;
+$color-blue-200: #a6b1e6;
+$color-blue-300: #7e8edb;
+$color-blue-400: #566bd0;
+$color-blue-500: $color-cloudinary-blue-500;
+$color-blue-600: #2a3c96;
+$color-blue-700: #1f2c6e;
+$color-blue-800: #141c46;
+$color-blue-900: #090c1f;
+
 $color-header-background: #04072D;
 $color-header-links: $color-light-gray;
 
 $color-button-background: $color-purple;
 
-$color-cloudinary-blue-500: #354CBE;
-$color-cloudinary-yellow-500: #EEBD41;

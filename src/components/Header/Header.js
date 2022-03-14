@@ -10,12 +10,12 @@ const Header = () => {
       <Container className={styles.headerContainer}>
         <p className={styles.headerTitle}>
           <Link href="/">
-            <a>Cloudinary Camera Filters</a>
+            <a>CloudyCam v2</a>
           </Link>
         </p>
         <ul className={styles.headerLinks}>
           <li>
-            <a href="https://github.com/colbyfayock/cloudinary-camera-filters">
+            <a href="https://github.com/colbyfayock/cloudycam">
               Inspect on GitHub
             </a>
           </li>

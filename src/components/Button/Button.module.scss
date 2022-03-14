@@ -2,6 +2,7 @@
 
 .button {
 
+  display: inline-block;
   font-size: 1em;
   color: white;
   background-color: $color-button-background;
@@ -17,12 +18,24 @@
     background-color: lighten($color-button-background, 10);
   }
 
+  // Color
+
   &[data-color="red"] {
 
     background-color: $color-red;
 
     &:hover {
       background-color: lighten($color-red, 10);
+    }
+
+  }
+
+  &[data-color="blue-800"] {
+
+    background-color: $color-blue-800;
+
+    &:hover {
+      background-color: lighten($color-blue-800, 10);
     }
 
   }
@@ -34,6 +47,39 @@
 
     &:hover {
       background-color: lighten($color-cloudinary-yellow-500, 10);
+    }
+
+  }
+
+  // Shape
+
+  &[data-shape="capsule"] {
+    height: 2.5em;
+    border-radius: 2.5em;
+    padding: 0 1em;
+  }
+
+  &[data-shape="circle"] {
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 100%;
+    padding: 0;
+  }
+
+  // Icon
+
+  &[data-icon-position="left"] {
+
+    svg {
+      margin-right: .5em;
+    }
+
+  }
+
+  &[data-icon-position="right"] {
+
+    svg {
+      margin-left: .5em;
     }
 
   }

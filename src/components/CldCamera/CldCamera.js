@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Cloudinary } from '@cloudinary/url-gen';
-import { FaCamera, FaTimes } from 'react-icons/fa';
+import { FaCamera, FaTimes, FaImages } from 'react-icons/fa';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
 
 import Camera from '@components/Camera';
 import Button from '@components/Button';
+import CldImage from '@components/CldImage';
 
 import { ALL_FILTERS, FILTER_TYPES, FILTERS_STYLES, FILTERS_EFFECTS } from '@data/filters';
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
@@ -28,12 +29,18 @@ const cld = new Cloudinary({
 });
 
 const DEFAULT_CLD_DATA = {
+  main: undefined,
+  transparent: undefined
+};
+
+const DEMO_CLD_DATA = {
   main: {
     public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo`
   },
   transparent: {
-    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo`
-  }
+    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo-transparent`
+  },
+  isDemo: true
 }
 
 const DEFAULT_FILTERS = {};
@@ -41,19 +48,33 @@ const DEFAULT_FILTERS = {};
 const CldCamera = ({ ...props }) => {
   const [cldData, setCldData] = useState(DEFAULT_CLD_DATA);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const { isDemo = false } = cldData;
 
   const { image, hash, isActive, capture, reset } = useCamera();
 
   const hasFilters = Object.keys(filters).length > 0;
   const hasBackgroundFilter = Object.keys(filters).find(key => filters[key].type === 'backgrounds');
-  const isDefaultPhoto = cldData.main.public_id === DEFAULT_CLD_DATA.main.public_id;
-  const isDefaultWithFilters = isDefaultPhoto && hasFilters;
 
-  let src;
+  let src, cloudImageId;
+  const thumbnailPublicId = cldData?.main?.public_id || DEMO_CLD_DATA.main.public_id;
 
-  if ( ( cldData.main.public_id && !isDefaultPhoto ) || ( cldData.main.public_id && isDefaultWithFilters )  ) {
-    const cloudImageId = hasBackgroundFilter && cldData.transparent ? cldData.transparent.public_id : cldData.main.public_id;
+  // If we have any of the background filters applied attempt to use the transparent ID if available
+  // for background effects. If it's not available, fall back to the main ID no matter the case until
+  // it loads and refreshes state
+
+  if ( hasBackgroundFilter && cldData?.transparent ) {
+    cloudImageId = cldData.transparent.public_id;
+  } else if ( cldData?.main ) {
+    cloudImageId = cldData.main.public_id;
+  }
+
+  // If we have a Cloudinary Public ID assigned, use it to start to construct
+  // an image URL
+
+  if ( cloudImageId ) {
     const cloudImage = cld.image(cloudImageId).format('auto').quality('auto');
+
+    // If filters are applied, work through them and add each one
 
     if ( hasFilters ) {
       Object.keys(filters).forEach(filterKey => {
@@ -72,7 +93,20 @@ const CldCamera = ({ ...props }) => {
     src = cloudImage.toURL();
   }
 
-  const canCapture = !image && !(isDefaultPhoto && hasFilters);
+  // Determines whether or not the webcam should be active for capture mode
+
+  const canCapture = !image && !cloudImageId;
+
+  // If a filter is selected but someone has yet to take an image, default to
+  // demo mode and load demo data
+
+  useEffect(() => {
+    if ( hasFilters && !image ) {
+      setCldData(DEMO_CLD_DATA);
+    }
+  }, [cloudImageId, hasFilters])
+
+  // Once we have an image stored, attempt to upload it to Cloudinary
 
   useEffect(() => {
     if ( !image || !hash ) {
@@ -100,8 +134,11 @@ const CldCamera = ({ ...props }) => {
     })();
   }, [image, hash]);
 
+  // After a successful Cloudinary upload, try to upload it again with
+  // background removal to use for background effects
+
   useEffect(() => {
-    if ( !cldData || isDefaultPhoto || cldData.transparent ) return;
+    if ( !cldData?.main || cldData?.transparent ) return;
 
     (async function run() {
       const transparentPublicId = `${hash}-transparent`;
@@ -109,7 +146,7 @@ const CldCamera = ({ ...props }) => {
       const response = await fetch('/api/cloudinary/upload', {
         method: 'POST',
         body: JSON.stringify({
-          image,
+          image: cldData.main.secure_url,
           options: {
             public_id: transparentPublicId,
             background_removal: 'cloudinary_ai',
@@ -127,16 +164,29 @@ const CldCamera = ({ ...props }) => {
   }, [cldData]);
 
   /**
+   * onEnableDemo
+   * @description Resets state and applies demo data
+   */
+
+  function onEnableDemo() {
+    handleOnReset();
+    setCldData(DEMO_CLD_DATA);
+  }
+
+  /**
    * handleOnReset
+   * @description Resets all application state
    */
 
   function handleOnReset() {
     setFilters(DEFAULT_FILTERS);
+    setCldData(DEFAULT_CLD_DATA);
     reset();
   }
 
   /**
    * handleOnFilterSelect
+   * @description Finds the selected filter's ID and toggles it on or off
    */
 
   function handleOnFilterSelect(e) {
@@ -146,6 +196,7 @@ const CldCamera = ({ ...props }) => {
 
   /**
    * toggleFilter
+   * @description Given a filter's ID, attempt to switch it on or off based on current state
    */
 
   function toggleFilter(filterId) {
@@ -194,31 +245,27 @@ const CldCamera = ({ ...props }) => {
 
             {FILTER_TYPES.map(type => {
               const availableFilters = ALL_FILTERS.filter(filter => filter.type === type.id);
-              const thumbPublicId = cldData.transparent && type.id === 'backgrounds' ? cldData.transparent.public_id : cldData.main.public_id;
+              const publicId = cldData?.transparent && type.id === 'backgrounds' ? cldData.transparent.public_id : thumbnailPublicId;
               return (
                 <TabPanel key={type.id} className={styles.effectsPanel}>
                   <ul className={styles.filters}>
                     {availableFilters.map(filter => {
-                      let thumb = cld.image(thumbPublicId)
-                                      .format('auto')
-                                      .quality('auto')
-                                      .resize(`w_${FILTER_THUMB_WIDTH * 2},h_${FILTER_THUMB_HEIGHT * 2}`);
-
-                      filter.transformations?.forEach(transformation => {
-                        thumb.addTransformation(transformation);
-                      });
-
-                      filter.effects?.forEach(effect => {
-                        thumb.effect(effect);
-                      });
-
-                      thumb = thumb.toURL();
-
                       return (
                         <li key={filter.id} data-is-active-filter={!!filters[filter.id]}>
                           <button className={styles.filterThumb} data-filter-id={filter.id} onClick={handleOnFilterSelect}>
                             <span className={styles.filterThumbImage}>
-                              <img width={FILTER_THUMB_WIDTH} height={FILTER_THUMB_HEIGHT} src={thumb} alt={filter.name} loading="lazy" />
+                              <CldImage
+                                src={publicId}
+                                width={FILTER_THUMB_WIDTH}
+                                height={FILTER_THUMB_HEIGHT}
+                                resize={{
+                                  width: FILTER_THUMB_WIDTH * 2,
+                                  height: FILTER_THUMB_HEIGHT * 2
+                                }}
+                                transformations={filter.transformations}
+                                effects={filter.effects}
+                                alt={filter.name}
+                              />
                             </span>
                             <span>{ filter.title }</span>
                           </button>
@@ -235,16 +282,24 @@ const CldCamera = ({ ...props }) => {
 
         <ul className={styles.controls}>
           {canCapture && (
-            <li className={styles.control}>
-              <Button onClick={capture} color="cloudinary-yellow" disabled={!isActive}>
-                <FaCamera />
-                <span className="sr-only">Capture Photo</span>
-              </Button>
-            </li>
+            <>
+              <li className={`${styles.control} ${styles.controlDemo}`}>
+                <Button onClick={onEnableDemo} color="blue-800" shape="capsule" disabled={!isActive} iconPosition="left">
+                  <FaImages />
+                  <span>Try a Demo Image</span>
+                </Button>
+              </li>
+              <li className={styles.control}>
+                <Button onClick={capture} color="cloudinary-yellow" shape="circle" disabled={!isActive}>
+                  <FaCamera />
+                  <span className="sr-only">Capture Photo</span>
+                </Button>
+              </li>
+            </>
           )}
           {!canCapture && (
             <li className={styles.control}>
-              <Button onClick={handleOnReset} color="red" disabled={!isActive}>
+              <Button onClick={handleOnReset} color="red" shape="circle" disabled={!isActive}>
                 <FaTimes />
                 <span className="sr-only">Reset Photo</span>
               </Button>

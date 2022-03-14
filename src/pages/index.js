@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import Head from 'next/head';
-import Image from 'next/image';
+import Link from 'next/link';
 
 import Layout from '@components/Layout';
 import Container from '@components/Container';
-import CldCamera from '@components/CldCamera';
+import Button from '@components/Button';
 
 import styles from '@styles/Home.module.scss'
 
@@ -18,7 +18,13 @@ export default function Home() {
       </Head>
 
       <Container>
-        <CldCamera className={styles.camera} />
+        <p>
+          <Link href="/camera" passHref={true}>
+            <Button>
+              Try the Camera
+            </Button>
+          </Link>
+        </p>
       </Container>
     </Layout>
   )

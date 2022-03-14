@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       ...options
     });
   } catch(e) {
-    console.log('e', e);
+    console.log('Failed to upload to Cloudinary', e);
     res.status(500).json({
       message: 'Failed to upload image'
     });
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
 
       results = backgroundRemovalResource;
     } catch(e) {
-      console.log('e', e);
+      console.log('Failed to check status.', e);
       res.status(500).json({
         message: 'Failed to upload image'
       });
