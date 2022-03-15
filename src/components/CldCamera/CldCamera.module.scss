@@ -48,7 +48,8 @@ $desktop-width: 600px;
 
 .control {
 
-  button {
+  button,
+  a {
     display: flex;
     justify-content: center;
     align-items: center;

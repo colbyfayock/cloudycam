@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Cloudinary } from '@cloudinary/url-gen';
-import { FaCamera, FaTimes, FaImages } from 'react-icons/fa';
+import { FaCamera, FaTimes, FaImages, FaShare } from 'react-icons/fa';
 
 // https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
 const Tabs = dynamic(import('react-tabs').then(mod => mod.Tabs), { ssr: false });
@@ -14,7 +15,7 @@ import Button from '@components/Button';
 import CldImage from '@components/CldImage';
 
 import { ALL_FILTERS, FILTER_TYPES, FILTERS_STYLES, FILTERS_EFFECTS } from '@data/filters';
-import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
+import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
 
 import styles from './CldCamera.module.scss';
 
@@ -67,6 +68,8 @@ const CldCamera = ({ ...props }) => {
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [assetState, setAssetState] = useState(DEFAULT_ASSET_STATE);
 
+  console.log('cldData', cldData)
+
   const { isDemo = false } = cldData;
 
   const { image, hash, isActive, capture, reset } = useCamera();
@@ -76,6 +79,7 @@ const CldCamera = ({ ...props }) => {
 
   let src, cloudImageId;
   const thumbnailPublicId = cldData?.main?.public_id || DEMO_CLD_DATA.main.public_id;
+  const sharePublicId = cldData?.main?.public_id && cldData.main.public_id.replace(`${CLOUDINARY_UPLOADS_FOLDER}/`, '');
 
   // If we have any of the background filters applied attempt to use the transparent ID if available
   // for background effects. If it's not available, fall back to the main ID no matter the case until
@@ -411,12 +415,24 @@ const CldCamera = ({ ...props }) => {
             </>
           )}
           {!canCapture && (
-            <li className={styles.control}>
-              <Button onClick={handleOnReset} color="red" shape="circle">
-                <FaTimes />
-                <span className="sr-only">Reset Photo</span>
-              </Button>
-            </li>
+            <>
+              {cldData.main?.public_id && (
+                <li className={styles.control}>
+                  <Link href={`/share/${sharePublicId}?url=${encodeURIComponent(src)}`} passHref={true}>
+                    <Button color="blue-800" shape="capsule" iconPosition="left">
+                      <FaShare />
+                      <span>Share</span>
+                    </Button>
+                  </Link>
+                </li>
+              )}
+              <li className={styles.control}>
+                <Button onClick={handleOnReset} color="red" shape="circle">
+                  <FaTimes />
+                  <span className="sr-only">Reset Photo</span>
+                </Button>
+              </li>
+            </>
           )}
         </ul>
 

@@ -1,6 +1,9 @@
+import { forwardRef } from 'react';
 import styles from './Button.module.scss';
 
-const Button = ({ children, href, className, color, shape, iconPosition, ...rest }) => {
+const Button = forwardRef((props, ref) => {
+  const { children, href, className, color, shape, iconPosition, ...rest } = props;
+
   let buttonClassName = styles.button;
 
   if ( className ) {
@@ -17,17 +20,17 @@ const Button = ({ children, href, className, color, shape, iconPosition, ...rest
 
   if ( href ) {
     return (
-      <a href={href} {...buttonProps}>
+      <a ref={ref} href={href} {...buttonProps}>
         { children }
       </a>
     )
   }
 
   return (
-    <button {...buttonProps}>
+    <button ref={ref} {...buttonProps}>
       { children }
     </button>
   )
-}
+});
 
 export default Button;
