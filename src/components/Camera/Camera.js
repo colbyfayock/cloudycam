@@ -5,20 +5,18 @@ import Button from '@components/Button';
 
 import { useCamera } from '@hooks/useCamera';
 
-import styles from './Camera.module.scss';
+import { CAMERA_WIDTH, CAMERA_HEIGHT } from '@data/camera';
 
-const minWidth = 720;
-const minHeight = 720;
-const aspectRatio = minWidth / minHeight;
+import styles from './Camera.module.scss';
 
 const videoConstraints = {
   width: {
-    min: minWidth
+    min: CAMERA_WIDTH
   },
   height: {
-    min: minHeight
+    min: CAMERA_HEIGHT
   },
-  aspectRatio
+  aspectRatio: CAMERA_WIDTH / CAMERA_HEIGHT
 };
 
 const DEFAULT_IMG_STATE = {
@@ -71,7 +69,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
     <div className={cameraClassName}>
 
       <div className={styles.stageContainer} style={{
-        aspectRatio: `${minWidth} / ${minHeight}`
+        aspectRatio: `${CAMERA_WIDTH} / ${CAMERA_HEIGHT}`
       }}>
         <div className={styles.stage} data-is-active-webcam={isActive} {...imgStateProps}>
           { src && (
@@ -81,8 +79,8 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
             <Webcam
               ref={ref}
               videoConstraints={videoConstraints}
-              width={minWidth}
-              height={minHeight}
+              width={CAMERA_WIDTH}
+              height={CAMERA_HEIGHT}
               onUserMedia={onUserMedia}
             />
           )}

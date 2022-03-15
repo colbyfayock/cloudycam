@@ -1,4 +1,5 @@
 import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { CAMERA_WIDTH, CAMERA_HEIGHT } from '@data/camera';
 
 export const FILTER_TYPES = [
   {
@@ -13,6 +14,14 @@ export const FILTER_TYPES = [
     id: 'backgrounds',
     title: 'Backgrounds',
     checkActive: (cldData) => !!cldData.transparent?.public_id
+  },
+  // {
+  //   id: 'crops',
+  //   title: 'Crops'
+  // },
+  {
+    id: 'frames',
+    title: 'Frames'
   },
 ];
 
@@ -31,6 +40,14 @@ export const FILTERS_EFFECTS = [
     type: 'effects',
     transformations: [
       `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative`
+    ]
+  },
+  {
+    id: 'pixelate',
+    title: 'Pixelate',
+    type: 'effects',
+    transformations: [
+      `e_pixelate_faces`
     ]
   },
 ]
@@ -103,4 +120,47 @@ export const FILTERS_BACKGROUNDS = [
   },
 ]
 
-export const ALL_FILTERS = [...FILTERS_STYLES, ...FILTERS_EFFECTS, ...FILTERS_BACKGROUNDS];
+export const FILTERS_FRAMES = [
+  {
+    id: 'border',
+    title: 'Solid Border',
+    type: 'frames',
+    transformations: [
+      'bo_40px_solid_rgb:eebd41'
+    ],
+    thumb: {
+      transformations: [
+        'bo_5px_solid_rgb:eebd41'
+      ],
+    }
+  },
+  {
+    id: 'friends',
+    title: 'Friends',
+    type: 'frames',
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`
+    ],
+  }
+]
+
+export const FILTERS_CROPS = [
+  {
+    id: 'rounded',
+    title: 'Rounded',
+    type: 'crops',
+    transformations: [
+      'r_20'
+    ]
+  },
+  {
+    id: 'circle',
+    title: 'Circle',
+    type: 'crops',
+    transformations: [
+      'r_max'
+    ]
+  },
+]
+
+export const ALL_FILTERS = [...FILTERS_STYLES, ...FILTERS_EFFECTS, ...FILTERS_BACKGROUNDS, ...FILTERS_FRAMES, ...FILTERS_CROPS];

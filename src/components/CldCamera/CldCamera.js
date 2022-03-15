@@ -347,12 +347,14 @@ const CldCamera = ({ ...props }) => {
 
           <Tabs key={`${cldData.main?.public_id}-${cldData.transparent?.public_id}`}>
 
-            <TabList className={styles.effectsHeaders}>
-              {FILTER_TYPES.map(type => {
-                const isActive = typeof type.checkActive === 'function' ? type.checkActive(cldData) : true;
-                return <Tab key={type.id} disabled={!isActive} data-type={type.id}>{ type.title }</Tab>
-              })}
-            </TabList>
+            <div className={styles.effectsHeaders}>
+              <TabList>
+                {FILTER_TYPES.map(type => {
+                  const isActive = typeof type.checkActive === 'function' ? type.checkActive(cldData) : true;
+                  return <Tab key={type.id} disabled={!isActive} data-type={type.id}>{ type.title }</Tab>
+                })}
+              </TabList>
+            </div>
 
             {FILTER_TYPES.map(type => {
               const availableFilters = ALL_FILTERS.filter(filter => filter.type === type.id);
@@ -373,8 +375,8 @@ const CldCamera = ({ ...props }) => {
                                   width: FILTER_THUMB_WIDTH * 2,
                                   height: FILTER_THUMB_HEIGHT * 2
                                 }}
-                                transformations={filter.transformations}
-                                effects={filter.effects}
+                                transformations={filter.thumb?.transformations || filter.transformations}
+                                effects={filter.thumb?.effects || filter.effects}
                                 alt={filter.name}
                               />
                             </span>

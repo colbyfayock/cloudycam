@@ -1,27 +1,34 @@
 @import "@styles/settings/__settings";
 @import "@styles/util/__util";
 
+$desktop-width: 600px;
+
 .container {
+
   display: grid;
   grid-template-rows: 1fr auto;
   width: 100%;
   height: 100%;
   background-color: $color-cloudinary-blue-500;
-}
 
-.stage {
-
-  margin: auto;
-
-  video,
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
+  @media (min-width: 720px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
 }
 
+.camera {
+
+  @media (min-width: 720px) {
+    width: $desktop-width;
+    height: $desktop-width;
+    margin: 0 auto;
+  }
+
+}
 
 .controls {
 
@@ -31,6 +38,11 @@
   list-style: none;
   padding: 1em;
   margin: 0;
+
+  @media (min-width: 720px) {
+    width: $desktop-width;
+    margin: 0 auto;
+  }
 
 }
 
@@ -67,22 +79,42 @@
 
 .effects {
 
+  @media (min-width: 720px) {
+    overflow: hidden;
+    width: $desktop-width;
+    margin: 0 auto;
+  }
+
 }
 
 .effectsHeaders {
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  list-style: none;
+  width: 100vw;
+  overflow-x: hidden;
   padding: 0;
   border-top: solid 1px rgba(white, .2);
   border-bottom: solid 1px rgba(white, .2);
   margin: 1em 0 .5em;
 
+  ul {
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    color: white;
+    list-style: none;
+    padding: 0 .5em;
+    margin: 0;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+  }
+
   li {
 
+    display: inline-block;
     position: relative;
     font-size: .8em;
     text-transform: uppercase;
