@@ -109,6 +109,8 @@ const CldCamera = ({ ...props }) => {
       })
     }
 
+    cloudImage.addTransformation(`l_${CLOUDINARY_ASSETS_FOLDER}:cloudinary_white,h_20,o_40,g_south_east,x_10,y_10`);
+
     src = cloudImage.toURL();
   }
 
@@ -286,6 +288,7 @@ const CldCamera = ({ ...props }) => {
    */
 
   function handleOnReset() {
+    console.log('reset')
     setFilters(DEFAULT_FILTERS);
     setCldData(DEFAULT_CLD_DATA);
     setAssetState(DEFAULT_ASSET_STATE);
@@ -392,13 +395,13 @@ const CldCamera = ({ ...props }) => {
           {canCapture && (
             <>
               <li className={`${styles.control} ${styles.controlDemo}`}>
-                <Button onClick={onEnableDemo} color="blue-800" shape="capsule" disabled={!isActive} iconPosition="left">
+                <Button onClick={onEnableDemo} color="blue-800" shape="capsule" iconPosition="left">
                   <FaImages />
                   <span>Try a Demo Image</span>
                 </Button>
               </li>
               <li className={styles.control}>
-                <Button onClick={capture} color="cloudinary-yellow" shape="circle" disabled={!isActive}>
+                <Button onClick={capture} color="cloudinary-yellow" shape="circle">
                   <FaCamera />
                   <span className="sr-only">Capture Photo</span>
                 </Button>
@@ -407,7 +410,7 @@ const CldCamera = ({ ...props }) => {
           )}
           {!canCapture && (
             <li className={styles.control}>
-              <Button onClick={handleOnReset} color="red" shape="circle" disabled={!isActive}>
+              <Button onClick={handleOnReset} color="red" shape="circle">
                 <FaTimes />
                 <span className="sr-only">Reset Photo</span>
               </Button>

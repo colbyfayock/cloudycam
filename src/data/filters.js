@@ -70,11 +70,19 @@ export const FILTERS_BACKGROUNDS = [
     ]
   },
   {
-    id: 'beach',
-    title: 'Beach',
+    id: 'this-is-fine',
+    title: 'This Is Fine',
     type: 'backgrounds',
     transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`
+      `u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`
+    ]
+  },
+  {
+    id: 'mario',
+    title: 'Mario',
+    type: 'backgrounds',
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative`
     ]
   },
   {
@@ -86,11 +94,11 @@ export const FILTERS_BACKGROUNDS = [
     ]
   },
   {
-    id: 'this-is-fine',
-    title: 'This Is Fine',
+    id: 'beach',
+    title: 'Beach',
     type: 'backgrounds',
     transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`
+      `u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`
     ]
   },
 ]
