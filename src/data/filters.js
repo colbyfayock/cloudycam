@@ -68,7 +68,31 @@ export const FILTERS_BACKGROUNDS = [
     transformations: [
       `u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative`
     ]
-  }
+  },
+  {
+    id: 'beach',
+    title: 'Beach',
+    type: 'backgrounds',
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`
+    ]
+  },
+  {
+    id: 'the-office',
+    title: 'The Office',
+    type: 'backgrounds',
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative`
+    ]
+  },
+  {
+    id: 'this-is-fine',
+    title: 'This Is Fine',
+    type: 'backgrounds',
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`
+    ]
+  },
 ]
 
 export const ALL_FILTERS = [...FILTERS_STYLES, ...FILTERS_EFFECTS, ...FILTERS_BACKGROUNDS];
