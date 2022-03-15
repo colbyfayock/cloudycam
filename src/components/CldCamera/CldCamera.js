@@ -140,7 +140,7 @@ const CldCamera = ({ ...props }) => {
     if ( hasFilters && !image ) {
       setCldData(DEMO_CLD_DATA);
     }
-  }, [cloudImageId, hasFilters])
+  }, [hasFilters, image])
 
   // Once we have an image stored, attempt to upload it to Cloudinary
 
@@ -274,7 +274,7 @@ const CldCamera = ({ ...props }) => {
         })
       }
     })();
-  }, [cldData]);
+  }, [cldData, hash]);
 
   /**
    * onEnableDemo

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import styles from './Button.module.scss';
 
-const Button = forwardRef((props, ref) => {
+const Button = (props, ref) => {
   const { children, href, className, color, shape, iconPosition, ...rest } = props;
 
   let buttonClassName = styles.button;
@@ -31,6 +31,6 @@ const Button = forwardRef((props, ref) => {
       { children }
     </button>
   )
-});
+};
 
-export default Button;
+export default forwardRef(Button);

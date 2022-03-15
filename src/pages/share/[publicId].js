@@ -22,7 +22,7 @@ export default function Share({ resource, url }) {
       }).then(r => r.json());
       setTransformations(transformationResults);
     })();
-  }, []);
+  }, [url]);
 
   return (
     <Layout>
@@ -34,7 +34,7 @@ export default function Share({ resource, url }) {
 
       <Container>
         <div>
-          <img src={url} />
+          <img src={url} alt="Transformed Image" />
         </div>
         <p>
           <Link href="/camera" passHref={true}>

@@ -47,7 +47,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
       error: false
     });
 
-    imgRef.current?.onload = function() {
+    imgRef.current.onload = function() {
       setImgState({
         loading: false,
         loaded: true,
