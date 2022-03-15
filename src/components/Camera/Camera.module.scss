@@ -22,7 +22,8 @@
   height: 100%;
   margin: auto;
 
-  &[data-is-active-webcam="false"] {
+  &[data-is-active-webcam="false"],
+  &[data-img-loading="true"] {
 
     &:before {
       display: block;
@@ -35,7 +36,20 @@
       height: 100%;
       background: linear-gradient(120deg, $color-gray-800 30%, $color-gray-700 50%, $color-gray-800 70%);
       background-size: 400%;
-      animation: loading 1.2s ease-in-out infinite;
+      animation: loading 2s linear infinite;
+    }
+
+  }
+
+  &[data-img-loading="true"] {
+
+    &:before {
+      background: linear-gradient(120deg, $color-gray-400 30%, $color-gray-100 50%, $color-gray-400 70%);
+      background-size: 400%;
+    }
+
+    img {
+      opacity: .5;
     }
 
   }

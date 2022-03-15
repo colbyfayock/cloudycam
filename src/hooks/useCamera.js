@@ -31,6 +31,7 @@ export function useCameraState() {
 
     setImage(imageSrc);
     setHash(imageHash);
+    setIsActive(false);
   }
 
   /**
