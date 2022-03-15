@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { FaCamera, FaTimes, FaImages } from 'react-icons/fa';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
+// https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
+const Tabs = dynamic(import('react-tabs').then(mod => mod.Tabs), { ssr: false });
+import { Tab, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
 
