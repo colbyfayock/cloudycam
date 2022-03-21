@@ -1,0 +1,14 @@
+@import "@styles/settings/__settings";
+
+.actionsContainer {
+
+  position: fixed;
+  background-color: $color-blue-500;
+  bottom: 0;
+
+  button,
+  a {
+    width: 100%;
+  }
+
+}

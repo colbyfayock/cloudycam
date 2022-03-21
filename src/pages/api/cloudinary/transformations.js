@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   let results;
 
   try {
-    results = await fetch(`https://production-code-snippets.cloudinary.com/v1/generate-code-snippets?agentId=swagger&sdkIds=js_2&url=${url}`)
+    results = await fetch(`https://production-code-snippets.cloudinary.com/v1/generate-code-snippets?agentId=swagger&sdkIds=js_2&url=${encodeURIComponent(url)}`)
       .then(r => r.json());
   } catch(e) {
     console.log('Failed get transformations', e);

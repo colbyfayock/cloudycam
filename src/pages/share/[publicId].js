@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 import { v2 as cloudinary } from 'cloudinary';
+import { FaCamera } from 'react-icons/fa';
 
 import Layout from '@components/Layout';
 import Container from '@components/Container';
 import Button from '@components/Button';
 
-import styles from '@styles/Home.module.scss'
+import styles from '@styles/Share.module.scss'
 
 import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
 
 export default function Share({ resource, url }) {
-  const [trasnformations, setTransformations] = useState();
+  const [transformations, setTransformations] = useState();
+
+  console.log('transformations', transformations)
 
   useEffect(() => {
     (async function run() {
@@ -36,10 +38,13 @@ export default function Share({ resource, url }) {
         <div>
           <img src={url} alt="Transformed Image" />
         </div>
+      </Container>
+
+      <Container className={styles.actionsContainer}>
         <p>
           <Link href="/camera" passHref={true}>
-            <Button>
-              Try Your Own
+            <Button color="cloudinary-yellow" iconPosition="left">
+              <FaCamera /> Create Your Own
             </Button>
           </Link>
         </p>
@@ -49,6 +54,13 @@ export default function Share({ resource, url }) {
 }
 
 export async function getServerSideProps({ params, query }) {
+  cloudinary.config({
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+  });
+
   const publicId = `${CLOUDINARY_UPLOADS_FOLDER}/${params.publicId}`;
   const resourceResults = await cloudinary.api.resource(publicId);
 
