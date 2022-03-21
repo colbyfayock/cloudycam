@@ -1,3 +1,5 @@
+@import "@styles/settings/__settings";
+
 html,
 body {
   padding: 0;
@@ -7,7 +9,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: $color-blue-500;
   text-decoration: none;
 }
 

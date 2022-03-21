@@ -1,14 +1,100 @@
 @import "@styles/settings/__settings";
 
-.actionsContainer {
+.shareContainer {
 
-  position: fixed;
-  background-color: $color-blue-500;
-  bottom: 0;
+  margin-bottom: 3em;
 
-  button,
-  a {
-    width: 100%;
+  @media (min-width: 720px) {
+    display: flex;
   }
 
+}
+
+.imageTransformed {
+
+  @media (min-width: 720px) {
+    width: 60%;
+    flex-shrink: 0;
+    margin-right: 2em;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+  }
+  
+}
+
+.actions {
+  
+  list-style: none;
+  padding: 0;
+  margin: 1em 0;
+
+  @media (min-width: 720px) {
+    margin-top: 0;
+  }
+
+  li {
+    display: flex;
+    justify-content: center;
+    margin-bottom: .5em;
+  }
+
+  a,
+  button {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 1em;
+  }
+
+
+
+}
+
+.imageOriginal {
+  
+  display: flex;
+  padding: 1em;
+  background-color: $color-gray-50;
+  border-radius: .2em;
+
+  img {
+    display: block;
+  }
+
+}
+
+.imageOriginalDetails {
+
+  order: 2;
+
+  h2 {
+    color: $color-gray-700;
+    font-size: 1em;
+    margin-top: 0;
+  }
+
+  p {
+    
+    font-size: .9em;
+    word-break: break-all;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+  }
+
+}
+
+.imageOriginalImage {
+  order: 1;
+  width: 10em;
+  flex-shrink: 0;
+  margin: 0 1em 0 0;
 }

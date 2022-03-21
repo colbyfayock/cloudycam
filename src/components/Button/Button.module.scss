@@ -54,6 +54,17 @@
 
   }
 
+  &[data-color="twitter-blue"] {
+
+    color: white;
+    background-color: $color-twitter-blue;
+
+    &:hover {
+      background-color: lighten($color-twitter-blue, 10);
+    }
+
+  }
+
   // Shape
 
   &[data-shape="capsule"] {
