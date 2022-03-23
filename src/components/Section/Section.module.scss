@@ -1,0 +1,26 @@
+@import "@styles/settings/__settings";
+
+.section {
+  padding: 1em 0;
+  margin: 1em 0;
+
+  @media (min-width: 720px) {
+    padding: 2em 0;
+    margin: 3em 0;
+  }
+
+  &[data-background-color="cloudinary-blue"] {
+    color: white;
+    background-color: $color-cloudinary-blue;
+  }
+
+  &[data-background-color="blue-800"] {
+    color: white;
+    background-color: $color-blue-800;
+  }
+
+  &[data-background-color="cloudinary-yellow"] {
+    color: rgba(black, 0.8);
+    background-color: $color-cloudinary-yellow-500;
+  }
+}

@@ -1,6 +1,12 @@
+@import "@styles/settings/__settings";
+
 .container {
   width: 100%;
-  max-width: 1024px;
-  padding: 0 1em;
+  max-width: $page-max-width;
+  padding: 0 2em;
   margin: 0 auto;
+
+  @media (max-width: 720px) {
+    padding: 0 1em;
+  }
 }

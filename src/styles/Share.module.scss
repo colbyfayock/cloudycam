@@ -1,8 +1,11 @@
 @import "@styles/settings/__settings";
 
-.shareContainer {
-  margin-bottom: 3em;
+.sectionTitle {
+  font-size: 2em;
+  text-align: center;
+}
 
+.shareContainer {
   @media (min-width: 720px) {
     display: flex;
   }
@@ -96,10 +99,11 @@
   flex-direction: column;
   align-items: center;
   color: white;
-  background-color: $color-cloudinary-blue-500;
-  padding: 2em 4em;
+  background-color: $color-cloudinary-blue;
+  padding: 2em;
 
   @media (min-width: 720px) {
+    padding: 2em 4em;
     flex-direction: row;
   }
 
@@ -141,9 +145,10 @@
   }
 
   img {
-    transform: translateX(5%);
+    transform: translateX(3%);
 
     @media (min-width: 720px) {
+      transform: translateX(5%);
     }
   }
 }
@@ -151,12 +156,21 @@
 /* Filters */
 
 .filter {
+  padding-bottom: 4em;
+  border-bottom: solid 2px $color-cloudinary-blue;
   margin-top: 4em;
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+    margin-bottom: 0;
+  }
 }
 
 .filterTitle {
   font-size: 1.5em;
   margin-top: 0;
+  margin-bottom: 1.5em;
 }
 
 .transformation {
@@ -168,6 +182,10 @@
 .definition {
   font-size: 0.9em;
   margin-bottom: 1.8em;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .definitionDetails {

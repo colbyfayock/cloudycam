@@ -7,6 +7,7 @@ import { FaCamera, FaTwitter } from 'react-icons/fa';
 import { createTweetAction, openTweet } from '@lib/social';
 
 import Layout from '@components/Layout';
+import Section from '@components/Section';
 import Container from '@components/Container';
 import Button from '@components/Button';
 
@@ -107,104 +108,114 @@ export default function Share({ resource, original, filters }) {
         <meta name="description" content="From Cloudinary" />
       </Head>
 
-      <Container className={styles.shareContainer}>
-        <div className={styles.imageTransformed}>
-          <p>
-            <img src={resource.secure_url} alt="Transformed Image" />
-          </p>
-        </div>
+      <Section>
+        <Container className={styles.shareContainer}>
+          <div className={styles.imageTransformed}>
+            <p>
+              <img src={resource.secure_url} alt="Transformed Image" />
+            </p>
+          </div>
 
-        <div className={styles.content}>
-          <ul className={styles.actions}>
-            <li>
-              <Button color="twitter-blue" iconPosition="left" onClick={handleOnTwitterClick}>
-                <FaTwitter /> Share on Twitter
-              </Button>
-            </li>
-            <li>
-              <Link href="/camera" passHref={true}>
-                <Button color="cloudinary-yellow" iconPosition="left">
-                  <FaCamera /> Create Your Own
+          <div className={styles.content}>
+            <ul className={styles.actions}>
+              <li>
+                <Button color="twitter-blue" iconPosition="left" onClick={handleOnTwitterClick}>
+                  <FaTwitter /> Share on Twitter
                 </Button>
-              </Link>
-            </li>
-          </ul>
+              </li>
+              <li>
+                <Link href="/camera" passHref={true}>
+                  <Button color="cloudinary-yellow" iconPosition="left">
+                    <FaCamera /> Create Your Own
+                  </Button>
+                </Link>
+              </li>
+            </ul>
 
-          {original && (
-            <div className={styles.imageOriginal}>
-              <div className={styles.imageOriginalDetails}>
-                <h2>Original Image</h2>
-                <p className={styles.imageOriginalLink}>
-                  <a href={original.secure_url} target="_blank" rel="noreferrer">
-                    View Image
-                  </a>
+            {original && (
+              <div className={styles.imageOriginal}>
+                <div className={styles.imageOriginalDetails}>
+                  <h2>Original Image</h2>
+                  <p className={styles.imageOriginalLink}>
+                    <a href={original.secure_url} target="_blank" rel="noreferrer">
+                      View Image
+                    </a>
+                  </p>
+                </div>
+                <p className={styles.imageOriginalImage}>
+                  <img src={original.secure_url} alt="Transformed Image" />
                 </p>
               </div>
-              <p className={styles.imageOriginalImage}>
-                <img src={original.secure_url} alt="Transformed Image" />
-              </p>
-            </div>
-          )}
-        </div>
-      </Container>
+            )}
+          </div>
+        </Container>
+      </Section>
 
-      <Container className={styles.cloudinary}>
-        <div className={styles.cloudinaryContent}>
-          <h2 className={styles.cloudinaryHeadline}>Transform & Deliver with Cloudinary</h2>
-          <p>
-            Media delivery is cool and Cloudinary is great at it. Register with the link below and{' '}
-            <strong>get an extra something.</strong>
-          </p>
-          <p>
-            <Button
-              href="https://cloudinary.com/users/register/free?utm_source=cityjsbrazil&utm_medium=event&utm_campaign=cityjsbrazil_booth"
-              color="cloudinary-yellow"
-            >
-              Sign Up Today
-            </Button>
-          </p>
-        </div>
-        <div className={styles.cloudinaryImage}>
-          <img src="/images/cloudinary-media-experience-cloud.png" />
-        </div>
-      </Container>
+      <Section>
+        <Container className={styles.cloudinary}>
+          <div className={styles.cloudinaryContent}>
+            <h2 className={styles.cloudinaryHeadline}>Transform & Deliver with Cloudinary</h2>
+            <p>
+              Media delivery is cool and Cloudinary is great at it. Register with the link below and{' '}
+              <strong>get an extra something.</strong>
+            </p>
+            <p>
+              <Button
+                href="https://cloudinary.com/users/register/free?utm_source=cityjsbrazil&utm_medium=event&utm_campaign=cityjsbrazil_booth"
+                color="cloudinary-yellow"
+              >
+                Sign Up Today
+              </Button>
+            </p>
+          </div>
+          <div className={styles.cloudinaryImage}>
+            <img src="/images/cloudinary-media-experience-cloud.png" />
+          </div>
+        </Container>
+      </Section>
 
-      <Container>
-        <h2>How it Works</h2>
+      <Section>
+        <Container>
+          <h2 className={styles.sectionTitle}>How it Works</h2>
 
-        <h2>Transformations</h2>
+          <p>Cloudinary does...</p>
 
-        <div className={styles.filters}>
-          {Object.keys(filters).map((key) => {
-            const { id: filterId, title: filterTitle, transformations = [] } = filters[key];
-            return (
-              <div key={filterId} className={styles.filter}>
-                <h3 className={styles.filterTitle}>{filterTitle}</h3>
-                <div className={styles.transformations}>
-                  {transformations.map((transformation) => {
-                    const definitions = parseTransformationStringToReadable(transformation);
-                    return (
-                      <ul key={transformation} className={styles.transformation}>
-                        {definitions.map((definition) => {
-                          return (
-                            <li key={definition.id} className={styles.definition}>
-                              <p className={styles.definitionDetails}>
-                                <strong className={styles.definitionTitle}>{definition.name}:</strong>
-                                <code className={styles.definitionRule}>{`${definition.id}_${definition.value}`}</code>
-                              </p>
-                              <p className={styles.definitionDescription}>{definition.description}</p>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    );
-                  })}
+          <h2>Transformations</h2>
+
+          <div className={styles.filters}>
+            {Object.keys(filters).map((key) => {
+              const { id: filterId, title: filterTitle, transformations = [] } = filters[key];
+              return (
+                <div key={filterId} className={styles.filter}>
+                  <h3 className={styles.filterTitle}>{filterTitle}</h3>
+                  <div className={styles.transformations}>
+                    {transformations.map((transformation) => {
+                      const definitions = parseTransformationStringToReadable(transformation);
+                      return (
+                        <ul key={transformation} className={styles.transformation}>
+                          {definitions.map((definition) => {
+                            return (
+                              <li key={definition.id} className={styles.definition}>
+                                <p className={styles.definitionDetails}>
+                                  <strong className={styles.definitionTitle}>{definition.name}:</strong>
+                                  <code
+                                    className={styles.definitionRule}
+                                  >{`${definition.id}_${definition.value}`}</code>
+                                </p>
+                                <p className={styles.definitionDescription}>{definition.description}</p>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </Container>
+              );
+            })}
+          </div>
+        </Container>
+      </Section>
     </Layout>
   );
 }

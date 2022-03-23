@@ -1,15 +1,10 @@
 .layout {
   display: grid;
   grid-template-rows: auto 1fr auto;
+  overflow: hidden;
   min-height: 100vh;
 }
 
 .main {
-
-  padding: 1em 0 3em;
-  
-  @media (min-width: 720px) {
-    padding: 3em 0;
-  }
-
+  padding: 0 0 3em;
 }
