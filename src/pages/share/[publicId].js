@@ -148,6 +148,27 @@ export default function Share({ resource, original, filters }) {
         </div>
       </Container>
 
+      <Container className={styles.cloudinary}>
+        <div className={styles.cloudinaryContent}>
+          <h2 className={styles.cloudinaryHeadline}>Transform & Deliver with Cloudinary</h2>
+          <p>
+            Media delivery is cool and Cloudinary is great at it. Register with the link below and{' '}
+            <strong>get an extra something.</strong>
+          </p>
+          <p>
+            <Button
+              href="https://cloudinary.com/users/register/free?utm_source=cityjsbrazil&utm_medium=event&utm_campaign=cityjsbrazil_booth"
+              color="cloudinary-yellow"
+            >
+              Sign Up Today
+            </Button>
+          </p>
+        </div>
+        <div className={styles.cloudinaryImage}>
+          <img src="/images/cloudinary-media-experience-cloud.png" />
+        </div>
+      </Container>
+
       <Container>
         <h2>How it Works</h2>
 
