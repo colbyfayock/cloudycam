@@ -87,7 +87,7 @@ export default function Share({ resource, original, filters }) {
               <div className={styles.imageOriginalDetails}>
                 <h2>Original Image</h2>
                 <p className={styles.imageOriginalLink}>
-                  <a href={ original.secure_url } target="_blank">View Image</a>
+                  <a href={ original.secure_url } target="_blank" rel="noreferrer">View Image</a>
                 </p>
               </div>
               <p className={styles.imageOriginalImage}>
@@ -103,12 +103,12 @@ export default function Share({ resource, original, filters }) {
         <h2>How it Works</h2>
 
         <h2>Transformations</h2>
-        
+
         <div className={styles.transformations}>
           {Object.keys(filters).map(key => {
             const { id, title, transformations } = filters[key];
             return (
-              <div className={styles.transformation}>
+              <div key={id} className={styles.transformation}>
                 { title }
               </div>
             )
@@ -147,7 +147,7 @@ export async function getServerSideProps({ params, query }) {
 
   const resource = {};
   const original = {};
-  
+
   const filtersString = resourceResults?.context?.custom?.cloudycam_filters;
   const filters = filtersString && JSON.parse(filtersString);
 

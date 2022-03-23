@@ -8,7 +8,7 @@ const Tabs = dynamic(import('react-tabs').then(mod => mod.Tabs), { ssr: false })
 import { Tab, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
-import { uploadToCloudinary } from '@lib/cloudinary';
+import { uploadToCloudinary, constructCldUrl } from '@lib/cloudinary';
 
 import Camera from '@components/Camera';
 import Button from '@components/Button';
@@ -22,11 +22,9 @@ import {
   CLOUDINARY_TAG_ASSET_TRANSPARENT,
   CLOUDINARY_TAG_ASSET_TRANSFORMATION
 } from '@data/cloudinary';
+import { CAMERA_WIDTH, CAMERA_HEIGHT, FILTER_THUMB_WIDTH, FILTER_THUMB_HEIGHT } from '@data/camera';
 
 import styles from './CldCamera.module.scss';
-
-const FILTER_THUMB_WIDTH = 80;
-const FILTER_THUMB_HEIGHT = 80;
 
 const cld = new Cloudinary({
   cloud: {
@@ -67,6 +65,8 @@ const DEFAULT_ASSET_STATE = {
 
 const DEFAULT_FILTERS = {};
 
+
+
 const CldCamera = ({ onShare, ...props }) => {
   const [cldData, setCldData] = useState(DEFAULT_CLD_DATA);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
@@ -96,27 +96,12 @@ const CldCamera = ({ onShare, ...props }) => {
   // an image URL
 
   if ( cloudImageId ) {
-    const cloudImage = cld.image(cloudImageId).format('auto').quality('auto');
-
-    // If filters are applied, work through them and add each one
-
-    if ( hasFilters ) {
-      Object.keys(filters).forEach(filterKey => {
-        const filter = filters[filterKey];
-
-        filter.transformations?.forEach(transformation => {
-          cloudImage.addTransformation(transformation);
-        });
-
-        filter.effects?.forEach(effect => {
-          cloudImage.effect(effect);
-        });
-      })
-    }
-
-    cloudImage.addTransformation(`l_${CLOUDINARY_ASSETS_FOLDER}:cloudinary_white,h_20,o_40,g_south_east,x_10,y_10`);
-
-    src = cloudImage.toURL();
+    src = constructCldUrl({
+      publicId: cloudImageId,
+      width: CAMERA_WIDTH,
+      height: CAMERA_HEIGHT,
+      filters
+    });
   }
 
   // Determines whether or not the webcam should be active for capture mode
@@ -169,7 +154,7 @@ const CldCamera = ({ onShare, ...props }) => {
 
     (async function run() {
       try {
-        
+
         const results = await uploadToCloudinary(image, {
           tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_ORIGINAL],
           options: {
@@ -406,6 +391,7 @@ const CldCamera = ({ onShare, ...props }) => {
                                 transformations={filter.thumb?.transformations || filter.transformations}
                                 effects={filter.thumb?.effects || filter.effects}
                                 alt={filter.name}
+                                watermark={false}
                               />
                             </span>
                             <span>{ filter.title }</span>

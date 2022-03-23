@@ -1,32 +1,27 @@
-import { Cloudinary } from '@cloudinary/url-gen';
+import { constructCldUrl } from '@lib/cloudinary';
 
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-  },
-  url: {
-    secure: true
-  }
-});
+import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { CAMERA_WIDTH, CAMERA_HEIGHT, FILTER_THUMB_WIDTH, FILTER_THUMB_HEIGHT } from '@data/camera';
 
-const CldImage = ({ src, format = 'auto', quality = 'auto', resize, transformations, effects, ...props }) => {
-  const cldImage = cld.image(src).format(format).quality(quality);
-
-  if ( resize ) {
-    cldImage.resize(`w_${resize.width},h_${resize.height}`);
-  }
-
-  transformations?.forEach(transformation => {
-    cldImage.addTransformation(transformation);
-  });
-
-  effects?.forEach(effect => {
-    cldImage.effect(effect);
+const CldImage = ({ src, width, height, resize, transformations, effects, watermark, ...props }) => {
+  const cldImageUrl = constructCldUrl({
+    publicId: src,
+    width: resize?.width || width,
+    height: resize?.height || height,
+    filters: [
+      {
+        transformations,
+        effects
+      }
+    ],
+    applyWatermark: watermark
   });
 
   return (
     <img
-      src={cldImage.toURL()}
+      width={width}
+      height={height}
+      src={cldImageUrl}
       loading="lazy"
       {...props}
     />

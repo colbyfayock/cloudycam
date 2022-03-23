@@ -22,7 +22,7 @@
   height: 100%;
   margin: auto;
 
-  &[data-is-active-webcam="false"],
+  &[data-is-active-webcam="false"][data-img-loaded="false"],
   &[data-img-loading="true"] {
 
     &:before {

@@ -1,5 +1,4 @@
 import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
-import { CAMERA_WIDTH, CAMERA_HEIGHT } from '@data/camera';
 
 export const FILTER_TYPES = [
   {
@@ -15,10 +14,10 @@ export const FILTER_TYPES = [
     title: 'Backgrounds',
     checkActive: (cldData) => !!cldData.transparent?.public_id
   },
-  // {
-  //   id: 'crops',
-  //   title: 'Crops'
-  // },
+  {
+    id: 'crops',
+    title: 'Crops'
+  },
   {
     id: 'frames',
     title: 'Frames'
@@ -138,6 +137,10 @@ export const FILTERS_FRAMES = [
     id: 'friends',
     title: 'Friends',
     type: 'frames',
+    baseTransformations: [
+      'c_thumb,g_faces,h_480,w_360',
+      'fl_layer_apply,g_north_west,x_170,y_130'
+    ],
     transformations: [
       `l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`
     ],
