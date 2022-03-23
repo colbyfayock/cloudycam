@@ -3,10 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "format": "yarn lint --fix",
+    "format:no-path": "yarn lint:no-path --fix",
+    "lint": "eslint .",
+    "lint:no-path": "eslint",
+    "prepare": "husky install",
+    "start": "next start"
+  },
+  "lint-staged": {
+    "**/*.js": "yarn format:no-path",
+    "**/*.scss": "yarn prettier --write"
   },
   "dependencies": {
     "@cloudinary/url-gen": "^1.6.0",
@@ -21,7 +29,13 @@
     "sass": "^1.49.9"
   },
   "devDependencies": {
-    "eslint": "8.10.0",
-    "eslint-config-next": "12.1.0"
+    "eslint": "^8.11.0",
+    "eslint-config-next": "^12.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.0"
   }
 }
