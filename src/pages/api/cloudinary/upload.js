@@ -10,15 +10,25 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const { image, folder = CLOUDINARY_UPLOADS_FOLDER, options } = JSON.parse(req.body);
+  const { image, folder = CLOUDINARY_UPLOADS_FOLDER, context, tags, options } = JSON.parse(req.body);
+
+  const uploadOptions = {
+    folder,
+    ...options,
+  }
+
+  if ( context ) {
+    uploadOptions.context = context;
+  }
+
+  if ( Array.isArray(tags) ) {
+    uploadOptions.tags = tags;
+  }
 
   let results;
 
   try {
-    results = await cloudinary.uploader.upload(image, {
-      folder,
-      ...options
-    });
+    results = await cloudinary.uploader.upload(image, uploadOptions);
   } catch(e) {
     console.log('Failed to upload to Cloudinary', e);
     res.status(500).json({

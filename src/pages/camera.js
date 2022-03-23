@@ -1,15 +1,29 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router'
 import Head from 'next/head';
-import Image from 'next/image';
 
-import Layout from '@components/Layout';
-import Container from '@components/Container';
 import CldCamera from '@components/CldCamera';
 
 export default function Camera() {
+  const router = useRouter();
+
+  /**
+   * handleOnShare
+   */
+
+  function handleOnShare({ publicId }) {
+    router.push(`/share/${publicId}`);
+  }
+
   return (
     <>
-      <CldCamera />
+      <Head>
+        <title>CloudyCam</title>
+        <meta name="description" content="From Cloudinary" />
+      </Head>
+
+      <CldCamera onShare={handleOnShare} />
+
       <style global jsx>{`
         html,
         body {

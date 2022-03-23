@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { Cloudinary } from '@cloudinary/url-gen';
 import { FaCamera, FaTimes, FaImages, FaShare } from 'react-icons/fa';
 
@@ -9,20 +8,25 @@ const Tabs = dynamic(import('react-tabs').then(mod => mod.Tabs), { ssr: false })
 import { Tab, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
+import { uploadToCloudinary } from '@lib/cloudinary';
 
 import Camera from '@components/Camera';
 import Button from '@components/Button';
 import CldImage from '@components/CldImage';
 
-import { ALL_FILTERS, FILTER_TYPES, FILTERS_STYLES, FILTERS_EFFECTS } from '@data/filters';
-import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { ALL_FILTERS, FILTER_TYPES } from '@data/filters';
+import {
+  CLOUDINARY_ASSETS_FOLDER,
+  CLOUDINARY_TAG_ASSET,
+  CLOUDINARY_TAG_ASSET_ORIGINAL,
+  CLOUDINARY_TAG_ASSET_TRANSPARENT,
+  CLOUDINARY_TAG_ASSET_TRANSFORMATION
+} from '@data/cloudinary';
 
 import styles from './CldCamera.module.scss';
 
 const FILTER_THUMB_WIDTH = 80;
 const FILTER_THUMB_HEIGHT = 80;
-
-const artFilters = FILTERS_STYLES.map(f => ({ name: f, type: 'art' }));
 
 const cld = new Cloudinary({
   cloud: {
@@ -63,12 +67,10 @@ const DEFAULT_ASSET_STATE = {
 
 const DEFAULT_FILTERS = {};
 
-const CldCamera = ({ ...props }) => {
+const CldCamera = ({ onShare, ...props }) => {
   const [cldData, setCldData] = useState(DEFAULT_CLD_DATA);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [assetState, setAssetState] = useState(DEFAULT_ASSET_STATE);
-
-  console.log('cldData', cldData)
 
   const { isDemo = false } = cldData;
 
@@ -79,7 +81,6 @@ const CldCamera = ({ ...props }) => {
 
   let src, cloudImageId;
   const thumbnailPublicId = cldData?.main?.public_id || DEMO_CLD_DATA.main.public_id;
-  const sharePublicId = cldData?.main?.public_id && cldData.main.public_id.replace(`${CLOUDINARY_UPLOADS_FOLDER}/`, '');
 
   // If we have any of the background filters applied attempt to use the transparent ID if available
   // for background effects. If it's not available, fall back to the main ID no matter the case until
@@ -168,21 +169,17 @@ const CldCamera = ({ ...props }) => {
 
     (async function run() {
       try {
-        const response = await fetch('/api/cloudinary/upload', {
-          method: 'POST',
-          body: JSON.stringify({
-            image,
-            options: {
-              public_id: hash
-            }
-          })
-        }).then(r => r.json());
-
-        setCldData(prev => {
-          return {
-            main: response,
-            transparent: undefined
+        
+        const results = await uploadToCloudinary(image, {
+          tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_ORIGINAL],
+          options: {
+            public_id: hash
           }
+        });
+
+        setCldData({
+          main: results,
+          transparent: undefined
         });
 
         setAssetState(prev => {
@@ -233,21 +230,21 @@ const CldCamera = ({ ...props }) => {
       try {
         const transparentPublicId = `${hash}-transparent`;
 
-        const response = await fetch('/api/cloudinary/upload', {
-          method: 'POST',
-          body: JSON.stringify({
-            image: cldData.main.secure_url,
-            options: {
-              public_id: transparentPublicId,
-              background_removal: 'cloudinary_ai',
-            }
-          })
-        }).then(r => r.json());
+        const results = await uploadToCloudinary(cldData.main.secure_url, {
+          tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSPARENT],
+          context: {
+            original_public_id: cldData.main.public_id
+          },
+          options: {
+            public_id: transparentPublicId,
+            background_removal: 'cloudinary_ai',
+          }
+        });
 
         setCldData(prev => {
           return {
             ...prev,
-            transparent: response
+            transparent: results
           }
         });
 
@@ -275,6 +272,33 @@ const CldCamera = ({ ...props }) => {
       }
     })();
   }, [cldData, hash]);
+
+  /**
+   * handleOnShare
+   * @description Triggers an upload of the current state of transformations
+   */
+
+  async function handleOnShare() {
+    const sharePublicId = `${hash}-transformation`;
+
+    const results = await uploadToCloudinary(src, {
+      context: {
+        original_public_id: cldData.main.public_id,
+        cloudycam_filters: JSON.stringify(filters)
+      },
+      tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
+      options: {
+        public_id: sharePublicId
+      }
+    });
+
+    if ( typeof onShare === 'function' ) {
+      onShare({
+        publicId: sharePublicId,
+        resource: results
+      });
+    }
+  }
 
   /**
    * onEnableDemo
@@ -418,12 +442,10 @@ const CldCamera = ({ ...props }) => {
             <>
               {cldData.main?.public_id && (
                 <li className={styles.control}>
-                  <Link href={`/share/${sharePublicId}?url=${encodeURIComponent(src)}`} passHref={true}>
-                    <Button color="blue-800" shape="capsule" iconPosition="left">
-                      <FaShare />
-                      <span>Share</span>
-                    </Button>
-                  </Link>
+                  <Button color="blue-800" shape="capsule" iconPosition="left" onClick={handleOnShare}>
+                    <FaShare />
+                    <span>Share</span>
+                  </Button>
                 </li>
               )}
               <li className={styles.control}>

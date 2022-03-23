@@ -17,10 +17,11 @@ import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
 
 const HOST = process.env.URL || process.env.NEXT_PUBLIC_URL;
 
-export default function Share({ resource, url }) {
-  const router = useRouter();
+export default function Share({ resource, original, filters }) {
 
-  const [transformations, setTransformations] = useState();
+  console.log('filters', filters)
+
+  const router = useRouter();
 
   const twitterAction = createTweetAction({
     message: [
@@ -36,16 +37,7 @@ export default function Share({ resource, url }) {
   });
 
   console.log('resource', resource)
-  console.log('transformations', transformations)
 
-  useEffect(() => {
-    (async function run() {
-      const transformationResults = await fetch('/api/cloudinary/transformations', {
-        url
-      }).then(r => r.json());
-      setTransformations(transformationResults);
-    })();
-  }, [url]);
 
 
   /**
@@ -69,39 +61,62 @@ export default function Share({ resource, url }) {
       <Container className={styles.shareContainer}>
         <div className={styles.imageTransformed}>
           <p>
-            <img src={url} alt="Transformed Image" />
-          </p>
-        </div>
-
-        <ul className={styles.actions}>
-          <li>
-            <Button color="twitter-blue" iconPosition="left" onClick={handleOnTwitterClick}>
-              <FaTwitter /> Share on Twitter
-            </Button>
-          </li>
-          <li>
-            <Link href="/camera" passHref={true}>
-              <Button color="cloudinary-yellow" iconPosition="left">
-                <FaCamera /> Create Your Own
-              </Button>
-            </Link>
-          </li>
-        </ul>
-      </Container>
-
-      <Container>
-        <div className={styles.imageOriginal}>
-          <div className={styles.imageOriginalDetails}>
-            <h2>Original Image</h2>
-            <p className={styles.imageOriginalLink}>
-              <a href={ resource.secure_url } target="_blank">View Image</a>
-            </p>
-          </div>
-          <p className={styles.imageOriginalImage}>
             <img src={resource.secure_url} alt="Transformed Image" />
           </p>
         </div>
+
+        <div className={styles.content}>
+
+          <ul className={styles.actions}>
+            <li>
+              <Button color="twitter-blue" iconPosition="left" onClick={handleOnTwitterClick}>
+                <FaTwitter /> Share on Twitter
+              </Button>
+            </li>
+            <li>
+              <Link href="/camera" passHref={true}>
+                <Button color="cloudinary-yellow" iconPosition="left">
+                  <FaCamera /> Create Your Own
+                </Button>
+              </Link>
+            </li>
+          </ul>
+
+          {original && (
+            <div className={styles.imageOriginal}>
+              <div className={styles.imageOriginalDetails}>
+                <h2>Original Image</h2>
+                <p className={styles.imageOriginalLink}>
+                  <a href={ original.secure_url } target="_blank">View Image</a>
+                </p>
+              </div>
+              <p className={styles.imageOriginalImage}>
+                <img src={original.secure_url} alt="Transformed Image" />
+              </p>
+            </div>
+          )}
+
+        </div>
       </Container>
+
+      <Container>
+        <h2>How it Works</h2>
+
+        <h2>Transformations</h2>
+        
+        <div className={styles.transformations}>
+          {Object.keys(filters).map(key => {
+            const { id, title, transformations } = filters[key];
+            return (
+              <div className={styles.transformation}>
+                { title }
+              </div>
+            )
+          })}
+        </div>
+
+      </Container>
+
     </Layout>
   )
 }
@@ -117,6 +132,10 @@ export async function getServerSideProps({ params, query }) {
   const publicId = `${CLOUDINARY_UPLOADS_FOLDER}/${params.publicId}`;
   const resourceResults = await cloudinary.api.resource(publicId);
 
+  const originalPublicId = resourceResults?.context?.custom?.original_public_id;
+  const originalResults = originalPublicId && await cloudinary.api.resource(originalPublicId);
+  console.log('originalResults', originalResults)
+
   const keys = [
     'public_id',
     'resource_type',
@@ -127,13 +146,22 @@ export async function getServerSideProps({ params, query }) {
   ];
 
   const resource = {};
+  const original = {};
+  
+  const filtersString = resourceResults?.context?.custom?.cloudycam_filters;
+  const filters = filtersString && JSON.parse(filtersString);
 
   keys.forEach(key => resource[key] = resourceResults[key]);
+
+  if ( originalResults ) {
+    keys.forEach(key => original[key] = originalResults[key]);
+  }
 
   return {
     props: {
       resource,
-      url: query.url
+      original,
+      filters
     }
   }
 }
