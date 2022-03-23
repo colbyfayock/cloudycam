@@ -4,7 +4,7 @@ cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true
+  secure: true,
 });
 
 export default async function handler(req, res) {
@@ -14,15 +14,15 @@ export default async function handler(req, res) {
 
   try {
     results = await cloudinary.resource(publicId);
-  } catch(e) {
+  } catch (e) {
     console.log('Failed to get resource', e);
     res.status(500).json({
-      message: 'Failed to get resource'
+      message: 'Failed to get resource',
     });
     return;
   }
 
   res.status(200).json({
-    ...results
+    ...results,
   });
 }

@@ -1,6 +1,6 @@
 import { CameraProvider } from '@hooks/useCamera';
 
-import '@styles/globals.scss'
+import '@styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -10,4 +10,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp
+export default MyApp;

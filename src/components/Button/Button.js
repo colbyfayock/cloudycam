@@ -6,8 +6,8 @@ const Button = (props, ref) => {
 
   let buttonClassName = styles.button;
 
-  if ( className ) {
-    buttonClassName = `${buttonClassName} ${className}`
+  if (className) {
+    buttonClassName = `${buttonClassName} ${className}`;
   }
 
   const buttonProps = {
@@ -15,22 +15,22 @@ const Button = (props, ref) => {
     'data-color': color,
     'data-shape': shape,
     'data-icon-position': iconPosition,
-    ...rest
-  }
+    ...rest,
+  };
 
-  if ( href ) {
+  if (href) {
     return (
       <a ref={ref} href={href} {...buttonProps}>
-        { children }
+        {children}
       </a>
-    )
+    );
   }
 
   return (
     <button ref={ref} {...buttonProps}>
-      { children }
+      {children}
     </button>
-  )
+  );
 };
 
 export default forwardRef(Button);

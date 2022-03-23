@@ -4,11 +4,11 @@ import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
 const cld = new Cloudinary({
   cloud: {
-    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   },
   url: {
-    secure: true
-  }
+    secure: true,
+  },
 });
 
 /**
@@ -20,9 +20,9 @@ export async function uploadToCloudinary(image, options = {}) {
     method: 'POST',
     body: JSON.stringify({
       image,
-      ...options
-    })
-  }).then(r => r.json());
+      ...options,
+    }),
+  }).then((r) => r.json());
 }
 
 /**
@@ -40,17 +40,17 @@ export function constructCldUrl({ publicId: userPublicId, width, height, filters
 
   // Resized image with base auto optimization settings
 
-  cloudImage.resize('w_$imgWidth,h_$imgHeight')
-    .format('auto')
-    .quality('auto');
+  cloudImage.resize('w_$imgWidth,h_$imgHeight').format('auto').quality('auto');
 
   // Add the photo as an overlay giving us more flexibility with how we arrange it on the canvas
   // particularly for crops and framing
 
-  const baseTransformations = hasFilters && Object.keys(filters)
-    .map(key => filters[key])
-    .filter(({ baseTransformations }) => !!baseTransformations)
-    .flatMap(({ baseTransformations }) => baseTransformations);
+  const baseTransformations =
+    hasFilters &&
+    Object.keys(filters)
+      .map((key) => filters[key])
+      .filter(({ baseTransformations }) => !!baseTransformations)
+      .flatMap(({ baseTransformations }) => baseTransformations);
 
   const baseTransformationsString = baseTransformations.length > 0 && `,${baseTransformations.join('/')}`;
 
@@ -58,21 +58,21 @@ export function constructCldUrl({ publicId: userPublicId, width, height, filters
 
   // If filters are applied, work through them and add each one
 
-  if ( hasFilters ) {
-    Object.keys(filters).forEach(filterKey => {
+  if (hasFilters) {
+    Object.keys(filters).forEach((filterKey) => {
       const filter = filters[filterKey];
 
-      filter.transformations?.forEach(transformation => {
+      filter.transformations?.forEach((transformation) => {
         cloudImage.addTransformation(transformation);
       });
 
-      filter.effects?.forEach(effect => {
+      filter.effects?.forEach((effect) => {
         cloudImage.effect(effect);
       });
-    })
+    });
   }
 
-  if ( applyWatermark ) {
+  if (applyWatermark) {
     cloudImage.addTransformation(`l_${CLOUDINARY_ASSETS_FOLDER}:cloudinary_white,h_20,o_40,g_south_east,x_10,y_10`);
   }
 

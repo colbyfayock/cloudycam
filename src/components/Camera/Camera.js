@@ -11,19 +11,19 @@ import styles from './Camera.module.scss';
 
 const videoConstraints = {
   width: {
-    min: CAMERA_WIDTH
+    min: CAMERA_WIDTH,
   },
   height: {
-    min: CAMERA_HEIGHT
+    min: CAMERA_HEIGHT,
   },
-  aspectRatio: CAMERA_WIDTH / CAMERA_HEIGHT
+  aspectRatio: CAMERA_WIDTH / CAMERA_HEIGHT,
 };
 
 const DEFAULT_IMG_STATE = {
   loading: false,
   loaded: false,
-  error: false
-}
+  error: false,
+};
 
 const Camera = ({ className, src: defaultSrc, controls = true }) => {
   const imgRef = useRef();
@@ -33,27 +33,27 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
 
   const src = defaultSrc || image;
 
-  const cameraClassName = [styles.camera, className].filter(c => !!c).join(' ');
+  const cameraClassName = [styles.camera, className].filter((c) => !!c).join(' ');
 
   useEffect(() => {
-    if ( !imgRef.current || !defaultSrc ) {
+    if (!imgRef.current || !defaultSrc) {
       setImgState(DEFAULT_IMG_STATE);
       return;
-    };
+    }
 
     setImgState({
       loading: true,
       loaded: false,
-      error: false
+      error: false,
     });
 
-    imgRef.current.onload = function() {
+    imgRef.current.onload = function () {
       setImgState({
         loading: false,
         loaded: true,
-        error: false
+        error: false,
       });
-    }
+    };
   }, [defaultSrc]);
 
   // Construct props to use as data attributes that allow the ability to target different
@@ -61,20 +61,20 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
 
   const imgStateProps = {};
 
-  Object.keys(imgState).forEach(stateKey => {
+  Object.keys(imgState).forEach((stateKey) => {
     imgStateProps[`data-img-${stateKey}`] = imgState[stateKey];
-  })
+  });
 
   return (
     <div className={cameraClassName}>
-
-      <div className={styles.stageContainer} style={{
-        aspectRatio: `${CAMERA_WIDTH} / ${CAMERA_HEIGHT}`
-      }}>
+      <div
+        className={styles.stageContainer}
+        style={{
+          aspectRatio: `${CAMERA_WIDTH} / ${CAMERA_HEIGHT}`,
+        }}
+      >
         <div className={styles.stage} data-is-active-webcam={isActive} {...imgStateProps}>
-          { src && (
-            <img ref={imgRef} src={src} />
-          )}
+          {src && <img ref={imgRef} src={src} alt="Webcam Photo" />}
           {!src && (
             <Webcam
               ref={ref}
@@ -91,9 +91,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
         <div className={styles.controls}>
           <ul>
             <li>
-              <Button onClick={capture}>
-                Capture photo
-              </Button>
+              <Button onClick={capture}>Capture photo</Button>
             </li>
             <li>
               <Button onClick={reset} color="red">
@@ -104,7 +102,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default Camera;

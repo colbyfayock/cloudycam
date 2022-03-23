@@ -5,8 +5,6 @@ import Layout from '@components/Layout';
 import Container from '@components/Container';
 import Button from '@components/Button';
 
-import styles from '@styles/Home.module.scss'
-
 export default function Home() {
   return (
     <Layout>
@@ -18,12 +16,10 @@ export default function Home() {
       <Container>
         <p>
           <Link href="/camera" passHref={true}>
-            <Button>
-              Try the Camera
-            </Button>
+            <Button>Try the Camera</Button>
           </Link>
         </p>
       </Container>
     </Layout>
-  )
+  );
 }

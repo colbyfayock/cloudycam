@@ -1,16 +1,12 @@
-import { useState, createContext, useContext, useEffect, useRef } from 'react';
+import { useState, createContext, useContext, useRef } from 'react';
 import { createHashFromString } from '@lib/util';
 
 export const CameraContext = createContext();
 
 export const CameraProvider = ({ children }) => {
   const camera = useCameraState();
-  return (
-    <CameraContext.Provider value={camera}>
-      { children }
-    </CameraContext.Provider>
-  )
-}
+  return <CameraContext.Provider value={camera}>{children}</CameraContext.Provider>;
+};
 
 export function useCameraState() {
   const ref = useRef();
@@ -25,7 +21,7 @@ export function useCameraState() {
   async function capture() {
     const imageSrc = await ref.current.getScreenshot();
 
-    if ( !imageSrc ) return null;
+    if (!imageSrc) return null;
 
     const imageHash = await createHashFromString(imageSrc);
 
@@ -58,8 +54,8 @@ export function useCameraState() {
     isActive,
     capture,
     reset,
-    onUserMedia
-  }
+    onUserMedia,
+  };
 }
 
 export function useCamera() {

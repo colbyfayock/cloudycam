@@ -1,8 +1,7 @@
 const twitterTweetIntent = 'https://twitter.com/intent/tweet';
 
 export function createTweetAction({ message = [], hashtags = [], via, related = [] } = {}) {
-  
-  const text = message.map(m => encodeURIComponent(m)).join('%0A');
+  const text = message.map((m) => encodeURIComponent(m)).join('%0A');
 
   const intent = {
     text,
@@ -11,7 +10,10 @@ export function createTweetAction({ message = [], hashtags = [], via, related = 
     related: related.join(','),
   };
 
-  const paramString = Object.keys(intent).filter(key => !!intent[key]).map(key => `${key}=${intent[key]}`).join('&');
+  const paramString = Object.keys(intent)
+    .filter((key) => !!intent[key])
+    .map((key) => `${key}=${intent[key]}`)
+    .join('&');
 
   return `${twitterTweetIntent}?${paramString}`;
 }

@@ -13,7 +13,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:prettier/recommended',
     'plugin:@next/next/recommended',
-    'next/core-web-vitals'
+    'next/core-web-vitals',
   ],
   parserOptions: {
     ecmaFeatures: {

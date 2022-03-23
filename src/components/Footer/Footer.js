@@ -7,7 +7,7 @@ const Footer = ({ ...rest }) => {
         &copy; <a href="https://spacejelly.dev">Space Jelly</a>, {new Date().getFullYear()}
       </p>
     </footer>
-  )
-}
+  );
+};
 
 export default Footer;

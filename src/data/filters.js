@@ -1,26 +1,26 @@
-import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
 export const FILTER_TYPES = [
   {
     id: 'effects',
-    title: 'Effects'
+    title: 'Effects',
   },
   {
     id: 'styles',
-    title: 'Styles'
+    title: 'Styles',
   },
   {
     id: 'backgrounds',
     title: 'Backgrounds',
-    checkActive: (cldData) => !!cldData.transparent?.public_id
+    checkActive: (cldData) => !!cldData.transparent?.public_id,
   },
   {
     id: 'crops',
-    title: 'Crops'
+    title: 'Crops',
   },
   {
     id: 'frames',
-    title: 'Frames'
+    title: 'Frames',
   },
 ];
 
@@ -29,141 +29,117 @@ export const FILTERS_EFFECTS = [
     id: 'vader',
     title: 'Vader',
     type: 'effects',
-    transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,g_faces,h_1.0,fl_region_relative`
-    ]
+    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,g_faces,h_1.0,fl_region_relative`],
   },
   {
     id: 'deal-with-it',
     title: 'Deal With It',
     type: 'effects',
-    transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative`
-    ]
+    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative`],
   },
   {
     id: 'pixelate',
     title: 'Pixelate',
     type: 'effects',
-    transformations: [
-      `e_pixelate_faces`
-    ]
+    transformations: [`e_pixelate_faces`],
   },
-]
-
-export const FILTERS_STYLES = [
-  { type: 'styles', id: 'al_dente', title: 'Al Dente', effects: [ 'e_art:al_dente' ] },
-  { type: 'styles', id: 'athena', title: 'Athena', effects: [ 'e_art:athena' ] },
-  { type: 'styles', id: 'audrey', title: 'Audrey', effects: [ 'e_art:audrey' ] },
-  { type: 'styles', id: 'aurora', title: 'Aurora', effects: [ 'e_art:aurora' ] },
-  { type: 'styles', id: 'daguerre', title: 'Daguerre', effects: [ 'e_art:daguerre' ] },
-  { type: 'styles', id: 'eucalyptus', title: 'Eucalyptus', effects: [ 'e_art:eucalyptus' ] },
-  { type: 'styles', id: 'fes', title: 'Fes', effects: [ 'e_art:fes' ] },
-  { type: 'styles', id: 'frost', title: 'Frost', effects: [ 'e_art:frost' ] },
-  { type: 'styles', id: 'hairspray', title: 'Hairspray', effects: [ 'e_art:hairspray' ] },
-  { type: 'styles', id: 'hokusai', title: 'Hokusai', effects: [ 'e_art:hokusai' ] },
-  { type: 'styles', id: 'incognito', title: 'Incognito', effects: [ 'e_art:incognito' ] },
-  { type: 'styles', id: 'linen', title: 'Linen', effects: [ 'e_art:linen' ] },
-  { type: 'styles', id: 'peacock', title: 'Peacock', effects: [ 'e_art:peacock' ] },
-  { type: 'styles', id: 'primavera', title: 'Primavera', effects: [ 'e_art:primavera' ] },
-  { type: 'styles', id: 'quartz', title: 'Quartz', effects: [ 'e_art:quartz' ] },
-  { type: 'styles', id: 'red_rock', title: 'Red Rock', effects: [ 'e_art:red_rock' ] },
-  { type: 'styles', id: 'refresh', title: 'Refresh', effects: [ 'e_art:refresh' ] },
-  { type: 'styles', id: 'sizzle', title: 'Sizzle', effects: [ 'e_art:sizzle' ] },
-  { type: 'styles', id: 'sonnet', title: 'Sonnet', effects: [ 'e_art:sonnet' ] },
-  { type: 'styles', id: 'ukulele', title: 'Ukulele', effects: [ 'e_art:ukulele' ] },
-  { type: 'styles', id: 'zorro', title: 'Zorro', effects: [ 'e_art:zorro' ] },
 ];
 
+export const FILTERS_STYLES = [
+  { type: 'styles', id: 'al_dente', title: 'Al Dente', effects: ['e_art:al_dente'] },
+  { type: 'styles', id: 'athena', title: 'Athena', effects: ['e_art:athena'] },
+  { type: 'styles', id: 'audrey', title: 'Audrey', effects: ['e_art:audrey'] },
+  { type: 'styles', id: 'aurora', title: 'Aurora', effects: ['e_art:aurora'] },
+  { type: 'styles', id: 'daguerre', title: 'Daguerre', effects: ['e_art:daguerre'] },
+  { type: 'styles', id: 'eucalyptus', title: 'Eucalyptus', effects: ['e_art:eucalyptus'] },
+  { type: 'styles', id: 'fes', title: 'Fes', effects: ['e_art:fes'] },
+  { type: 'styles', id: 'frost', title: 'Frost', effects: ['e_art:frost'] },
+  { type: 'styles', id: 'hairspray', title: 'Hairspray', effects: ['e_art:hairspray'] },
+  { type: 'styles', id: 'hokusai', title: 'Hokusai', effects: ['e_art:hokusai'] },
+  { type: 'styles', id: 'incognito', title: 'Incognito', effects: ['e_art:incognito'] },
+  { type: 'styles', id: 'linen', title: 'Linen', effects: ['e_art:linen'] },
+  { type: 'styles', id: 'peacock', title: 'Peacock', effects: ['e_art:peacock'] },
+  { type: 'styles', id: 'primavera', title: 'Primavera', effects: ['e_art:primavera'] },
+  { type: 'styles', id: 'quartz', title: 'Quartz', effects: ['e_art:quartz'] },
+  { type: 'styles', id: 'red_rock', title: 'Red Rock', effects: ['e_art:red_rock'] },
+  { type: 'styles', id: 'refresh', title: 'Refresh', effects: ['e_art:refresh'] },
+  { type: 'styles', id: 'sizzle', title: 'Sizzle', effects: ['e_art:sizzle'] },
+  { type: 'styles', id: 'sonnet', title: 'Sonnet', effects: ['e_art:sonnet'] },
+  { type: 'styles', id: 'ukulele', title: 'Ukulele', effects: ['e_art:ukulele'] },
+  { type: 'styles', id: 'zorro', title: 'Zorro', effects: ['e_art:zorro'] },
+];
 
 export const FILTERS_BACKGROUNDS = [
   {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative`
-    ]
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
     id: 'this-is-fine',
     title: 'This Is Fine',
     type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`
-    ]
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
     id: 'mario',
     title: 'Mario',
     type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative`
-    ]
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
     id: 'the-office',
     title: 'The Office',
     type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative`
-    ]
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
     id: 'beach',
     title: 'Beach',
     type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`
-    ]
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`],
   },
-]
+];
 
 export const FILTERS_FRAMES = [
   {
     id: 'border',
     title: 'Solid Border',
     type: 'frames',
-    transformations: [
-      'bo_40px_solid_rgb:eebd41'
-    ],
+    transformations: ['bo_40px_solid_rgb:eebd41'],
     thumb: {
-      transformations: [
-        'bo_5px_solid_rgb:eebd41'
-      ],
-    }
+      transformations: ['bo_5px_solid_rgb:eebd41'],
+    },
   },
   {
     id: 'friends',
     title: 'Friends',
     type: 'frames',
-    baseTransformations: [
-      'c_thumb,g_faces,h_480,w_360',
-      'fl_layer_apply,g_north_west,x_170,y_130'
-    ],
-    transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`
-    ],
-  }
-]
+    baseTransformations: ['c_thumb,g_faces,h_480,w_360', 'fl_layer_apply,g_north_west,x_170,y_130'],
+    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`],
+  },
+];
 
 export const FILTERS_CROPS = [
   {
     id: 'rounded',
     title: 'Rounded',
     type: 'crops',
-    transformations: [
-      'r_20'
-    ]
+    transformations: ['r_20'],
   },
   {
     id: 'circle',
     title: 'Circle',
     type: 'crops',
-    transformations: [
-      'r_max'
-    ]
+    transformations: ['r_max'],
   },
-]
+];
 
-export const ALL_FILTERS = [...FILTERS_STYLES, ...FILTERS_EFFECTS, ...FILTERS_BACKGROUNDS, ...FILTERS_FRAMES, ...FILTERS_CROPS];
+export const ALL_FILTERS = [
+  ...FILTERS_STYLES,
+  ...FILTERS_EFFECTS,
+  ...FILTERS_BACKGROUNDS,
+  ...FILTERS_FRAMES,
+  ...FILTERS_CROPS,
+];

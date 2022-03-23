@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import CldCamera from '@components/CldCamera';
@@ -38,5 +37,5 @@ export default function Camera() {
         }
       `}</style>
     </>
-  )
+  );
 }

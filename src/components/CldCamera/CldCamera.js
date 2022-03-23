@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Cloudinary } from '@cloudinary/url-gen';
 import { FaCamera, FaTimes, FaImages, FaShare } from 'react-icons/fa';
 
 // https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
-const Tabs = dynamic(import('react-tabs').then(mod => mod.Tabs), { ssr: false });
+const Tabs = dynamic(
+  import('react-tabs').then((mod) => mod.Tabs),
+  { ssr: false }
+);
 import { Tab, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
@@ -20,64 +22,51 @@ import {
   CLOUDINARY_TAG_ASSET,
   CLOUDINARY_TAG_ASSET_ORIGINAL,
   CLOUDINARY_TAG_ASSET_TRANSPARENT,
-  CLOUDINARY_TAG_ASSET_TRANSFORMATION
+  CLOUDINARY_TAG_ASSET_TRANSFORMATION,
 } from '@data/cloudinary';
 import { CAMERA_WIDTH, CAMERA_HEIGHT, FILTER_THUMB_WIDTH, FILTER_THUMB_HEIGHT } from '@data/camera';
 
 import styles from './CldCamera.module.scss';
 
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-  },
-  url: {
-    secure: true
-  }
-});
-
 const DEFAULT_CLD_DATA = {
   main: undefined,
-  transparent: undefined
+  transparent: undefined,
 };
 
 const DEMO_CLD_DATA = {
   main: {
-    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo`
+    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo`,
   },
   transparent: {
-    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo-transparent`
+    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo-transparent`,
   },
-  isDemo: true
-}
+  isDemo: true,
+};
 
 const DEFAULT_ASSET_STATE = {
   main: {
     loading: false,
     loaded: false,
-    error: false
+    error: false,
   },
   transparent: {
     loading: false,
     loaded: false,
-    error: false
-  }
-}
+    error: false,
+  },
+};
 
 const DEFAULT_FILTERS = {};
-
-
 
 const CldCamera = ({ onShare, ...props }) => {
   const [cldData, setCldData] = useState(DEFAULT_CLD_DATA);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [assetState, setAssetState] = useState(DEFAULT_ASSET_STATE);
 
-  const { isDemo = false } = cldData;
-
-  const { image, hash, isActive, capture, reset } = useCamera();
+  const { image, hash, capture, reset } = useCamera();
 
   const hasFilters = Object.keys(filters).length > 0;
-  const hasBackgroundFilter = Object.keys(filters).find(key => filters[key].type === 'backgrounds');
+  const hasBackgroundFilter = Object.keys(filters).find((key) => filters[key].type === 'backgrounds');
 
   let src, cloudImageId;
   const thumbnailPublicId = cldData?.main?.public_id || DEMO_CLD_DATA.main.public_id;
@@ -86,21 +75,21 @@ const CldCamera = ({ onShare, ...props }) => {
   // for background effects. If it's not available, fall back to the main ID no matter the case until
   // it loads and refreshes state
 
-  if ( hasBackgroundFilter && cldData?.transparent ) {
+  if (hasBackgroundFilter && cldData?.transparent) {
     cloudImageId = cldData.transparent.public_id;
-  } else if ( cldData?.main ) {
+  } else if (cldData?.main) {
     cloudImageId = cldData.main.public_id;
   }
 
   // If we have a Cloudinary Public ID assigned, use it to start to construct
   // an image URL
 
-  if ( cloudImageId ) {
+  if (cloudImageId) {
     src = constructCldUrl({
       publicId: cloudImageId,
       width: CAMERA_WIDTH,
       height: CAMERA_HEIGHT,
-      filters
+      filters,
     });
   }
 
@@ -113,81 +102,80 @@ const CldCamera = ({ onShare, ...props }) => {
 
   const assetStateProps = {};
 
-  Object.keys(assetState).forEach(assetKey => {
-    Object.keys(assetState[assetKey]).forEach(stateKey => {
+  Object.keys(assetState).forEach((assetKey) => {
+    Object.keys(assetState[assetKey]).forEach((stateKey) => {
       assetStateProps[`data-${assetKey}-${stateKey}`] = assetState[assetKey][stateKey];
     });
-  })
+  });
 
   // If a filter is selected but someone has yet to take an image, default to
   // demo mode and load demo data
 
   useEffect(() => {
-    if ( hasFilters && !image ) {
+    if (hasFilters && !image) {
       setCldData(DEMO_CLD_DATA);
     }
-  }, [hasFilters, image])
+  }, [hasFilters, image]);
 
   // Once we have an image stored, attempt to upload it to Cloudinary
 
   useEffect(() => {
-    if ( !image || !hash ) {
+    if (!image || !hash) {
       setCldData(DEFAULT_CLD_DATA);
       return;
     }
 
-    setAssetState(prev => {
+    setAssetState((prev) => {
       return {
         ...prev,
         main: {
           loading: true,
           loaded: false,
-          error: false
+          error: false,
         },
         transparent: {
           loading: true,
           loaded: false,
-          error: false
-        }
-      }
+          error: false,
+        },
+      };
     });
 
     (async function run() {
       try {
-
         const results = await uploadToCloudinary(image, {
           tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_ORIGINAL],
           options: {
-            public_id: hash
-          }
+            public_id: hash,
+          },
         });
 
         setCldData({
           main: results,
-          transparent: undefined
+          transparent: undefined,
         });
 
-        setAssetState(prev => {
+        setAssetState((prev) => {
           return {
             ...prev,
             main: {
               loading: false,
               loaded: true,
-              error: false
-            }
-          }
-        })
-      } catch(e) {
-        setAssetState(prev => {
+              error: false,
+            },
+          };
+        });
+      } catch (e) {
+        setAssetState((prev) => {
           return {
             ...prev,
             main: {
               loading: false,
               loaded: false,
-              error: true
-            }
-          }
-        })
+              error: true,
+            },
+          };
+        });
       }
     })();
   }, [image, hash]);
@@ -196,19 +184,19 @@ const CldCamera = ({ onShare, ...props }) => {
   // background removal to use for background effects
 
   useEffect(() => {
-    if ( !cldData?.main || cldData?.transparent ) {
+    if (!cldData?.main || cldData?.transparent) {
       return;
     }
 
-    setAssetState(prev => {
+    setAssetState((prev) => {
       return {
         ...prev,
         transparent: {
           loading: true,
           loaded: false,
-          error: false
-        }
-      }
+          error: false,
+        },
+      };
     });
 
     (async function run() {
@@ -218,42 +206,42 @@ const CldCamera = ({ onShare, ...props }) => {
         const results = await uploadToCloudinary(cldData.main.secure_url, {
           tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSPARENT],
           context: {
-            original_public_id: cldData.main.public_id
+            original_public_id: cldData.main.public_id,
           },
           options: {
             public_id: transparentPublicId,
             background_removal: 'cloudinary_ai',
-          }
+          },
         });
 
-        setCldData(prev => {
+        setCldData((prev) => {
           return {
             ...prev,
-            transparent: results
-          }
+            transparent: results,
+          };
         });
 
-        setAssetState(prev => {
+        setAssetState((prev) => {
           return {
             ...prev,
             transparent: {
               loading: false,
               loaded: true,
-              error: false
-            }
-          }
-        })
-      } catch(e) {
-        setAssetState(prev => {
+              error: false,
+            },
+          };
+        });
+      } catch (e) {
+        setAssetState((prev) => {
           return {
             ...prev,
             transparent: {
               loading: false,
               loaded: false,
-              error: true
-            }
-          }
-        })
+              error: true,
+            },
+          };
+        });
       }
     })();
   }, [cldData, hash]);
@@ -269,18 +257,18 @@ const CldCamera = ({ onShare, ...props }) => {
     const results = await uploadToCloudinary(src, {
       context: {
         original_public_id: cldData.main.public_id,
-        cloudycam_filters: JSON.stringify(filters)
+        cloudycam_filters: JSON.stringify(filters),
       },
       tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
       options: {
-        public_id: sharePublicId
-      }
+        public_id: sharePublicId,
+      },
     });
 
-    if ( typeof onShare === 'function' ) {
+    if (typeof onShare === 'function') {
       onShare({
         publicId: sharePublicId,
-        resource: results
+        resource: results,
       });
     }
   }
@@ -301,7 +289,7 @@ const CldCamera = ({ onShare, ...props }) => {
    */
 
   function handleOnReset() {
-    console.log('reset')
+    console.log('reset');
     setFilters(DEFAULT_FILTERS);
     setCldData(DEFAULT_CLD_DATA);
     setAssetState(DEFAULT_ASSET_STATE);
@@ -315,7 +303,7 @@ const CldCamera = ({ onShare, ...props }) => {
 
   function handleOnFilterSelect(e) {
     const filterId = e.currentTarget.dataset.filterId;
-    toggleFilter(filterId)
+    toggleFilter(filterId);
   }
 
   /**
@@ -326,14 +314,14 @@ const CldCamera = ({ onShare, ...props }) => {
   function toggleFilter(filterId) {
     const filter = ALL_FILTERS.find(({ id }) => id === filterId);
 
-    setFilters(prev => {
-      const next = {...prev};
+    setFilters((prev) => {
+      const next = { ...prev };
 
       // Clear all filters with the same type to avoid multiple
       // overlapping filters that won't work properly
 
-      Object.keys(next).forEach(key => {
-        if ( next[key].type === filter.type ) {
+      Object.keys(next).forEach((key) => {
+        if (next[key].type === filter.type) {
           delete next[key];
         }
       });
@@ -342,7 +330,7 @@ const CldCamera = ({ onShare, ...props }) => {
       // sure to add it, but we don't need to worry about deleting
       // as it should be cleared in the above check
 
-      if ( !prev[filter.id] ) {
+      if (!prev[filter.id]) {
         next[filter.id] = filter;
       }
 
@@ -355,30 +343,36 @@ const CldCamera = ({ onShare, ...props }) => {
       <Camera {...props} className={styles.camera} src={src} controls={false} />
 
       <div className={styles.actions}>
-
         <div className={styles.effects}>
-
           <Tabs key={`${cldData.main?.public_id}-${cldData.transparent?.public_id}`}>
-
             <div className={styles.effectsHeaders}>
               <TabList>
-                {FILTER_TYPES.map(type => {
+                {FILTER_TYPES.map((type) => {
                   const isActive = typeof type.checkActive === 'function' ? type.checkActive(cldData) : true;
-                  return <Tab key={type.id} disabled={!isActive} data-type={type.id}>{ type.title }</Tab>
+                  return (
+                    <Tab key={type.id} disabled={!isActive} data-type={type.id}>
+                      {type.title}
+                    </Tab>
+                  );
                 })}
               </TabList>
             </div>
 
-            {FILTER_TYPES.map(type => {
-              const availableFilters = ALL_FILTERS.filter(filter => filter.type === type.id);
-              const publicId = cldData?.transparent && type.id === 'backgrounds' ? cldData.transparent.public_id : thumbnailPublicId;
+            {FILTER_TYPES.map((type) => {
+              const availableFilters = ALL_FILTERS.filter((filter) => filter.type === type.id);
+              const publicId =
+                cldData?.transparent && type.id === 'backgrounds' ? cldData.transparent.public_id : thumbnailPublicId;
               return (
                 <TabPanel key={type.id} className={styles.effectsPanel}>
                   <ul className={styles.filters}>
-                    {availableFilters.map(filter => {
+                    {availableFilters.map((filter) => {
                       return (
                         <li key={filter.id} data-is-active-filter={!!filters[filter.id]}>
-                          <button className={styles.filterThumb} data-filter-id={filter.id} onClick={handleOnFilterSelect}>
+                          <button
+                            className={styles.filterThumb}
+                            data-filter-id={filter.id}
+                            onClick={handleOnFilterSelect}
+                          >
                             <span className={styles.filterThumbImage}>
                               <CldImage
                                 src={publicId}
@@ -386,7 +380,7 @@ const CldCamera = ({ onShare, ...props }) => {
                                 height={FILTER_THUMB_HEIGHT}
                                 resize={{
                                   width: FILTER_THUMB_WIDTH * 2,
-                                  height: FILTER_THUMB_HEIGHT * 2
+                                  height: FILTER_THUMB_HEIGHT * 2,
                                 }}
                                 transformations={filter.thumb?.transformations || filter.transformations}
                                 effects={filter.thumb?.effects || filter.effects}
@@ -394,16 +388,15 @@ const CldCamera = ({ onShare, ...props }) => {
                                 watermark={false}
                               />
                             </span>
-                            <span>{ filter.title }</span>
+                            <span>{filter.title}</span>
                           </button>
                         </li>
-                      )
+                      );
                     })}
                   </ul>
                 </TabPanel>
               );
             })}
-
           </Tabs>
         </div>
 
@@ -443,10 +436,9 @@ const CldCamera = ({ onShare, ...props }) => {
             </>
           )}
         </ul>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CldCamera;
