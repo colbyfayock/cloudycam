@@ -16,6 +16,67 @@ import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
 
 const HOST = process.env.URL || process.env.NEXT_PUBLIC_URL;
 
+const PROPERTIES = [
+  {
+    id: 'fl',
+    name: 'Flag',
+    description: 'Alters the regular behavior of another transformation or the overall delivery behavior.',
+  },
+  {
+    id: 'g',
+    name: 'Gravity',
+    description: 'Determines which part of an asset to focus on.',
+  },
+  {
+    id: 'h',
+    name: 'Height',
+    description: 'Determines the height of a transformed asset or an overlay.',
+  },
+  {
+    id: 'l',
+    name: 'Layer',
+    description: 'Applies a layer over the base asset, also known as an overlay.',
+  },
+  {
+    id: 'w',
+    name: 'Width',
+    description: 'Determines the width of a transformed asset or an overlay.',
+  },
+  {
+    id: 'x',
+    name: 'X Coordinate',
+    description: 'Adjusts the starting location or offset of the corresponding transformation action on the X axis.',
+  },
+  {
+    id: 'y',
+    name: 'Y Coordinate',
+    description: 'Adjusts the starting location or offset of the corresponding transformation action on the Y axis.',
+  },
+];
+
+function parseTransformationStringToReadable(transformation) {
+  const segments = transformation.split(',');
+  return segments.map((segment, index) => {
+    const matches = segment.match(/([a-zA-Z]+)_([a-zA-Z0-9_:\-.]+)/);
+
+    if (!matches) {
+      return {
+        id: `${segment}-${index}`,
+        name: 'Other',
+        value: segment,
+      };
+    }
+
+    const [, id, value] = matches;
+    const property = PROPERTIES.find((prop) => prop.id === id);
+
+    return {
+      ...property,
+      value,
+    };
+  });
+}
+
 export default function Share({ resource, original, filters }) {
   console.log('filters', filters);
 
@@ -92,12 +153,32 @@ export default function Share({ resource, original, filters }) {
 
         <h2>Transformations</h2>
 
-        <div className={styles.transformations}>
+        <div className={styles.filters}>
           {Object.keys(filters).map((key) => {
-            const { id, title } = filters[key];
+            const { id: filterId, title: filterTitle, transformations = [] } = filters[key];
             return (
-              <div key={id} className={styles.transformation}>
-                {title}
+              <div key={filterId} className={styles.filter}>
+                <h3 className={styles.filterTitle}>{filterTitle}</h3>
+                <div className={styles.transformations}>
+                  {transformations.map((transformation) => {
+                    const definitions = parseTransformationStringToReadable(transformation);
+                    return (
+                      <ul key={transformation} className={styles.transformation}>
+                        {definitions.map((definition) => {
+                          return (
+                            <li key={definition.id} className={styles.definition}>
+                              <p className={styles.definitionDetails}>
+                                <strong className={styles.definitionTitle}>{definition.name}:</strong>
+                                <code className={styles.definitionRule}>{`${definition.id}_${definition.value}`}</code>
+                              </p>
+                              <p className={styles.definitionDescription}>{definition.description}</p>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}
@@ -120,7 +201,6 @@ export async function getServerSideProps({ params }) {
 
   const originalPublicId = resourceResults?.context?.custom?.original_public_id;
   const originalResults = originalPublicId && (await cloudinary.api.resource(originalPublicId));
-  console.log('originalResults', originalResults);
 
   const keys = ['public_id', 'resource_type', 'created_at', 'width', 'height', 'secure_url'];
 

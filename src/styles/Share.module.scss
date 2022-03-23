@@ -1,17 +1,14 @@
 @import "@styles/settings/__settings";
 
 .shareContainer {
-
   margin-bottom: 3em;
 
   @media (min-width: 720px) {
     display: flex;
   }
-
 }
 
 .imageTransformed {
-
   @media (min-width: 720px) {
     width: 60%;
     flex-shrink: 0;
@@ -26,11 +23,9 @@
     display: block;
     width: 100%;
   }
-  
 }
 
 .actions {
-  
   list-style: none;
   padding: 0;
   margin: 1em 0;
@@ -42,7 +37,7 @@
   li {
     display: flex;
     justify-content: center;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   a,
@@ -51,26 +46,20 @@
     font-size: 1.1em;
     padding: 1em;
   }
-
-
-
 }
 
 .imageOriginal {
-  
   display: flex;
   padding: 1em;
   background-color: $color-gray-50;
-  border-radius: .2em;
+  border-radius: 0.2em;
 
   img {
     display: block;
   }
-
 }
 
 .imageOriginalDetails {
-
   order: 2;
 
   h2 {
@@ -80,16 +69,13 @@
   }
 
   p {
-    
-    font-size: .9em;
+    font-size: 0.9em;
     word-break: break-all;
 
     &:last-child {
       margin-bottom: 0;
     }
-
   }
-
 }
 
 .imageOriginalImage {
@@ -97,4 +83,43 @@
   width: 10em;
   flex-shrink: 0;
   margin: 0 1em 0 0;
+}
+
+.filter {
+  margin-top: 4em;
+}
+
+.filterTitle {
+  font-size: 1.5em;
+  margin-top: 0;
+}
+
+.transformation {
+  list-style: none;
+  padding: 0;
+  margin-left: 0;
+}
+
+.definition {
+  font-size: 0.9em;
+  margin-bottom: 1.8em;
+}
+
+.definitionDetails {
+  font-size: 1.2em;
+  margin: 0 0 0.8em;
+}
+
+.definitionTitle {
+  margin-right: 0.5em;
+}
+
+.definitionRule {
+  font-size: 1.3em;
+}
+
+.definitionDescription {
+  padding-left: 0.5em;
+  border-left: solid 2px $color-cloudinary-yellow-500;
+  margin: 0;
 }
