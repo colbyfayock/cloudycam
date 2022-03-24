@@ -169,7 +169,7 @@ export default function Share({ resource, original, filters }) {
             </p>
           </div>
           <div className={styles.cloudinaryImage}>
-            <img src="/images/cloudinary-media-experience-cloud.png" />
+            <img src="/images/cloudinary-media-experience-cloud.png" alt="Cloudinary Media Experience" />
           </div>
         </Container>
       </Section>
@@ -178,7 +178,49 @@ export default function Share({ resource, original, filters }) {
         <Container>
           <h2 className={styles.sectionTitle}>How it Works</h2>
 
-          <p>Cloudinary does...</p>
+          <h3>It&apos;s all in the URL...</h3>
+
+          <p>
+            Cloudinary&apos;s <a href="https://cloudinary.com/products/programmable_media">Programmable Media</a> allows
+            you to construct URLs to deliver your resources and transform them on the fly.
+          </p>
+
+          <div className={styles.diagram}>
+            <ul>
+              <li>
+                <strong>Base URL</strong>
+                <span>https://res.cloudinary.com</span>
+              </li>
+              <li>
+                <strong>Cloud Name</strong>
+                <span>mycloud</span>
+              </li>
+              <li>
+                <strong>Media Type</strong>
+                <span>image</span>
+              </li>
+              <li>
+                <strong>Delivery Method</strong>
+                <span>upload</span>
+              </li>
+              <li>
+                <strong>Transformations</strong>
+                <span>f_auto,q_auto,w_500</span>
+              </li>
+              <li>
+                <strong>Public ID</strong>
+                <span>myimage</span>
+              </li>
+            </ul>
+          </div>
+
+          <h3>But you don&apos;t have to do it all by hand...</h3>
+
+          <p>
+            Supporting a <a href="https://cloudinary.com/documentation/cloudinary_sdks">wide variety of SDKs</a>{' '}
+            including Node, Ruby, and PHP, you can easily construct your URLs dynamically as you&apos;re building
+            experiences for your apps and web projects.
+          </p>
 
           <h2>Transformations</h2>
 
