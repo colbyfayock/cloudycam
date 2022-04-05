@@ -25,6 +25,10 @@ export default async function handler(req, res) {
     uploadOptions.tags = tags;
   }
 
+  console.log('<<< Begin Upload Options');
+  console.log(uploadOptions);
+  console.log('>>> End Upload Options');
+
   let results;
 
   try {
@@ -36,6 +40,10 @@ export default async function handler(req, res) {
     });
     return;
   }
+
+  console.log('<<< Begin Results');
+  console.log(results);
+  console.log('>>> End Results');
 
   res.status(200).json({
     ...results,
