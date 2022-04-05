@@ -25,6 +25,10 @@ export default async function handler(req, res) {
     uploadOptions.tags = tags;
   }
 
+  console.log('<<< Begin Image');
+  console.log(image);
+  console.log('>>> End Image');
+
   console.log('<<< Begin Upload Options');
   console.log(uploadOptions);
   console.log('>>> End Upload Options');
@@ -40,6 +44,8 @@ export default async function handler(req, res) {
     });
     return;
   }
+
+  delete results.api_key;
 
   console.log('<<< Begin Results');
   console.log(results);
