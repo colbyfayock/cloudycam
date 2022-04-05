@@ -1,7 +1,5 @@
 const cloudinary = require('cloudinary').v2;
 
-import { timeout } from '@lib/util';
-
 import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
 
 cloudinary.config({
@@ -39,36 +37,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (options?.background_removal) {
-    try {
-      const backgroundRemovalResource = await checkStatus();
-
-      if (backgroundRemovalResource.info.background_removal.cloudinary_ai.status !== 'complete') {
-        throw new Error('Failed to remove background');
-      }
-
-      results = backgroundRemovalResource;
-    } catch (e) {
-      console.log('Failed to check status.', e);
-      res.status(500).json({
-        message: 'Failed to upload image',
-      });
-      return;
-    }
-  }
-
   res.status(200).json({
     ...results,
   });
-
-  async function checkStatus() {
-    const resource = await cloudinary.api.resource(`${folder}/${options.public_id}`);
-
-    if (resource.info.background_removal.cloudinary_ai.status === 'pending') {
-      await timeout(100);
-      return await checkStatus();
-    }
-
-    return resource;
-  }
 }

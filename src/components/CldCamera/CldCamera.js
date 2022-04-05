@@ -11,6 +11,7 @@ import { Tab, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
 import { uploadToCloudinary, constructCldUrl } from '@lib/cloudinary';
+import { timeout } from '@lib/util';
 
 import Camera from '@components/Camera';
 import Button from '@components/Button';
@@ -200,10 +201,11 @@ const CldCamera = ({ onShare, ...props }) => {
     });
 
     (async function run() {
+      /* eslint-disable no-inner-declarations */
       try {
         const transparentPublicId = `${hash}-transparent`;
 
-        const results = await uploadToCloudinary(cldData.main.secure_url, {
+        let results = await uploadToCloudinary(cldData.main.secure_url, {
           tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSPARENT],
           context: {
             original_public_id: cldData.main.public_id,
@@ -213,6 +215,34 @@ const CldCamera = ({ onShare, ...props }) => {
             background_removal: 'cloudinary_ai',
           },
         });
+
+        async function checkStatus() {
+          const resource = await fetch(`/api/cloudinary/resource/?publicId=${results.public_id}`).then((r) => r.json());
+
+          if (resource.info.background_removal.cloudinary_ai.status === 'pending') {
+            await timeout(100);
+            return await checkStatus();
+          }
+
+          return resource;
+        }
+
+        try {
+          const backgroundRemovalResource = await checkStatus();
+
+          console.log('backgroundRemovalResource', backgroundRemovalResource);
+
+          if (backgroundRemovalResource.info.background_removal.cloudinary_ai.status !== 'complete') {
+            throw new Error('Failed to remove background');
+          }
+
+          results = backgroundRemovalResource;
+        } catch (e) {
+          console.log('Failed to check status.', e);
+          return;
+        }
+
+        console.log('results', results);
 
         setCldData((prev) => {
           return {

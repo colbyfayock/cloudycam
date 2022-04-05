@@ -237,7 +237,10 @@ export default function Share({ resource, original, filters }) {
                         <ul key={transformation} className={styles.transformation}>
                           {definitions.map((definition) => {
                             return (
-                              <li key={definition.id} className={styles.definition}>
+                              <li
+                                key={`${filterTitle}-${definition.id || definition.value}`}
+                                className={styles.definition}
+                              >
                                 <p className={styles.definitionDetails}>
                                   <strong className={styles.definitionTitle}>{definition.name}:</strong>
                                   <code

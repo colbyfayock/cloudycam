@@ -8,12 +8,12 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const { publicId } = req.body ? JSON.parse(req.body) : {};
+  const { publicId } = req.query || {};
 
   let results;
 
   try {
-    results = await cloudinary.resource(publicId);
+    results = await cloudinary.api.resource(publicId);
   } catch (e) {
     console.log('Failed to get resource', e);
     res.status(500).json({
