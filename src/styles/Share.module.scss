@@ -195,6 +195,7 @@
 }
 
 .cloudinaryImageOverlay {
+  overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -203,8 +204,8 @@
   width: 40%;
   height: auto;
   margin: auto;
-  border-radius: 0.5em;
-  border: solid 5px $color-cloudinary-yellow-500;
+  border-radius: 50%;
+  border: solid 10px $color-cloudinary-yellow-500;
 }
 
 /**

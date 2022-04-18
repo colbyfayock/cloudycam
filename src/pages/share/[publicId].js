@@ -19,6 +19,16 @@ const HOST = process.env.URL || process.env.NEXT_PUBLIC_URL;
 
 const PROPERTIES = [
   {
+    id: 'c',
+    name: 'Crop / Resize',
+    description: 'Changes the size of the delivered asset according to the requested width & height dimensions.',
+  },
+  {
+    id: 'e',
+    name: 'Effect',
+    description: 'Applies the specified effect to an asset.',
+  },
+  {
     id: 'fl',
     name: 'Flag',
     description: 'Alters the regular behavior of another transformation or the overall delivery behavior.',
@@ -39,6 +49,16 @@ const PROPERTIES = [
     description: 'Applies a layer over the base asset, also known as an overlay.',
   },
   {
+    id: 'r',
+    name: 'Round Corners',
+    description: 'Rounds the corners of an image or video.',
+  },
+  {
+    id: 'u',
+    name: 'Underlay',
+    description: 'Applies an image layer under the base image or video.',
+  },
+  {
     id: 'w',
     name: 'Width',
     description: 'Determines the width of a transformed asset or an overlay.',
@@ -52,6 +72,14 @@ const PROPERTIES = [
     id: 'y',
     name: 'Y Coordinate',
     description: 'Adjusts the starting location or offset of the corresponding transformation action on the Y axis.',
+  },
+];
+
+const EFFECT_PROPERTIES = [
+  {
+    id: 'art',
+    name: 'Art',
+    description: 'Applies the selected artistic filter.',
   },
 ];
 
@@ -78,17 +106,33 @@ function parseTransformationStringToReadable(transformation) {
   });
 }
 
-export default function Share({ resource, original, filters }) {
-  console.log('filters', filters);
+function parseEffectsStringToReadable(transformation) {
+  const matches = transformation.match(/([a-zA-Z]+):([a-zA-Z0-9_:\-.]+)/);
 
+  if (!matches) {
+    return {
+      id: transformation,
+      name: 'Other',
+      value: transformation,
+    };
+  }
+
+  const [, id, value] = matches;
+  const property = EFFECT_PROPERTIES.find((prop) => prop.id === id);
+
+  return {
+    ...property,
+    value,
+  };
+}
+
+export default function Share({ resource, original, filters }) {
   const router = useRouter();
 
   const twitterAction = createTweetAction({
     message: ['My Transformations', '', '#CloudyCam', '', `${HOST}${router.asPath}`],
     related: ['Cloudinary'],
   });
-
-  console.log('resource', resource);
 
   /**
    * handleOnTwitterClick
@@ -229,39 +273,73 @@ export default function Share({ resource, original, filters }) {
 
           {Object.keys(filters).length > 0 && (
             <>
-              <h2>Transformations</h2>
+              <h2>Filters</h2>
 
               <div className={styles.filters}>
                 {Object.keys(filters).map((key) => {
-                  const { id: filterId, title: filterTitle, transformations = [] } = filters[key];
+                  const { id: filterId, title: filterTitle, transformations = [], effects = [] } = filters[key];
                   return (
                     <div key={filterId} className={styles.filter}>
                       <h3 className={styles.filterTitle}>{filterTitle}</h3>
-                      <div className={styles.transformations}>
-                        {transformations.map((transformation) => {
-                          const definitions = parseTransformationStringToReadable(transformation);
-                          return (
-                            <ul key={transformation} className={styles.transformation}>
-                              {definitions.map((definition) => {
-                                return (
-                                  <li
-                                    key={`${filterTitle}-${definition.id || definition.value}`}
-                                    className={styles.definition}
-                                  >
-                                    <p className={styles.definitionDetails}>
-                                      <strong className={styles.definitionTitle}>{definition.name}:</strong>
-                                      <code
-                                        className={styles.definitionRule}
-                                      >{`${definition.id}_${definition.value}`}</code>
-                                    </p>
-                                    <p className={styles.definitionDescription}>{definition.description}</p>
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          );
-                        })}
-                      </div>
+                      {transformations.length > 0 && (
+                        <div className={styles.transformations}>
+                          <h4>Transformations</h4>
+                          {transformations.map((transformation) => {
+                            const definitions = parseTransformationStringToReadable(transformation);
+                            return (
+                              <ul key={transformation} className={styles.transformation}>
+                                {definitions.map((definition) => {
+                                  return (
+                                    <li
+                                      key={`${filterTitle}-${definition.id || definition.value}`}
+                                      className={styles.definition}
+                                    >
+                                      <p className={styles.definitionDetails}>
+                                        <strong className={styles.definitionTitle}>{definition.name}:</strong>
+                                        <code
+                                          className={styles.definitionRule}
+                                        >{`${definition.id}_${definition.value}`}</code>
+                                      </p>
+                                      <p className={styles.definitionDescription}>{definition.description}</p>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {effects.length > 0 && (
+                        <div className={styles.transformations}>
+                          <h4>Effects</h4>
+                          {effects.map((effect) => {
+                            const definitions = parseTransformationStringToReadable(effect);
+                            return (
+                              <ul key={effect} className={styles.transformation}>
+                                {definitions.map((definition) => {
+                                  const effectDefinition = parseEffectsStringToReadable(definition.value);
+                                  return (
+                                    <li
+                                      key={`${filterTitle}-${definition.id || definition.value}`}
+                                      className={styles.definition}
+                                    >
+                                      <p className={styles.definitionDetails}>
+                                        <strong className={styles.definitionTitle}>{effectDefinition.name}:</strong>
+                                        <code
+                                          className={styles.definitionRule}
+                                        >{`${definition.id}_${definition.value}`}</code>
+                                      </p>
+                                      <p className={styles.definitionDescription}>
+                                        Artistic filter <em>{effectDefinition.value}</em>
+                                      </p>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
