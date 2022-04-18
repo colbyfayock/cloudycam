@@ -102,13 +102,13 @@ export default function Share({ resource, original, filters }) {
   }
 
   return (
-    <Layout>
+    <Layout className={styles.sharePage}>
       <Head>
         <title>CloudyCam</title>
         <meta name="description" content="From Cloudinary" />
       </Head>
 
-      <Section>
+      <Section className={styles.shareSection}>
         <Container className={styles.shareContainer}>
           <div className={styles.imageTransformed}>
             <p>
@@ -126,7 +126,7 @@ export default function Share({ resource, original, filters }) {
               <li>
                 <Link href="/camera" passHref={true}>
                   <Button color="cloudinary-yellow" iconPosition="left">
-                    <FaCamera /> Create Your Own
+                    <FaCamera /> Take a New Photo
                   </Button>
                 </Link>
               </li>
@@ -154,22 +154,27 @@ export default function Share({ resource, original, filters }) {
       <Section>
         <Container className={styles.cloudinary}>
           <div className={styles.cloudinaryContent}>
-            <h2 className={styles.cloudinaryHeadline}>Transform & Deliver with Cloudinary</h2>
+            <h2 className={styles.cloudinaryHeadline}>Incredible media transformations made simple</h2>
+            <p>Build your own transformations with a simple line of code.</p>
             <p>
-              Media delivery is cool and Cloudinary is great at it. Register with the link below and{' '}
-              <strong>get an extra something.</strong>
+              Use the link below to get an extra <strong>3 credits</strong> (
+              <a href="https://cloudinary.com/pricing/compare-plans#faq-heading-7" target="_blank" rel="noreferrer">
+                what are credits?
+              </a>
+              )!
             </p>
             <p>
               <Button
                 href="https://cloudinary.com/users/register/free?utm_source=cityjsbrazil&utm_medium=event&utm_campaign=cityjsbrazil_booth"
                 color="cloudinary-yellow"
               >
-                Sign Up Today
+                Get Your Free Account
               </Button>
             </p>
           </div>
           <div className={styles.cloudinaryImage}>
             <img src="/images/cloudinary-media-experience-cloud.png" alt="Cloudinary Media Experience" />
+            <img className={styles.cloudinaryImageOverlay} src={resource.secure_url} alt="Transformed Image" />
           </div>
         </Container>
       </Section>
@@ -222,43 +227,47 @@ export default function Share({ resource, original, filters }) {
             experiences for your apps and web projects.
           </p>
 
-          <h2>Transformations</h2>
+          {Object.keys(filters).length > 0 && (
+            <>
+              <h2>Transformations</h2>
 
-          <div className={styles.filters}>
-            {Object.keys(filters).map((key) => {
-              const { id: filterId, title: filterTitle, transformations = [] } = filters[key];
-              return (
-                <div key={filterId} className={styles.filter}>
-                  <h3 className={styles.filterTitle}>{filterTitle}</h3>
-                  <div className={styles.transformations}>
-                    {transformations.map((transformation) => {
-                      const definitions = parseTransformationStringToReadable(transformation);
-                      return (
-                        <ul key={transformation} className={styles.transformation}>
-                          {definitions.map((definition) => {
-                            return (
-                              <li
-                                key={`${filterTitle}-${definition.id || definition.value}`}
-                                className={styles.definition}
-                              >
-                                <p className={styles.definitionDetails}>
-                                  <strong className={styles.definitionTitle}>{definition.name}:</strong>
-                                  <code
-                                    className={styles.definitionRule}
-                                  >{`${definition.id}_${definition.value}`}</code>
-                                </p>
-                                <p className={styles.definitionDescription}>{definition.description}</p>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+              <div className={styles.filters}>
+                {Object.keys(filters).map((key) => {
+                  const { id: filterId, title: filterTitle, transformations = [] } = filters[key];
+                  return (
+                    <div key={filterId} className={styles.filter}>
+                      <h3 className={styles.filterTitle}>{filterTitle}</h3>
+                      <div className={styles.transformations}>
+                        {transformations.map((transformation) => {
+                          const definitions = parseTransformationStringToReadable(transformation);
+                          return (
+                            <ul key={transformation} className={styles.transformation}>
+                              {definitions.map((definition) => {
+                                return (
+                                  <li
+                                    key={`${filterTitle}-${definition.id || definition.value}`}
+                                    className={styles.definition}
+                                  >
+                                    <p className={styles.definitionDetails}>
+                                      <strong className={styles.definitionTitle}>{definition.name}:</strong>
+                                      <code
+                                        className={styles.definitionRule}
+                                      >{`${definition.id}_${definition.value}`}</code>
+                                    </p>
+                                    <p className={styles.definitionDescription}>{definition.description}</p>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </Container>
       </Section>
     </Layout>

@@ -5,13 +5,45 @@
   text-align: center;
 }
 
+.sharePage {
+  section {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.shareSection {
+  position: relative;
+  z-index: 0;
+
+  &:after {
+    position: absolute;
+    top: 5vh;
+    left: 0;
+    content: "";
+    z-index: 0;
+    width: 100%;
+    height: 80vh;
+    background: url("/images/cloudinary-background.jpg");
+    background-size: auto 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
+
 .shareContainer {
+  position: relative;
+  z-index: 1;
+
   @media (min-width: 720px) {
     display: flex;
   }
 }
 
 .imageTransformed {
+  border-radius: 0.5em;
+  overflow: hidden;
+
   @media (min-width: 720px) {
     width: 60%;
     flex-shrink: 0;
@@ -57,9 +89,14 @@
 
 .imageOriginal {
   display: flex;
+  color: white;
+  background-color: $color-cloudinary-blue-dark;
   padding: 1em;
-  background-color: $color-gray-50;
   border-radius: 0.2em;
+
+  a {
+    color: $color-cloudinary-yellow-500;
+  }
 
   img {
     display: block;
@@ -70,7 +107,6 @@
   order: 2;
 
   h2 {
-    color: $color-gray-700;
     font-size: 1em;
     margin-top: 0;
   }
@@ -103,7 +139,7 @@
   padding: 2em;
 
   @media (min-width: 720px) {
-    padding: 2em 4em;
+    padding: 3em 4em;
     flex-direction: row;
   }
 
@@ -118,6 +154,10 @@
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  a {
+    color: $color-cloudinary-yellow-500;
   }
 }
 
@@ -135,6 +175,7 @@
 }
 
 .cloudinaryImage {
+  position: relative;
   width: 100%;
   flex-shrink: 0;
   margin: 1em 0 0;
@@ -151,6 +192,19 @@
       transform: translateX(5%);
     }
   }
+}
+
+.cloudinaryImageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 40%;
+  height: auto;
+  margin: auto;
+  border-radius: 0.5em;
+  border: solid 5px $color-cloudinary-yellow-500;
 }
 
 /**
