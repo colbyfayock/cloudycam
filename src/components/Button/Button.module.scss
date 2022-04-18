@@ -1,7 +1,6 @@
 @import "@styles/settings/__settings";
 
 .button {
-
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +11,7 @@
   text-transform: uppercase;
   text-align: center;
   background-color: $color-button-background;
-  padding: .6em 1em;
+  padding: 0.6em 1em;
   border: 0;
   border-radius: $border-radius-small;
   cursor: pointer;
@@ -21,48 +20,62 @@
     background-color: lighten($color-button-background, 10);
   }
 
+  &:disabled {
+    color: rgba(white, 0.5);
+    background-color: lighten($color-button-background, 10);
+    cursor: default;
+  }
+
   // Color
 
   &[data-color="red"] {
-
     background-color: $color-red;
 
     &:hover {
       background-color: lighten($color-red, 10);
     }
 
+    &:disabled {
+      background-color: desaturate($color-red, 10);
+    }
   }
 
   &[data-color="blue-800"] {
-
     background-color: $color-blue-800;
 
     &:hover {
       background-color: lighten($color-blue-800, 10);
     }
 
+    &:disabled {
+      background-color: desaturate($color-blue-800, 10);
+    }
   }
 
   &[data-color="cloudinary-yellow"] {
-
-    color: rgba(black, .8);
+    color: rgba(black, 0.8);
     background-color: $color-cloudinary-yellow-500;
 
     &:hover {
       background-color: lighten($color-cloudinary-yellow-500, 10);
     }
 
+    &:disabled {
+      color: rgba(black, 0.4);
+      background-color: desaturate($color-cloudinary-yellow-500, 10);
+    }
   }
 
   &[data-color="twitter-blue"] {
-
-    color: white;
     background-color: $color-twitter-blue;
 
     &:hover {
       background-color: lighten($color-twitter-blue, 10);
     }
 
+    &:disabled {
+      background-color: desaturate($color-twitter-blue, 10);
+    }
   }
 
   // Shape
@@ -83,19 +96,14 @@
   // Icon
 
   &[data-icon-position="left"] {
-
     svg {
-      margin-right: .5em;
+      margin-right: 0.5em;
     }
-
   }
 
   &[data-icon-position="right"] {
-
     svg {
-      margin-left: .5em;
+      margin-left: 0.5em;
     }
-
   }
-
 }

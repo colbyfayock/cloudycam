@@ -50,12 +50,19 @@ $desktop-width: 600px;
     margin: 0 0.5em;
   }
 
-  [data-shape="capsule"] {
-    font-size: 0.9em;
+  [data-is-loading="true"] {
+    svg {
+      animation: spin 1s linear infinite;
+    }
   }
 }
 
 .controlDemo {
+  button,
+  a {
+    font-size: 0.9em;
+  }
+
   span {
     color: $color-blue-50;
     font-size: 0.9em;
@@ -64,6 +71,13 @@ $desktop-width: 600px;
 
   svg {
     fill: $color-blue-50;
+  }
+}
+
+.controlShare {
+  button,
+  a {
+    font-size: 0.9em;
   }
 }
 

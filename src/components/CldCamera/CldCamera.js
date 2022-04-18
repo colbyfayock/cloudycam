@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { FaCamera, FaTimes, FaImages, FaShare } from 'react-icons/fa';
+import { FaCamera, FaTimes, FaImages, FaShare, FaSpinner } from 'react-icons/fa';
 
 // https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
 const Tabs = dynamic(
@@ -51,6 +51,11 @@ const DEFAULT_ASSET_STATE = {
     error: false,
   },
   transparent: {
+    loading: false,
+    loaded: false,
+    error: false,
+  },
+  share: {
     loading: false,
     loaded: false,
     error: false,
@@ -284,16 +289,54 @@ const CldCamera = ({ onShare, ...props }) => {
   async function handleOnShare() {
     const sharePublicId = `${hash}-transformation`;
 
-    const results = await uploadToCloudinary(src, {
-      context: {
-        original_public_id: cldData.main.public_id,
-        cloudycam_filters: JSON.stringify(filters),
-      },
-      tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
-      options: {
-        public_id: sharePublicId,
-      },
+    setAssetState((prev) => {
+      return {
+        ...prev,
+        share: {
+          loading: true,
+          loaded: false,
+          error: false,
+        },
+      };
     });
+
+    let results;
+
+    try {
+      results = await uploadToCloudinary(src, {
+        context: {
+          original_public_id: cldData.main.public_id,
+          cloudycam_filters: JSON.stringify(filters),
+        },
+        tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
+        options: {
+          public_id: sharePublicId,
+        },
+      });
+
+      setAssetState((prev) => {
+        return {
+          ...prev,
+          share: {
+            loading: false,
+            loaded: true,
+            error: false,
+          },
+        };
+      });
+    } catch (e) {
+      setAssetState((prev) => {
+        return {
+          ...prev,
+          share: {
+            loading: false,
+            loaded: false,
+            error: true,
+          },
+        };
+      });
+      return;
+    }
 
     if (typeof onShare === 'function') {
       onShare({
@@ -319,7 +362,6 @@ const CldCamera = ({ onShare, ...props }) => {
    */
 
   function handleOnReset() {
-    console.log('reset');
     setFilters(DEFAULT_FILTERS);
     setCldData(DEFAULT_CLD_DATA);
     setAssetState(DEFAULT_ASSET_STATE);
@@ -436,13 +478,13 @@ const CldCamera = ({ onShare, ...props }) => {
               <li className={`${styles.control} ${styles.controlDemo}`}>
                 <Button onClick={onEnableDemo} color="blue-800" shape="capsule" iconPosition="left">
                   <FaImages />
-                  <span>Try a Demo Image</span>
+                  <span>Demo Image</span>
                 </Button>
               </li>
               <li className={styles.control}>
-                <Button onClick={capture} color="cloudinary-yellow" shape="circle">
+                <Button onClick={capture} color="cloudinary-yellow" shape="capsule" iconPosition="left">
                   <FaCamera />
-                  <span className="sr-only">Capture Photo</span>
+                  <span>Capture</span>
                 </Button>
               </li>
             </>
@@ -450,9 +492,17 @@ const CldCamera = ({ onShare, ...props }) => {
           {!canCapture && (
             <>
               {cldData.main?.public_id && (
-                <li className={styles.control}>
-                  <Button color="blue-800" shape="capsule" iconPosition="left" onClick={handleOnShare}>
-                    <FaShare />
+                <li className={`${styles.control} ${styles.controlShare}`}>
+                  <Button
+                    color="blue-800"
+                    shape="capsule"
+                    iconPosition="left"
+                    onClick={handleOnShare}
+                    disabled={assetState.share.loading || assetState.share.loaded}
+                    data-is-loading={assetState.share.loading || assetState.share.loaded}
+                  >
+                    {(assetState.share.loading || assetState.share.loaded) && <FaSpinner />}
+                    {!assetState.share.loading && !assetState.share.loaded && <FaShare />}
                     <span>Share</span>
                   </Button>
                 </li>
