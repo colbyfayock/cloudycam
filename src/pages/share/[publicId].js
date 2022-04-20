@@ -18,7 +18,7 @@ import { events } from '@data/events';
 
 import styles from '@styles/Share.module.scss';
 
-const HOST = process.env.URL || process.env.NEXT_PUBLIC_URL;
+const HOST = process.env.NEXT_PUBLIC_URL;
 
 const PROPERTIES = [
   {
@@ -135,24 +135,25 @@ export default function Share({ resource, original, filters }) {
   const { eventId } = useApp();
   const event = events[eventId || 'default'];
 
-  const twitterAction = createTweetAction({
-    message: [
-      'Transformed with #CloudyCam!',
-      '',
-      'Create your transformations below 👇',
-      ...(event.hashtags ? ['', event.hashtags.map((hashtag) => `#${hashtag}`).join(' ')] : []),
-      '',
-      `${HOST}${router.asPath}`,
-    ],
-    related: ['Cloudinary'],
-  });
-
   /**
    * handleOnTwitterClick
    */
 
   function handleOnTwitterClick(e) {
     e.preventDefault();
+
+    const twitterAction = createTweetAction({
+      message: [
+        'Transformed with #CloudyCam!',
+        '',
+        'Create your transformations below 👇',
+        ...(event.hashtags ? ['', event.hashtags.map((hashtag) => `#${hashtag}`).join(' ')] : []),
+        '',
+        `${HOST || window?.location.origin}${router.asPath}`,
+      ],
+      related: ['Cloudinary'],
+    });
+
     openTweet({
       message: twitterAction,
     });
