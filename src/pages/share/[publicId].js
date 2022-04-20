@@ -6,14 +6,17 @@ import { FaCamera, FaTwitter } from 'react-icons/fa';
 
 import { createTweetAction, openTweet } from '@lib/social';
 
+import { useApp } from '@hooks/useApp';
+
 import Layout from '@components/Layout';
 import Section from '@components/Section';
 import Container from '@components/Container';
 import Button from '@components/Button';
 
-import styles from '@styles/Share.module.scss';
-
 import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { events } from '@data/events';
+
+import styles from '@styles/Share.module.scss';
 
 const HOST = process.env.URL || process.env.NEXT_PUBLIC_URL;
 
@@ -129,8 +132,18 @@ function parseEffectsStringToReadable(transformation) {
 export default function Share({ resource, original, filters }) {
   const router = useRouter();
 
+  const { eventId } = useApp();
+  const event = events[eventId || 'default'];
+
   const twitterAction = createTweetAction({
-    message: ['My Transformations', '', '#CloudyCam', '', `${HOST}${router.asPath}`],
+    message: [
+      'Transformed with #CloudyCam!',
+      '',
+      'Create your transformations below 👇',
+      ...(event.hashtags ? ['', event.hashtags.map((hashtag) => `#${hashtag}`).join(' ')] : []),
+      '',
+      `${HOST}${router.asPath}`,
+    ],
     related: ['Cloudinary'],
   });
 
@@ -200,19 +213,24 @@ export default function Share({ resource, original, filters }) {
           <div className={styles.cloudinaryContent}>
             <h2 className={styles.cloudinaryHeadline}>Incredible media transformations made simple</h2>
             <p>Build your own transformations with a simple line of code.</p>
+            {event.incentive && (
+              <p>
+                Use the link below to get an <strong>{event.incentive.text}</strong>
+                {event.incentive.moreInfo && (
+                  <>
+                    (
+                    <a href={event.incentive.moreInfo.link} target="_blank" rel="noreferrer">
+                      {event.incentive.moreInfo.text}
+                    </a>
+                    )
+                  </>
+                )}
+                !
+              </p>
+            )}
             <p>
-              Use the link below to get an extra <strong>3 credits</strong> (
-              <a href="https://cloudinary.com/pricing/compare-plans#faq-heading-7" target="_blank" rel="noreferrer">
-                what are credits?
-              </a>
-              )!
-            </p>
-            <p>
-              <Button
-                href="https://cloudinary.com/users/register/free?utm_source=cityjsbrazil&utm_medium=event&utm_campaign=cityjsbrazil_booth"
-                color="cloudinary-yellow"
-              >
-                Get Your Free Account
+              <Button href={event.register.link} color="cloudinary-yellow">
+                {event.register.text}
               </Button>
             </p>
           </div>

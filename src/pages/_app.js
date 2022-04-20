@@ -1,12 +1,15 @@
+import { AppProvider } from '@hooks/useApp';
 import { CameraProvider } from '@hooks/useCamera';
 
 import '@styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <CameraProvider>
-      <Component {...pageProps} />
-    </CameraProvider>
+    <AppProvider>
+      <CameraProvider>
+        <Component {...pageProps} />
+      </CameraProvider>
+    </AppProvider>
   );
 }
 
