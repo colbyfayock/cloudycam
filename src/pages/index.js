@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -6,7 +7,15 @@ import Section from '@components/Section';
 import Container from '@components/Container';
 import Button from '@components/Button';
 
-export default function Home() {
+import { useApp } from '@hooks/useApp';
+
+import { DEFAULT_EVENT_ID } from '@data/events';
+
+export default function Home({ eventId = DEFAULT_EVENT_ID }) {
+  const { setEventId } = useApp();
+
+  useEffect(() => setEventId(eventId), [eventId]);
+
   return (
     <Layout>
       <Head>

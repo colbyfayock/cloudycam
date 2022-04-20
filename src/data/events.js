@@ -1,5 +1,7 @@
+export const DEFAULT_EVENT_ID = 'default';
+
 export const events = {
-  default: {
+  [DEFAULT_EVENT_ID]: {
     register: {
       link: 'https://cloudinary.com/users/register/free',
       text: 'Get Your Free Account',

@@ -2,10 +2,6 @@ import { useState, createContext, useContext, useEffect } from 'react';
 
 const STATE_KEY = 'CLOUDYCAM';
 
-const DEFAULT_STATE = {
-  eventId: undefined,
-};
-
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -20,11 +16,7 @@ export function useAppState() {
 
   useEffect(() => {
     const data = window.localStorage.getItem(STATE_KEY);
-    if (data !== null) {
-      setState(JSON.parse(data));
-    } else {
-      setState(DEFAULT_STATE);
-    }
+    if (data !== null) setState(JSON.parse(data));
   }, []);
 
   // Store state updates on change

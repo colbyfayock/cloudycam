@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
+import { useApp } from '@hooks/useApp';
+
 import CldCamera from '@components/CldCamera';
 
 export default function Camera() {
   const router = useRouter();
+
+  const { eventId } = useApp();
 
   /**
    * handleOnShare
@@ -21,7 +25,12 @@ export default function Camera() {
         <meta name="description" content="From Cloudinary" />
       </Head>
 
-      <CldCamera onShare={handleOnShare} />
+      <CldCamera
+        onShare={handleOnShare}
+        context={{
+          eventId,
+        }}
+      />
 
       <style global jsx>{`
         html,
