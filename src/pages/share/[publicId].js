@@ -219,7 +219,11 @@ export default function Share({ resource, original, filters }) {
                 {event.incentive.moreInfo && (
                   <>
                     (
-                    <a href={event.incentive.moreInfo.link} target="_blank" rel="noreferrer">
+                    <a
+                      href={`${event.incentive.moreInfo.link}?utm_source=${event.utm.source}&utm_medium=${event.utm.medium}&utm_campaign=${event.utm.campaign}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {event.incentive.moreInfo.text}
                     </a>
                     )
@@ -229,7 +233,10 @@ export default function Share({ resource, original, filters }) {
               </p>
             )}
             <p>
-              <Button href={event.register.link} color="cloudinary-yellow">
+              <Button
+                href={`${event.register.link}?utm_source=${event.utm.source}&utm_medium=${event.utm.medium}&utm_campaign=${event.utm.campaign}`}
+                color="cloudinary-yellow"
+              >
                 {event.register.text}
               </Button>
             </p>
@@ -248,8 +255,13 @@ export default function Share({ resource, original, filters }) {
           <h3>It&apos;s all in the URL...</h3>
 
           <p>
-            Cloudinary&apos;s <a href="https://cloudinary.com/products/programmable_media">Programmable Media</a> allows
-            you to construct URLs to deliver your resources and transform them on the fly.
+            Cloudinary&apos;s{' '}
+            <a
+              href={`https://cloudinary.com/products/programmable_media?utm_source=${event.utm.source}&utm_medium=${event.utm.medium}&utm_campaign=${event.utm.campaign}`}
+            >
+              Programmable Media
+            </a>{' '}
+            allows you to construct URLs to deliver your resources and transform them on the fly.
           </p>
 
           <div className={styles.diagram}>
@@ -284,7 +296,12 @@ export default function Share({ resource, original, filters }) {
           <h3>But you don&apos;t have to do it all by hand...</h3>
 
           <p>
-            Supporting a <a href="https://cloudinary.com/documentation/cloudinary_sdks">wide variety of SDKs</a>{' '}
+            Supporting a{' '}
+            <a
+              href={`https://cloudinary.com/documentation/cloudinary_sdks?utm_source=${event.utm.source}&utm_medium=${event.utm.medium}&utm_campaign=${event.utm.campaign}`}
+            >
+              wide variety of SDKs
+            </a>{' '}
             including Node, Ruby, and PHP, you can easily construct your URLs dynamically as you&apos;re building
             experiences for your apps and web projects.
           </p>
