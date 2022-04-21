@@ -384,6 +384,18 @@ export default function Share({ resource, original, filters }) {
           )}
         </Container>
       </Section>
+
+      <Section className={styles.sectionFeedback}>
+        <Container>
+          <h2>What do you think of CloudyCam?</h2>
+          <p>Good, bad, we want to know!</p>
+          <p>
+            <Button href="https://forms.monday.com/forms/9ed040a16978571e6ab92cdb59103b1d?r=use1">
+              Submit Feedback
+            </Button>
+          </p>
+        </Container>
+      </Section>
     </Layout>
   );
 }
