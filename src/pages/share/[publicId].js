@@ -13,7 +13,7 @@ import Section from '@components/Section';
 import Container from '@components/Container';
 import Button from '@components/Button';
 
-import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { CLOUDINARY_UPLOADS_FOLDER, CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 import { events } from '@data/events';
 
 import styles from '@styles/Share.module.scss';
@@ -129,7 +129,7 @@ function parseEffectsStringToReadable(transformation) {
   };
 }
 
-export default function Share({ resource, original, filters }) {
+export default function Share({ resource, original, filters, ogImageUrl }) {
   const router = useRouter();
 
   const { eventId } = useApp();
@@ -164,6 +164,14 @@ export default function Share({ resource, original, filters }) {
       <Head>
         <title>CloudyCam</title>
         <meta name="description" content="From Cloudinary" />
+        <meta property="og:title" content="Selfie. Transform. Unicorn. Get yours with CloudyCam!" />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:secure_url" content={ogImageUrl} />
+        <meta property="og:image:width" content="2024" />
+        <meta property="og:image:height" content="1012" />
+        <meta property="twitter:title" content="Selfie. Transform. Unicorn. Get yours with CloudyCam!" />
+        <meta property="twitter:image" content={ogImageUrl} />
+        <meta property="twitter:card" content="summary_large_image" />
       </Head>
 
       <Section className={styles.shareSection}>
@@ -213,7 +221,7 @@ export default function Share({ resource, original, filters }) {
         <Container className={styles.cloudinary}>
           <div className={styles.cloudinaryContent}>
             <h2 className={styles.cloudinaryHeadline}>Incredible media transformations made simple</h2>
-            <p>Build your own transformations with a simple line of code.</p>
+            <p>Build your own transformations with a simple line of code using Cloudinary&apos;s Media APIs.</p>
             {event.incentive && (
               <p>
                 Use the link below to get an <strong>{event.incentive.text}</strong>
@@ -428,11 +436,37 @@ export async function getServerSideProps({ params }) {
     keys.forEach((key) => (original[key] = originalResults[key]));
   }
 
+  const ogImageUrl = cloudinary.url(`${CLOUDINARY_ASSETS_FOLDER}/social-background`, {
+    width: 1012,
+    height: 506,
+    transformation: [
+      {
+        width: 1012,
+        height: 506,
+        fetch_format: 'auto',
+        quality: 'auto',
+      },
+      {
+        overlay: resource.public_id.replace('/', ':'),
+      },
+      {
+        flags: 'layer_apply',
+        width: 380,
+        height: 380,
+        gravity: 'west',
+        x: 60,
+        y: 0,
+        radius: 50,
+      },
+    ],
+  });
+
   return {
     props: {
       resource,
       original,
       filters,
+      ogImageUrl,
     },
   };
 }

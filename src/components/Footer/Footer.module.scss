@@ -1,7 +1,6 @@
 @import "@styles/settings/__settings";
 
 .footer {
-
   width: 100%;
   color: white;
   background-color: $color-blue-800;
@@ -10,8 +9,11 @@
   align-items: center;
   padding: 1em 0;
 
+  a {
+    color: inherit;
+  }
+
   p {
     margin: 0;
   }
-
 }
