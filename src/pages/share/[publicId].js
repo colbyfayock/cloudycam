@@ -5,6 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { FaCamera, FaTwitter } from 'react-icons/fa';
 
 import { createTweetAction, openTweet } from '@lib/social';
+import * as gtag from '@lib/gtag';
 
 import { useApp } from '@hooks/useApp';
 
@@ -141,6 +142,12 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
 
   function handleOnTwitterClick(e) {
     e.preventDefault();
+
+    gtag.event({
+      action: 'click',
+      category: 'share',
+      label: 'twitter',
+    });
 
     const twitterAction = createTweetAction({
       message: [

@@ -12,6 +12,7 @@ import { Tab, TabList, TabPanel } from 'react-tabs';
 import { useCamera } from '@hooks/useCamera';
 import { uploadToCloudinary, constructCldUrl } from '@lib/cloudinary';
 import { timeout } from '@lib/util';
+import { event } from '@lib/gtag';
 
 import Camera from '@components/Camera';
 import Button from '@components/Button';
@@ -352,6 +353,11 @@ const CldCamera = ({ onShare, ...props }) => {
    */
 
   function onEnableDemo() {
+    event({
+      action: 'click',
+      category: 'camera',
+      label: 'demo | enable',
+    });
     handleOnReset();
     setCldData(DEMO_CLD_DATA);
   }
@@ -362,6 +368,11 @@ const CldCamera = ({ onShare, ...props }) => {
    */
 
   function handleOnReset() {
+    event({
+      action: 'click',
+      category: 'camera',
+      label: 'reset',
+    });
     setFilters(DEFAULT_FILTERS);
     setCldData(DEFAULT_CLD_DATA);
     setAssetState(DEFAULT_ASSET_STATE);
@@ -375,6 +386,13 @@ const CldCamera = ({ onShare, ...props }) => {
 
   function handleOnFilterSelect(e) {
     const filterId = e.currentTarget.dataset.filterId;
+
+    event({
+      action: 'click',
+      category: 'camera',
+      label: `filter | ${filterId}`,
+    });
+
     toggleFilter(filterId);
   }
 
@@ -385,6 +403,12 @@ const CldCamera = ({ onShare, ...props }) => {
 
   function toggleFilter(filterId) {
     const filter = ALL_FILTERS.find(({ id }) => id === filterId);
+
+    event({
+      action: 'click',
+      category: 'camera',
+      label: `toggle | ${filter.id}`,
+    });
 
     setFilters((prev) => {
       const next = { ...prev };
