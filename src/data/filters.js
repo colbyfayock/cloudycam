@@ -32,6 +32,18 @@ export const FILTERS_EFFECTS = [
     transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,g_faces,h_1.0,fl_region_relative`],
   },
   {
+    id: 'guy-fawkes',
+    title: 'Guy Fawkes',
+    type: 'effects',
+    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,g_faces,h_0.8,fl_region_relative`],
+  },
+  {
+    id: 'dali',
+    title: 'Dali',
+    type: 'effects',
+    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:dali,g_faces,h_1.0,fl_region_relative`],
+  },
+  {
     id: 'deal-with-it',
     title: 'Deal With It',
     type: 'effects',
@@ -71,6 +83,12 @@ export const FILTERS_STYLES = [
 
 export const FILTERS_BACKGROUNDS = [
   {
+    id: 'cityjs',
+    title: 'City JS',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cityjs,c_fill,w_1.0,h_1.0,fl_relative`],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
@@ -93,6 +111,12 @@ export const FILTERS_BACKGROUNDS = [
     title: 'The Office',
     type: 'backgrounds',
     transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative`],
+  },
+  {
+    id: 'whats-going-on',
+    title: "What's going on?",
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:whats-going-on,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
     id: 'beach',
