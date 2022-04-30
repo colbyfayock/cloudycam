@@ -19,6 +19,12 @@ $desktop-width: 600px;
 }
 
 .camera {
+  @media (max-width: 380px) {
+    width: 70vw;
+    height: 70vw;
+    margin: auto;
+  }
+
   @media (min-width: 720px) {
     width: $desktop-width;
     height: $desktop-width;
