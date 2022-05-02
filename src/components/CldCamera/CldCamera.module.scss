@@ -47,13 +47,22 @@ $desktop-width: 600px;
 }
 
 .control {
+  margin: 0 0.5em;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
   button,
   a {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.2em;
-    margin: 0 0.5em;
   }
 
   [data-is-loading="true"] {
@@ -88,6 +97,8 @@ $desktop-width: 600px;
 }
 
 .effects {
+  position: relative;
+
   @media (min-width: 720px) {
     overflow: hidden;
     width: $desktop-width;
@@ -132,10 +143,12 @@ $desktop-width: 600px;
     }
 
     &[aria-selected="true"] {
-      color: $color-cloudinary-yellow-500;
+      [data-effects-active="true"] & {
+        color: $color-cloudinary-yellow-500;
 
-      &:after {
-        display: block;
+        &:after {
+          display: block;
+        }
       }
     }
 
@@ -187,6 +200,10 @@ $desktop-width: 600px;
   padding: 0 0.5em 0.5em;
   margin: 0;
 
+  [data-effects-active="false"] & {
+    overflow-x: hidden;
+  }
+
   li {
     display: inline-block;
   }
@@ -202,6 +219,10 @@ $desktop-width: 600px;
   padding: 0.5em;
   border: none;
   cursor: pointer;
+
+  [data-effects-active="false"] & {
+    visibility: hidden;
+  }
 
   span,
   img {

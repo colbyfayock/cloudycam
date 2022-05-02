@@ -14,10 +14,10 @@ export const FILTER_TYPES = [
     title: 'Backgrounds',
     checkActive: (cldData) => !!cldData.transparent?.public_id,
   },
-  {
-    id: 'crops',
-    title: 'Crops',
-  },
+  // {
+  //   id: 'crops',
+  //   title: 'Crops',
+  // },
   {
     id: 'frames',
     title: 'Frames',

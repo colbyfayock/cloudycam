@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { FaCamera, FaTimes, FaImages, FaShare, FaSpinner } from 'react-icons/fa';
+import { FaCamera, FaTimes, FaImages, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
 
 // https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
 const Tabs = dynamic(
@@ -76,7 +76,6 @@ const CldCamera = ({ onShare, ...props }) => {
   const hasBackgroundFilter = Object.keys(filters).find((key) => filters[key].type === 'backgrounds');
 
   let src, cloudImageId;
-  const thumbnailPublicId = cldData?.main?.public_id || DEMO_CLD_DATA.main.public_id;
 
   // If we have any of the background filters applied attempt to use the transparent ID if available
   // for background effects. If it's not available, fall back to the main ID no matter the case until
@@ -348,6 +347,29 @@ const CldCamera = ({ onShare, ...props }) => {
   }
 
   /**
+   * onRemix
+   * @description Grabs a random set of filters to apply
+   */
+
+  function onRemix(e) {
+    e.preventDefault();
+
+    event({
+      action: 'click',
+      category: 'camera',
+      label: 'remix',
+    });
+
+    const filters = FILTER_TYPES.map(({ id: typeId }) => {
+      const availableFilters = ALL_FILTERS.filter(({ type }) => type === typeId);
+      const random = availableFilters.sort(() => 0.5 - Math.random())[0];
+      return random;
+    });
+
+    filters.forEach(({ id }) => toggleFilter(id));
+  }
+
+  /**
    * onEnableDemo
    * @description Resets state and applies demo data
    */
@@ -439,14 +461,14 @@ const CldCamera = ({ onShare, ...props }) => {
       <Camera {...props} className={styles.camera} src={src} controls={false} />
 
       <div className={styles.actions}>
-        <div className={styles.effects}>
+        <div className={styles.effects} data-effects-active={!!cldData.main?.public_id}>
           <Tabs key={`${cldData.main?.public_id}-${cldData.transparent?.public_id}`}>
             <div className={styles.effectsHeaders}>
               <TabList>
                 {FILTER_TYPES.map((type) => {
                   const isActive = typeof type.checkActive === 'function' ? type.checkActive(cldData) : true;
                   return (
-                    <Tab key={type.id} disabled={!isActive} data-type={type.id}>
+                    <Tab key={type.id} disabled={!cldData?.main || !isActive} data-type={type.id}>
                       {type.title}
                     </Tab>
                   );
@@ -456,8 +478,13 @@ const CldCamera = ({ onShare, ...props }) => {
 
             {FILTER_TYPES.map((type) => {
               const availableFilters = ALL_FILTERS.filter((filter) => filter.type === type.id);
-              const publicId =
-                cldData?.transparent && type.id === 'backgrounds' ? cldData.transparent.public_id : thumbnailPublicId;
+
+              let publicId = cldData.main?.public_id;
+
+              if (cldData.transparent && type.id === 'backgrounds') {
+                publicId = cldData.transparent.public_id;
+              }
+
               return (
                 <TabPanel key={type.id} className={styles.effectsPanel}>
                   <ul className={styles.filters}>
@@ -471,7 +498,7 @@ const CldCamera = ({ onShare, ...props }) => {
                           >
                             <span className={styles.filterThumbImage}>
                               <CldImage
-                                src={publicId}
+                                src={publicId || `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`}
                                 width={FILTER_THUMB_WIDTH}
                                 height={FILTER_THUMB_HEIGHT}
                                 resize={{
@@ -502,7 +529,7 @@ const CldCamera = ({ onShare, ...props }) => {
               <li className={`${styles.control} ${styles.controlDemo}`}>
                 <Button onClick={onEnableDemo} color="blue-800" shape="capsule" iconPosition="left">
                   <FaImages />
-                  <span>Demo Image</span>
+                  <span>Try Demo</span>
                 </Button>
               </li>
               <li className={styles.control}>
@@ -515,10 +542,16 @@ const CldCamera = ({ onShare, ...props }) => {
           )}
           {!canCapture && (
             <>
+              <li className={`${styles.control} ${styles.controlDemo}`}>
+                <Button onClick={onRemix} color="blue-800" shape="capsule" iconPosition="left">
+                  <FaMagic />
+                  <span>Remix</span>
+                </Button>
+              </li>
               {cldData.main?.public_id && (
                 <li className={`${styles.control} ${styles.controlShare}`}>
                   <Button
-                    color="blue-800"
+                    color="cloudinary-yellow"
                     shape="capsule"
                     iconPosition="left"
                     onClick={handleOnShare}
