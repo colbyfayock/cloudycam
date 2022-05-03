@@ -13,6 +13,12 @@ import '@styles/globals.scss';
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
+  // Event ID is made available as a page prop from
+  // `src/pages/[eventId].js` to allow URL based
+  // ID configuration
+
+  const { eventId } = pageProps;
+
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url);
@@ -43,7 +49,7 @@ function MyApp({ Component, pageProps }) {
           `,
         }}
       />
-      <AppProvider>
+      <AppProvider eventId={eventId}>
         <CameraProvider>
           <Component {...pageProps} />
         </CameraProvider>

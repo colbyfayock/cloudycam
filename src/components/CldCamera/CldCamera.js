@@ -235,8 +235,6 @@ const CldCamera = ({ onShare, ...props }) => {
         try {
           const backgroundRemovalResource = await checkStatus();
 
-          console.log('backgroundRemovalResource', backgroundRemovalResource);
-
           if (backgroundRemovalResource.info.background_removal.cloudinary_ai.status !== 'complete') {
             throw new Error('Failed to remove background');
           }
@@ -246,8 +244,6 @@ const CldCamera = ({ onShare, ...props }) => {
           console.log('Failed to check status.', e);
           return;
         }
-
-        console.log('results', results);
 
         setCldData((prev) => {
           return {

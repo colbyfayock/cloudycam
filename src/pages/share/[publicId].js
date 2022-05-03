@@ -234,7 +234,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
                 Use the link below to get an <strong>{event.incentive.text}</strong>
                 {event.incentive.moreInfo && (
                   <>
-                    (
+                    {`&nbsp;`}(
                     <a
                       href={`${event.incentive.moreInfo.link}?utm_source=${event.utm.source}&utm_medium=${event.utm.medium}&utm_campaign=${event.utm.campaign}`}
                       target="_blank"
