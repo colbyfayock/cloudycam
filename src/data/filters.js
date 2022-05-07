@@ -82,12 +82,27 @@ export const FILTERS_STYLES = [
 ];
 
 export const FILTERS_BACKGROUNDS = [
+  // {
+  //   id: 'cityjs',
+  //   title: 'City JS',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cityjs,c_fill,w_1.0,h_1.0,fl_relative`],
+  //   allowedEvents: [
+  //     'cityjsbrazil'
+  //   ]
+  // },
   {
-    id: 'cityjs',
-    title: 'City JS',
+    id: 'jsdaycanarias-stage',
+    title: 'JSDay Canarias',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cityjs,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-stage,c_fill,w_1.0,h_1.0,fl_relative`],
   },
+  // {
+  //   id: 'jsdaycanarias-audience',
+  //   title: 'JSDay Canarias',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-audience,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
   {
     id: 'moon',
     title: 'Moon',
