@@ -54,4 +54,23 @@ export const events = {
       campaign: 'cityjsbrazil_booth',
     },
   },
+
+  vueconfus: {
+    register: {
+      link: 'https://forms.monday.com/forms/1a5c33d75181a0968c7b297f3f12bd3b',
+      text: 'Get Your Free Account',
+    },
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'vueconfus',
+      medium: 'event',
+      campaign: 'vueconfus2022_booth',
+    },
+  },
 };
