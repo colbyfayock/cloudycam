@@ -11,7 +11,7 @@ export default function EventHome(props) {
 export async function getStaticProps({ params }) {
   return {
     props: {
-      eventId: params.eventId,
+      eventId: params.eventId.toLowerCase(),
     },
   };
 }
@@ -25,6 +25,6 @@ export async function getStaticPaths() {
         },
       };
     }),
-    fallback: false,
+    fallback: true,
   };
 }
