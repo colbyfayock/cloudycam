@@ -116,6 +116,12 @@ export const FILTERS_BACKGROUNDS = [
     transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:vueconf-beach,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
+    id: 'vueconf-stage',
+    title: 'VueConf Stage',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:vueconf-stage,c_fill,w_1.0,h_1.0,fl_relative`],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
