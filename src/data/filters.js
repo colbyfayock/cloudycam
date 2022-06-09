@@ -91,23 +91,29 @@ export const FILTERS_BACKGROUNDS = [
   //     'cityjsbrazil'
   //   ]
   // },
+  // {
+  //   id: 'jsdaycanarias-stage',
+  //   title: 'JSDay Canarias',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-stage,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
+  // {
+  //   id: 'jsdaycanarias-audience',
+  //   title: 'JSDay Canarias',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-audience,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
+  // {
+  //   id: 'tenerife',
+  //   title: 'Tenerife',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:tenerife,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
   {
-    id: 'jsdaycanarias-stage',
-    title: 'JSDay Canarias',
+    id: 'vueconf-beach',
+    title: 'VueConf Beach',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-stage,c_fill,w_1.0,h_1.0,fl_relative`],
-  },
-  {
-    id: 'jsdaycanarias-audience',
-    title: 'JSDay Canarias',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-audience,c_fill,w_1.0,h_1.0,fl_relative`],
-  },
-  {
-    id: 'tenerife',
-    title: 'Tenerife',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:tenerife,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:vueconf-beach,c_fill,w_1.0,h_1.0,fl_relative`],
   },
   {
     id: 'moon',
