@@ -55,6 +55,26 @@ export const events = {
     },
   },
 
+  reactnorway: {
+    register: {
+      link: 'https://forms.monday.com/forms/7bd7cd423d8de10732d891cf845445bc',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['ReactNorway'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'reactnorway',
+      medium: 'event',
+      campaign: 'reactnorway_booth',
+    },
+  },
+
   vueconfus: {
     register: {
       link: 'https://forms.monday.com/forms/1a5c33d75181a0968c7b297f3f12bd3b',
