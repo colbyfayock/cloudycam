@@ -55,6 +55,46 @@ export const events = {
     },
   },
 
+  cityjssg: {
+    register: {
+      link: 'https://forms.monday.com/forms/a436cb3952b83eb35a340d50324b5d24',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['cityjssg'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cityjssg',
+      medium: 'event',
+      campaign: 'cityjssg2022_booth',
+    },
+  },
+
+  CityJSSG: {
+    register: {
+      link: 'https://forms.monday.com/forms/a436cb3952b83eb35a340d50324b5d24',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['cityjssg'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cityjssg',
+      medium: 'event',
+      campaign: 'cityjssg2022_booth',
+    },
+  },
+
   reactnorway: {
     register: {
       link: 'https://forms.monday.com/forms/7bd7cd423d8de10732d891cf845445bc',
