@@ -60,7 +60,7 @@ export const events = {
       link: 'https://forms.monday.com/forms/a436cb3952b83eb35a340d50324b5d24',
       text: 'Get Your Free Account',
     },
-    hashtags: ['cityjssg'],
+    hashtags: ['CITYJSSingapore'],
     incentive: {
       text: 'extra 3 credits',
       moreInfo: {
@@ -80,7 +80,7 @@ export const events = {
       link: 'https://forms.monday.com/forms/a436cb3952b83eb35a340d50324b5d24',
       text: 'Get Your Free Account',
     },
-    hashtags: ['cityjssg'],
+    hashtags: ['CITYJSSingapore'],
     incentive: {
       text: 'extra 3 credits',
       moreInfo: {
