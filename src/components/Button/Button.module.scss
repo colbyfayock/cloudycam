@@ -10,6 +10,7 @@
   font-family: inherit;
   text-transform: uppercase;
   text-align: center;
+  text-decoration: none;
   background-color: $color-button-background;
   padding: 0.6em 1em;
   border: 0;
@@ -83,6 +84,12 @@
   &[data-shape="capsule"] {
     height: 2.5em;
     border-radius: 2.5em;
+    padding: 0 1em;
+  }
+
+  &[data-shape="capsule-tall"] {
+    height: 3em;
+    border-radius: 3em;
     padding: 0 1em;
   }
 

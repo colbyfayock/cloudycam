@@ -1,4 +1,5 @@
 @import "@styles/settings/__settings";
+@import "@styles/util/__util";
 
 .sectionTitle {
   font-size: 2em;
@@ -38,11 +39,23 @@
   @media (min-width: 720px) {
     display: flex;
   }
+
+  ul,
+  p {
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .imageTransformed {
   border-radius: 0.5em;
   overflow: hidden;
+  margin-bottom: 1em;
 
   @media (min-width: 720px) {
     width: 60%;
@@ -85,50 +98,39 @@
     font-size: 1.1em;
     padding: 1em;
   }
-}
 
-.imageOriginal {
-  display: flex;
-  color: white;
-  background-color: $color-cloudinary-blue-dark;
-  padding: 1em;
-  border-radius: 0.2em;
-
-  a {
-    color: $color-cloudinary-yellow-500;
-  }
-
-  img {
-    display: block;
-  }
-}
-
-.imageOriginalDetails {
-  order: 2;
-
-  h2 {
-    font-size: 1em;
-    margin-top: 0;
-  }
-
-  p {
-    font-size: 0.9em;
-    word-break: break-all;
-
-    &:last-child {
-      margin-bottom: 0;
+  [data-is-loading="true"] {
+    svg {
+      animation: spin 1s linear infinite;
     }
   }
 }
 
-.imageOriginalImage {
-  order: 1;
-  width: 10em;
-  flex-shrink: 0;
-  margin: 0 1em 0 0;
+.actionsSecondary {
+  display: flex;
+  width: 100%;
+
+  li {
+    flex-grow: 1;
+    width: 50%;
+    padding: 0 0.5em;
+  }
+
+  button,
+  a {
+    font-size: 0.8em;
+  }
+
+  svg {
+    color: $color-cloudinary-yellow-500;
+  }
 }
 
 /* Cloudinary */
+
+.cloudinarySection {
+  padding: 0;
+}
 
 .cloudinary {
   display: flex;

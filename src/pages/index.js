@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { FaCamera } from 'react-icons/fa';
 
 import Layout from '@components/Layout';
 import Section from '@components/Section';
@@ -17,17 +18,35 @@ export default function Home() {
       </Head>
 
       <Section>
-        <Container>
-          <p>
-            <img
-              src="https://res.cloudinary.com/colbycloud-cloudycam/image/upload/$imgWidth_720/$imgHeight_720/w_$imgWidth,h_$imgHeight/f_auto/q_auto/l_cloudycam-assets:default-photo-transparent,w_$imgWidth,h_$imgHeight/l_cloudycam-assets:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative/u_cloudycam-assets:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative/l_cloudycam-assets:cloudinary_white,h_20,o_40,g_south_east,x_10,y_10/v1/cloudycam-assets/transparent-1x1?_a=ATAJZAA0"
-              alt="Keanu Reeves - This is Fine"
-            />
-          </p>
+        <Container className={styles.homeContainer}>
+          <ul className={styles.imageGrid}>
+            <li>
+              <img src="/images/cloudycam-example-dali.jpg" alt="Is it a money heist?" />
+            </li>
+            <li>
+              <img src="/images/cloudycam-example-unicorn.jpg" alt="Prized Unicorn from CloudyCam" />
+            </li>
+            <li>
+              <img src="/images/cloudycam-example-dog.jpg" alt="Deal with it, dog" />
+            </li>
+            <li>
+              <img src="/images/cloudycam-example-cityjsbrazil.jpg" alt="Darth Vader in CityJS Brazil" />
+            </li>
+          </ul>
           <p className={styles.try}>
             <Link href="/camera" passHref={true}>
-              <Button>Try the Camera</Button>
+              <Button className={styles.tryButton} shape="capsule" iconPosition="left">
+                <FaCamera />
+                Snap a Photo
+              </Button>
             </Link>
+          </p>
+          <p className={styles.instructions}>
+            Take a selfie, add some effects using{' '}
+            <a href="https://cloudinary.com/documentation/image_transformations" rel="noreferrer" target="_blank">
+              Cloudinary transformations
+            </a>
+            , and share on Twitter!
           </p>
         </Container>
       </Section>

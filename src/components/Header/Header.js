@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { FaGithub } from 'react-icons/fa';
 
 import Container from '@components/Container';
 import LogoCloudyCam from '@components/LogoCloudyCam';
@@ -18,13 +17,6 @@ const Header = () => {
             </a>
           </Link>
         </p>
-        <ul className={styles.headerLinks}>
-          <li>
-            <a href="https://github.com/colbyfayock/cloudycam">
-              <FaGithub /> CloudyCam on GitHub
-            </a>
-          </li>
-        </ul>
       </Container>
     </header>
   );

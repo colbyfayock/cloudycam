@@ -72,7 +72,7 @@ $desktop-width: 600px;
   }
 }
 
-.controlDemo {
+.controlSecondary {
   button,
   a {
     font-size: 0.9em;
@@ -89,7 +89,9 @@ $desktop-width: 600px;
   }
 }
 
-.controlShare {
+.controlCancel {
+  flex-grow: 1;
+
   button,
   a {
     font-size: 0.9em;

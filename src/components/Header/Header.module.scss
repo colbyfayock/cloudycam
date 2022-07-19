@@ -4,8 +4,8 @@
   width: 100%;
   font-size: 1em;
   color: white;
-  padding: 1em 0;
-  margin-top: 1em;
+  padding: 0;
+  margin-top: 2em;
 }
 
 .headerContainer {
@@ -29,8 +29,6 @@
   @media (max-width: 720px) {
     justify-content: center;
     width: 100%;
-    height: 1.5em;
-    margin-bottom: 0.5em;
   }
 }
 

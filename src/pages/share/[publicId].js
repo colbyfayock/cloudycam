@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { v2 as cloudinary } from 'cloudinary';
-import { FaCamera, FaTwitter } from 'react-icons/fa';
+import { FaCamera, FaTwitter, FaSave, FaSpinner } from 'react-icons/fa';
 
 import { createTweetAction, openTweet } from '@lib/social';
 import * as gtag from '@lib/gtag';
@@ -136,6 +137,23 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
   const { eventId } = useApp();
   const event = events[eventId || 'default'];
 
+  const [downloadData, updateDownloadData] = useState();
+
+  // Once the page loads, attempt to download the image and convert it
+  // to a blob to allow for easy download
+
+  useEffect(() => {
+    (async function run() {
+      const data = await fetch(resource.secure_url);
+      const blob = await data.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      updateDownloadData({
+        blob,
+        objectUrl,
+      });
+    })();
+  }, []);
+
   /**
    * handleOnTwitterClick
    */
@@ -192,39 +210,41 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
           <div className={styles.content}>
             <ul className={styles.actions}>
               <li>
-                <Button color="twitter-blue" iconPosition="left" onClick={handleOnTwitterClick}>
+                <Button color="twitter-blue" iconPosition="left" shape="capsule-tall" onClick={handleOnTwitterClick}>
                   <FaTwitter /> Share on Twitter
+                </Button>
+              </li>
+            </ul>
+            <ul className={`${styles.actions} ${styles.actionsSecondary}`}>
+              <li>
+                <Button
+                  href={downloadData?.objectUrl}
+                  color="blue-800"
+                  iconPosition="left"
+                  shape="capsule"
+                  download
+                  target="_blank"
+                  disabled={!downloadData?.objectUrl}
+                  data-is-loading={!downloadData?.objectUrl}
+                >
+                  {!downloadData?.objectUrl && <FaSpinner />}
+                  {downloadData?.objectUrl && <FaSave />}
+                  Download
                 </Button>
               </li>
               <li>
                 <Link href="/camera" passHref={true}>
-                  <Button color="cloudinary-yellow" iconPosition="left">
-                    <FaCamera /> Take a New Photo
+                  <Button color="blue-800" iconPosition="left" shape="capsule">
+                    <FaCamera /> New Photo
                   </Button>
                 </Link>
               </li>
             </ul>
-
-            {original && (
-              <div className={styles.imageOriginal}>
-                <div className={styles.imageOriginalDetails}>
-                  <h2>Original Image</h2>
-                  <p className={styles.imageOriginalLink}>
-                    <a href={original.secure_url} target="_blank" rel="noreferrer">
-                      View Image
-                    </a>
-                  </p>
-                </div>
-                <p className={styles.imageOriginalImage}>
-                  <img src={original.secure_url} alt="Transformed Image" />
-                </p>
-              </div>
-            )}
           </div>
         </Container>
       </Section>
 
-      <Section>
+      <Section className={styles.cloudinarySection}>
         <Container className={styles.cloudinary}>
           <div className={styles.cloudinaryContent}>
             <h2 className={styles.cloudinaryHeadline}>Incredible media transformations made simple</h2>
@@ -259,7 +279,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
           </div>
           <div className={styles.cloudinaryImage}>
             <img src="/images/cloudinary-media-experience-cloud.png" alt="Cloudinary Media Experience" />
-            <img className={styles.cloudinaryImageOverlay} src={resource.secure_url} alt="Transformed Image" />
+            <img className={styles.cloudinaryImageOverlay} src={original.secure_url} alt="Transformed Image" />
           </div>
         </Container>
       </Section>

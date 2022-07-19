@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { FaCamera, FaTimes, FaImages, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
+import { FaCamera, FaTimes, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
 
 // https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
 const Tabs = dynamic(
@@ -35,16 +35,6 @@ const DEFAULT_CLD_DATA = {
   transparent: undefined,
 };
 
-const DEMO_CLD_DATA = {
-  main: {
-    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo`,
-  },
-  transparent: {
-    public_id: `${CLOUDINARY_ASSETS_FOLDER}/default-photo-transparent`,
-  },
-  isDemo: true,
-};
-
 const DEFAULT_ASSET_STATE = {
   main: {
     loading: false,
@@ -69,10 +59,10 @@ const CldCamera = ({ onShare, ...props }) => {
   const [cldData, setCldData] = useState(DEFAULT_CLD_DATA);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [assetState, setAssetState] = useState(DEFAULT_ASSET_STATE);
+  const [shareData, updateShareData] = useState();
 
   const { image, hash, capture, reset } = useCamera();
 
-  const hasFilters = Object.keys(filters).length > 0;
   const hasBackgroundFilter = Object.keys(filters).find((key) => filters[key].type === 'backgrounds');
 
   let src, cloudImageId;
@@ -113,15 +103,6 @@ const CldCamera = ({ onShare, ...props }) => {
       assetStateProps[`data-${assetKey}-${stateKey}`] = assetState[assetKey][stateKey];
     });
   });
-
-  // If a filter is selected but someone has yet to take an image, default to
-  // demo mode and load demo data
-
-  useEffect(() => {
-    if (hasFilters && !image) {
-      setCldData(DEMO_CLD_DATA);
-    }
-  }, [hasFilters, image]);
 
   // Once we have an image stored, attempt to upload it to Cloudinary
 
@@ -202,6 +183,15 @@ const CldCamera = ({ onShare, ...props }) => {
           loaded: false,
           error: false,
         },
+        // Additionally set the share state to not loading
+        // since we successfully have an asset to share, but
+        // set loaded to false as we're using it to control
+        // the initial loading UI
+        share: {
+          loading: false,
+          loaded: false,
+          error: false,
+        },
       };
     });
 
@@ -224,6 +214,14 @@ const CldCamera = ({ onShare, ...props }) => {
         async function checkStatus() {
           const resource = await fetch(`/api/cloudinary/resource/?publicId=${results.public_id}`).then((r) => r.json());
 
+          // If the share state is loading, that means that we are trying to load
+          // and redirect the user to the share page, so stop trying to load the
+          // transparenet image
+
+          if (assetState.share.loading) {
+            return;
+          }
+
           if (resource.info.background_removal.cloudinary_ai.status === 'pending') {
             await timeout(100);
             return await checkStatus();
@@ -235,7 +233,10 @@ const CldCamera = ({ onShare, ...props }) => {
         try {
           const backgroundRemovalResource = await checkStatus();
 
-          if (backgroundRemovalResource.info.background_removal.cloudinary_ai.status !== 'complete') {
+          if (
+            backgroundRemovalResource &&
+            backgroundRemovalResource.info.background_removal.cloudinary_ai.status !== 'complete'
+          ) {
             throw new Error('Failed to remove background');
           }
 
@@ -245,12 +246,14 @@ const CldCamera = ({ onShare, ...props }) => {
           return;
         }
 
-        setCldData((prev) => {
-          return {
-            ...prev,
-            transparent: results,
-          };
-        });
+        if (!results) {
+          setCldData((prev) => {
+            return {
+              ...prev,
+              transparent: results,
+            };
+          });
+        }
 
         setAssetState((prev) => {
           return {
@@ -276,6 +279,38 @@ const CldCamera = ({ onShare, ...props }) => {
       }
     })();
   }, [cldData, hash]);
+
+  // Once our share data has finished loading we want to trigger the
+  // onShare function that can handle any post-load capabilities
+
+  useEffect(() => {
+    if (!assetState?.share?.loaded || !shareData) return;
+
+    if (typeof onShare === 'function') {
+      onShare({
+        publicId: shareData.publicId,
+        resource: shareData.data,
+      });
+    }
+  }, [assetState.share.loaded, shareData]);
+
+  /**
+   * handleOnCapture
+   */
+
+  function handleOnCapture(e) {
+    capture(e);
+    setAssetState((prev) => {
+      return {
+        ...prev,
+        share: {
+          loading: true,
+          loaded: false,
+          error: false,
+        },
+      };
+    });
+  }
 
   /**
    * handleOnShare
@@ -334,12 +369,10 @@ const CldCamera = ({ onShare, ...props }) => {
       return;
     }
 
-    if (typeof onShare === 'function') {
-      onShare({
-        publicId: sharePublicId,
-        resource: results,
-      });
-    }
+    updateShareData({
+      publicId: sharePublicId,
+      data: results,
+    });
   }
 
   /**
@@ -363,21 +396,6 @@ const CldCamera = ({ onShare, ...props }) => {
     });
 
     filters.forEach(({ id }) => toggleFilter(id));
-  }
-
-  /**
-   * onEnableDemo
-   * @description Resets state and applies demo data
-   */
-
-  function onEnableDemo() {
-    event({
-      action: 'click',
-      category: 'camera',
-      label: 'demo | enable',
-    });
-    handleOnReset();
-    setCldData(DEMO_CLD_DATA);
   }
 
   /**
@@ -519,17 +537,11 @@ const CldCamera = ({ onShare, ...props }) => {
           </Tabs>
         </div>
 
-        <ul className={styles.controls}>
+        <ul className={styles.controls} data-can-capture={canCapture}>
           {canCapture && (
             <>
-              <li className={`${styles.control} ${styles.controlDemo}`}>
-                <Button onClick={onEnableDemo} color="blue-800" shape="capsule" iconPosition="left">
-                  <FaImages />
-                  <span>Try Demo</span>
-                </Button>
-              </li>
               <li className={styles.control}>
-                <Button onClick={capture} color="cloudinary-yellow" shape="capsule" iconPosition="left">
+                <Button onClick={handleOnCapture} color="cloudinary-yellow" shape="capsule" iconPosition="left">
                   <FaCamera />
                   <span>Capture</span>
                 </Button>
@@ -538,32 +550,30 @@ const CldCamera = ({ onShare, ...props }) => {
           )}
           {!canCapture && (
             <>
-              <li className={`${styles.control} ${styles.controlDemo}`}>
+              <li className={`${styles.control} ${styles.controlCancel}`}>
+                <Button onClick={handleOnReset} color="red" shape="circle">
+                  <FaTimes />
+                  <span className="sr-only">Reset Photo</span>
+                </Button>
+              </li>
+              <li className={`${styles.control} ${styles.controlSecondary}`}>
                 <Button onClick={onRemix} color="blue-800" shape="capsule" iconPosition="left">
                   <FaMagic />
                   <span>Remix</span>
                 </Button>
               </li>
-              {cldData.main?.public_id && (
-                <li className={`${styles.control} ${styles.controlShare}`}>
-                  <Button
-                    color="cloudinary-yellow"
-                    shape="capsule"
-                    iconPosition="left"
-                    onClick={handleOnShare}
-                    disabled={assetState.share.loading || assetState.share.loaded}
-                    data-is-loading={assetState.share.loading || assetState.share.loaded}
-                  >
-                    {(assetState.share.loading || assetState.share.loaded) && <FaSpinner />}
-                    {!assetState.share.loading && !assetState.share.loaded && <FaShare />}
-                    <span>Share</span>
-                  </Button>
-                </li>
-              )}
-              <li className={styles.control}>
-                <Button onClick={handleOnReset} color="red" shape="circle">
-                  <FaTimes />
-                  <span className="sr-only">Reset Photo</span>
+              <li className={`${styles.control} ${styles.controlShare}`}>
+                <Button
+                  color="cloudinary-yellow"
+                  shape="capsule"
+                  iconPosition="left"
+                  onClick={handleOnShare}
+                  disabled={assetState.share.loading || assetState.share.loaded}
+                  data-is-loading={assetState.share.loading || assetState.share.loaded}
+                >
+                  {(assetState.share.loading || assetState.share.loaded) && <FaSpinner />}
+                  {!assetState.share.loading && !assetState.share.loaded && <FaShare />}
+                  <span>Share</span>
                 </Button>
               </li>
             </>
