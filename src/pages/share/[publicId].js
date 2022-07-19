@@ -169,7 +169,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
 
     const twitterAction = createTweetAction({
       message: [
-        'Transformed with #CloudyCam!',
+        'Transformed with #CloudyCam by @cloudinary!',
         '',
         'Create your transformations below 👇',
         ...(event.hashtags ? ['', event.hashtags.map((hashtag) => `#${hashtag}`).join(' ')] : []),
