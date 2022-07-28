@@ -470,8 +470,6 @@ const CldCamera = ({ onShare, ...props }) => {
             <div className={styles.effectsHeaders}>
               <TabList>
                 {FILTER_TYPES.map((type) => {
-                  console.log('type', type);
-                  console.log('cldData', cldData);
                   const isActive = typeof type.checkActive === 'function' ? type.checkActive(cldData) : true;
                   return (
                     <Tab key={type.id} disabled={!cldData?.main || !isActive} data-type={type.id}>
