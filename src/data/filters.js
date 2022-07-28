@@ -121,18 +121,18 @@ export const FILTERS_BACKGROUNDS = [
   //   type: 'backgrounds',
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:vueconf-stage,c_fill,w_1.0,h_1.0,fl_relative`],
   // },
-  {
-    id: 'reactnorway-stage',
-    title: 'React Norway',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:reactnorway-stage,c_fill,w_1.0,h_1.0,fl_relative`],
-  },
-  {
-    id: 'reactnorway-larvik',
-    title: 'Larvik',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:reactnorway-larvik,c_fill,w_1.0,h_1.0,fl_relative`],
-  },
+  // {
+  //   id: 'reactnorway-stage',
+  //   title: 'React Norway',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:reactnorway-stage,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
+  // {
+  //   id: 'reactnorway-larvik',
+  //   title: 'Larvik',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:reactnorway-larvik,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
   {
     id: 'moon',
     title: 'Moon',

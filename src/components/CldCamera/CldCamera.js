@@ -246,7 +246,7 @@ const CldCamera = ({ onShare, ...props }) => {
           return;
         }
 
-        if (!results) {
+        if (results) {
           setCldData((prev) => {
             return {
               ...prev,
@@ -300,16 +300,6 @@ const CldCamera = ({ onShare, ...props }) => {
 
   function handleOnCapture(e) {
     capture(e);
-    setAssetState((prev) => {
-      return {
-        ...prev,
-        share: {
-          loading: true,
-          loaded: false,
-          error: false,
-        },
-      };
-    });
   }
 
   /**
@@ -480,6 +470,8 @@ const CldCamera = ({ onShare, ...props }) => {
             <div className={styles.effectsHeaders}>
               <TabList>
                 {FILTER_TYPES.map((type) => {
+                  console.log('type', type);
+                  console.log('cldData', cldData);
                   const isActive = typeof type.checkActive === 'function' ? type.checkActive(cldData) : true;
                   return (
                     <Tab key={type.id} disabled={!cldData?.main || !isActive} data-type={type.id}>
@@ -571,7 +563,7 @@ const CldCamera = ({ onShare, ...props }) => {
                   disabled={assetState.share.loading || assetState.share.loaded}
                   data-is-loading={assetState.share.loading || assetState.share.loaded}
                 >
-                  {(assetState.share.loading || assetState.share.loaded) && <FaSpinner />}
+                  {(assetState.main.loading || assetState.share.loading || assetState.share.loaded) && <FaSpinner />}
                   {!assetState.share.loading && !assetState.share.loaded && <FaShare />}
                   <span>Share</span>
                 </Button>
