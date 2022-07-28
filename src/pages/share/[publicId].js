@@ -435,7 +435,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
   );
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
   cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -495,5 +495,12 @@ export async function getServerSideProps({ params }) {
       filters,
       ogImageUrl,
     },
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
   };
 }
