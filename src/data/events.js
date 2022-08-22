@@ -95,6 +95,46 @@ export const events = {
     },
   },
 
+  frontconfzurich: {
+    register: {
+      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['frontzurich'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'frontconfzurich',
+      medium: 'event',
+      campaign: 'frontconfzurich2022_booth',
+    },
+  },
+
+  FrontConfZurich: {
+    register: {
+      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['frontzurich'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'frontconfzurich',
+      medium: 'event',
+      campaign: 'frontconfzurich2022_booth',
+    },
+  },
+
   reactnorway: {
     register: {
       link: 'https://forms.monday.com/forms/7bd7cd423d8de10732d891cf845445bc',
