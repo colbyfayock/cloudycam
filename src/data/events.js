@@ -17,7 +17,7 @@ export const events = {
 
   canariasjs: {
     register: {
-      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b?r=use1',
+      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
       text: 'Get Your Free Account',
     },
     hashtags: ['JSDayCAN2022'],
@@ -32,6 +32,46 @@ export const events = {
       source: 'canariasjs',
       medium: 'event',
       campaign: '2022canariasjs_booth',
+    },
+  },
+
+  cascadiajs: {
+    register: {
+      link: 'https://forms.monday.com/forms/12805bc122ea5719f365205e4ac364b5',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CascadiaJS'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cascadiajs',
+      medium: 'event',
+      campaign: 'cascadiajs2022_booth',
+    },
+  },
+
+  CascadiaJS: {
+    register: {
+      link: 'https://forms.monday.com/forms/12805bc122ea5719f365205e4ac364b5',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CascadiaJS'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cascadiajs',
+      medium: 'event',
+      campaign: 'cascadiajs2022_booth',
     },
   },
 
@@ -152,6 +192,46 @@ export const events = {
       source: 'reactnorway',
       medium: 'event',
       campaign: 'reactnorway_booth',
+    },
+  },
+
+  smashingfreiburg: {
+    register: {
+      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['smashingconf'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'smashingfreiburg',
+      medium: 'event',
+      campaign: 'smashingfreiburg_booth',
+    },
+  },
+
+  SmashingFreiburg: {
+    register: {
+      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['smashingconf'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'smashingfreiburg',
+      medium: 'event',
+      campaign: 'smashingfreiburg_booth',
     },
   },
 
