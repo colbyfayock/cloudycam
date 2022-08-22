@@ -95,7 +95,7 @@ export const events = {
     },
   },
 
-  frontconfzurich: {
+  frontconf: {
     register: {
       link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
       text: 'Get Your Free Account',
@@ -109,13 +109,13 @@ export const events = {
       },
     },
     utm: {
-      source: 'frontconfzurich',
+      source: 'frontconf',
       medium: 'event',
-      campaign: 'frontconfzurich2022_booth',
+      campaign: 'frontconf2022_booth',
     },
   },
 
-  FrontConfZurich: {
+  FrontConf: {
     register: {
       link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
       text: 'Get Your Free Account',
@@ -129,9 +129,9 @@ export const events = {
       },
     },
     utm: {
-      source: 'frontconfzurich',
+      source: 'frontconf',
       medium: 'event',
-      campaign: 'frontconfzurich2022_booth',
+      campaign: 'frontconf2022_booth',
     },
   },
 
