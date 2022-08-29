@@ -29,7 +29,7 @@ export async function uploadToCloudinary(image, options = {}) {
  * constructCldUrl
  */
 
-export function constructCldUrl({ publicId: userPublicId, width, height, filters, applyWatermark = true } = {}) {
+export function constructCldUrl({ publicId: userPublicId, width, height, filters, event, applyWatermark = true } = {}) {
   const publicId = userPublicId.replace('/', ':');
   const hasFilters = Object.keys(filters).length > 0;
 
@@ -72,8 +72,32 @@ export function constructCldUrl({ publicId: userPublicId, width, height, filters
     });
   }
 
+  // Cloudycam Logo
+
   if (applyWatermark) {
-    cloudImage.addTransformation(`l_${CLOUDINARY_ASSETS_FOLDER}:cloudinary_white,h_20,o_40,g_south_east,x_10,y_10`);
+    cloudImage.addTransformation(
+      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63,g_south_east,x_0,y_10`
+    );
+    cloudImage.addTransformation(
+      `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47,g_south_east,x_10,y_18,b_red`
+    );
+  }
+
+  if (event) {
+    const hashtags = ['CloudyCam'];
+
+    if (Array.isArray(event.hashtags) && event.hashtags.length > 0) {
+      event.hashtags.forEach((tag) => hashtags.push(tag));
+    }
+
+    cloudImage.addTransformation(
+      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,${
+        event.hashtags ? 'w_280' : 'w_160'
+      },h_42,g_north_west,x_0,y_10`
+    );
+    cloudImage.addTransformation(
+      `l_text:Source Sans Pro_22_bold:${hashtags.map((tag) => '%23' + tag).join('  ')},g_north_west,x_10,y_23,co_white`
+    );
   }
 
   return cloudImage.toURL();

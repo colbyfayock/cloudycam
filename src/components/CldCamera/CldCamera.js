@@ -10,9 +10,10 @@ const Tabs = dynamic(
 import { Tab, TabList, TabPanel } from 'react-tabs';
 
 import { useCamera } from '@hooks/useCamera';
+import { useApp } from '@hooks/useApp';
 import { uploadToCloudinary, constructCldUrl } from '@lib/cloudinary';
 import { timeout } from '@lib/util';
-import { event } from '@lib/gtag';
+import { event as pushEvent } from '@lib/gtag';
 
 import Camera from '@components/Camera';
 import Button from '@components/Button';
@@ -27,6 +28,7 @@ import {
   CLOUDINARY_TAG_ASSET_TRANSFORMATION,
 } from '@data/cloudinary';
 import { CAMERA_WIDTH, CAMERA_HEIGHT, FILTER_THUMB_WIDTH, FILTER_THUMB_HEIGHT } from '@data/camera';
+import { events } from '@data/events';
 
 import styles from './CldCamera.module.scss';
 
@@ -62,6 +64,9 @@ const CldCamera = ({ onShare, ...props }) => {
   const [shareData, updateShareData] = useState();
 
   const { image, hash, capture, reset } = useCamera();
+  const { eventId } = useApp();
+
+  const event = events[eventId];
 
   const hasBackgroundFilter = Object.keys(filters).find((key) => filters[key].type === 'backgrounds');
 
@@ -86,6 +91,7 @@ const CldCamera = ({ onShare, ...props }) => {
       width: CAMERA_WIDTH,
       height: CAMERA_HEIGHT,
       filters,
+      event,
     });
   }
 
@@ -373,7 +379,7 @@ const CldCamera = ({ onShare, ...props }) => {
   function onRemix(e) {
     e.preventDefault();
 
-    event({
+    pushEvent({
       action: 'click',
       category: 'camera',
       label: 'remix',
@@ -394,7 +400,7 @@ const CldCamera = ({ onShare, ...props }) => {
    */
 
   function handleOnReset() {
-    event({
+    pushEvent({
       action: 'click',
       category: 'camera',
       label: 'reset',
@@ -413,7 +419,7 @@ const CldCamera = ({ onShare, ...props }) => {
   function handleOnFilterSelect(e) {
     const filterId = e.currentTarget.dataset.filterId;
 
-    event({
+    pushEvent({
       action: 'click',
       category: 'camera',
       label: `filter | ${filterId}`,
@@ -430,7 +436,7 @@ const CldCamera = ({ onShare, ...props }) => {
   function toggleFilter(filterId) {
     const filter = ALL_FILTERS.find(({ id }) => id === filterId);
 
-    event({
+    pushEvent({
       action: 'click',
       category: 'camera',
       label: `toggle | ${filter.id}`,

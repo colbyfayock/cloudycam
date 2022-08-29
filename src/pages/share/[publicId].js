@@ -139,18 +139,24 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
 
   const [downloadData, updateDownloadData] = useState();
 
-  // Once the page loads, attempt to download the image and convert it
-  // to a blob to allow for easy download
-
   useEffect(() => {
     (async function run() {
+      // Once the page loads, attempt to download the image and convert it
+      // to a blob to allow for easy download
+
       const data = await fetch(resource.secure_url);
       const blob = await data.blob();
       const objectUrl = URL.createObjectURL(blob);
+
       updateDownloadData({
         blob,
         objectUrl,
       });
+
+      // Also attempt to pre-load the OG image URL to hopefully help issues
+      // with Twitter not correctly loading images on first share
+
+      await fetch(ogImageUrl);
     })();
   }, []);
 
@@ -483,7 +489,7 @@ export async function getStaticProps({ params }) {
         gravity: 'west',
         x: 60,
         y: 0,
-        radius: 50,
+        radius: 10,
       },
     ],
   });

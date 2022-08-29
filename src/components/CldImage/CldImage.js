@@ -1,6 +1,6 @@
 import { constructCldUrl } from '@lib/cloudinary';
 
-const CldImage = ({ src, width, height, resize, transformations, effects, watermark, alt, ...props }) => {
+const CldImage = ({ src, width, height, resize, transformations, effects, watermark, event, alt, ...props }) => {
   const cldImageUrl = constructCldUrl({
     publicId: src,
     width: resize?.width || width,
@@ -12,6 +12,7 @@ const CldImage = ({ src, width, height, resize, transformations, effects, waterm
       },
     ],
     applyWatermark: watermark,
+    event,
   });
 
   return <img width={width} height={height} src={cldImageUrl} loading="lazy" alt={alt} {...props} />;
