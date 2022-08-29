@@ -197,7 +197,7 @@ export const events = {
 
   MagnoliaJS: {
     register: {
-      link: '',
+      link: 'https://forms.monday.com/forms/ccaf953547ab67a089f3f7a7d39fac05?r=use1',
       text: 'Get Your Free Account',
     },
     hashtags: ['MagnoliaJS'],
