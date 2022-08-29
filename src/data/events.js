@@ -175,6 +175,46 @@ export const events = {
     },
   },
 
+  magnoliajs: {
+    register: {
+      link: 'https://forms.monday.com/forms/ccaf953547ab67a089f3f7a7d39fac05?r=use1',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['MagnoliaJS'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'magnoliajs',
+      medium: 'event',
+      campaign: 'magnoliajs2022_booth',
+    },
+  },
+
+  MagnoliaJS: {
+    register: {
+      link: '',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['MagnoliaJS'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'magnoliajs',
+      medium: 'event',
+      campaign: 'magnoliajs2022_booth',
+    },
+  },
+
   reactnorway: {
     register: {
       link: 'https://forms.monday.com/forms/7bd7cd423d8de10732d891cf845445bc',
@@ -211,7 +251,7 @@ export const events = {
     utm: {
       source: 'smashingfreiburg',
       medium: 'event',
-      campaign: 'smashingfreiburg_booth',
+      campaign: 'smashingfreiburg2022_booth',
     },
   },
 
@@ -231,7 +271,7 @@ export const events = {
     utm: {
       source: 'smashingfreiburg',
       medium: 'event',
-      campaign: 'smashingfreiburg_booth',
+      campaign: 'smashingfreiburg2022_booth',
     },
   },
 
