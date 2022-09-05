@@ -92,7 +92,7 @@ export function constructCldUrl({ publicId: userPublicId, width, height, filters
 
     cloudImage.addTransformation(
       `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,${
-        event.hashtags ? 'w_280' : 'w_160'
+        event.hashtags ? 'w_310' : 'w_160'
       },h_42,g_north_west,x_0,y_10`
     );
     cloudImage.addTransformation(
