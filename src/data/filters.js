@@ -131,18 +131,18 @@ export const FILTERS_BACKGROUNDS = [
   //   type: 'backgrounds',
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-towers,c_fill,w_1.0,h_1.0,fl_relative`],
   // },
-  {
-    id: 'cascadiajs',
-    title: 'CascadiaJS',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cascadiajs,c_fill,w_1.0,h_1.0,fl_relative`],
-  },
-  {
-    id: 'bend-or',
-    title: 'Bend, OR',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:bend-or,c_fill,w_1.0,h_1.0,fl_relative`],
-  },
+  // {
+  //   id: 'cascadiajs',
+  //   title: 'CascadiaJS',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cascadiajs,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
+  // {
+  //   id: 'bend-or',
+  //   title: 'Bend, OR',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:bend-or,c_fill,w_1.0,h_1.0,fl_relative`],
+  // },
   {
     id: 'moon',
     title: 'Moon',
