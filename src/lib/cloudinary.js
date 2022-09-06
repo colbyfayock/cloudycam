@@ -29,7 +29,8 @@ export async function uploadToCloudinary(image, options = {}) {
  * constructCldUrl
  */
 
-export function constructCldUrl({ publicId: userPublicId, width, height, filters, event, applyWatermark = true } = {}) {
+export function constructCldUrl(options = {}) {
+  const { publicId: userPublicId, width, height, filters, event, applyWatermark = true } = options;
   const publicId = userPublicId.replace('/', ':');
   const hasFilters = Object.keys(filters).length > 0;
 
@@ -63,6 +64,9 @@ export function constructCldUrl({ publicId: userPublicId, width, height, filters
       const filter = filters[filterKey];
 
       filter.transformations?.forEach((transformation) => {
+        if (typeof transformation === 'function') {
+          transformation = transformation({ options });
+        }
         cloudImage.addTransformation(transformation);
       });
 

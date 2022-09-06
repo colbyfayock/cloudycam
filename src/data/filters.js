@@ -22,8 +22,8 @@ export const FILTER_TYPES = [
   //   title: 'Crops',
   // },
   {
-    id: 'frames',
-    title: 'Frames',
+    id: 'more',
+    title: 'More',
   },
 ];
 
@@ -61,15 +61,10 @@ export const FILTERS_EFFECTS = [
 ];
 
 export const FILTERS_STYLES = [
-  { type: 'styles', id: 'eucalyptus', title: 'Eucalyptus', effects: ['e_art:eucalyptus'] },
   { type: 'styles', id: 'grayscale', title: 'Grayscale', effects: ['e_grayscale'] },
-  { type: 'styles', id: 'hokusai', title: 'Hokusai', effects: ['e_art:hokusai'] },
-  { type: 'styles', id: 'red_rock', title: 'Red Rock', effects: ['e_art:red_rock'] },
   { type: 'styles', id: 'negative', title: 'Negative', effects: ['e_negate'] },
   { type: 'styles', id: 'sepia', title: 'Sepia', effects: ['e_sepia'] },
-  { type: 'styles', id: 'sonnet', title: 'Sonnet', effects: ['e_art:sonnet'] },
-  { type: 'styles', id: 'quartz', title: 'Quartz', effects: ['e_art:quartz'] },
-  { type: 'styles', id: 'ukulele', title: 'Ukulele', effects: ['e_art:ukulele'] },
+  { type: 'styles', id: 'vibe', title: 'Vibe', effects: ['e_tint:100:0000FF:0p:FF1493:100p'] },
   { type: 'styles', id: 'vectorize', title: 'Vectorize', effects: ['e_vectorize:3:0.5:0.1'] },
 ];
 
@@ -179,25 +174,52 @@ export const FILTERS_BACKGROUNDS = [
     type: 'backgrounds',
     transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`],
   },
+  {
+    id: 'pixel-canvas',
+    title: 'Pixel Canvas',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:pixel-canvas,c_fill,w_1.0,h_1.0,fl_relative`],
+  },
+  {
+    id: 'matrix',
+    title: 'Matrix',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative`],
+  },
 ];
 
-export const FILTERS_FRAMES = [
-  {
-    id: 'border',
-    title: 'Solid Border',
-    type: 'frames',
-    transformations: ['bo_40px_solid_rgb:eebd41'],
-    thumb: {
-      transformations: ['bo_5px_solid_rgb:eebd41'],
-    },
-  },
+export const FILTERS_MORE = [
   {
     id: 'friends',
     title: 'Friends',
-    type: 'frames',
+    type: 'more',
     baseTransformations: ['c_thumb,g_faces,h_480,w_360', 'fl_layer_apply,g_north_west,x_170,y_130'],
     transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`],
   },
+  // {
+  //   id: 'pop',
+  //   title: 'Pop',
+  //   type: 'more',
+  //   transformations: [
+  //     ({ options }) => {
+  //       const publicId = options.publicId.replaceAll('/', ':');
+
+  //       const w = options.width / 2;
+  //       const h = options.width / 2;
+
+  //       return [
+  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:90`,
+  //         'fl_layer_apply,x_0,y_0,g_north_west',
+  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:-40`,
+  //         'fl_layer_apply,x_0,y_0,g_north_east',
+  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,a_0,e_hue:40`,
+  //         'fl_layer_apply,x_0,y_0,g_south_west',
+  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,a_0,e_hue:20`,
+  //         'fl_layer_apply,x_0,y_0,g_south_east',
+  //       ].join('/')
+  //     }
+  //   ],
+  // },
 ];
 
 export const FILTERS_CROPS = [
@@ -219,6 +241,6 @@ export const ALL_FILTERS = [
   ...FILTERS_STYLES,
   ...FILTERS_EFFECTS,
   ...FILTERS_BACKGROUNDS,
-  ...FILTERS_FRAMES,
+  ...FILTERS_MORE,
   ...FILTERS_CROPS,
 ];
