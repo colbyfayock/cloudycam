@@ -139,6 +139,12 @@ export const FILTERS_BACKGROUNDS = [
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:bend-or,c_fill,w_1.0,h_1.0,fl_relative`],
   // },
   {
+    id: 'mississippi-capitol',
+    title: 'Mississippi Capitol',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative`],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
