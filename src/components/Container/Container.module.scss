@@ -9,4 +9,15 @@
   @media (max-width: 720px) {
     padding: 0 1em;
   }
+
+  p,
+  ul {
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

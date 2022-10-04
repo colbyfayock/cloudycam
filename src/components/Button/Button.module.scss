@@ -12,7 +12,7 @@
   text-align: center;
   text-decoration: none;
   background-color: $color-button-background;
-  padding: 0.6em 1em;
+  padding: 1em 1.4em;
   border: 0;
   border-radius: $border-radius-small;
   cursor: pointer;
@@ -82,20 +82,20 @@
   // Shape
 
   &[data-shape="capsule"] {
-    height: 2.5em;
-    border-radius: 2.5em;
-    padding: 0 1em;
+    height: 3em;
+    border-radius: 3em;
+    padding: 0 2em;
   }
 
   &[data-shape="capsule-tall"] {
-    height: 3em;
-    border-radius: 3em;
-    padding: 0 1em;
+    height: 3.5em;
+    border-radius: 3.5em;
+    padding: 0 2em;
   }
 
   &[data-shape="circle"] {
-    width: 2.5em;
-    height: 2.5em;
+    width: 3em;
+    height: 3em;
     border-radius: 100%;
     padding: 0;
   }
