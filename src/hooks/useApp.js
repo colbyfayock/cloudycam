@@ -27,7 +27,7 @@ export function useAppState({ eventId: initialEventId = DEFAULT_EVENT_ID }) {
     }
 
     setState(initialState);
-  }, []);
+  }, [initialEventId]);
 
   // Store state updates on change
 

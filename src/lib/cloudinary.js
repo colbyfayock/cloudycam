@@ -1,5 +1,7 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 
+import { timeout } from '@lib/util';
+
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
 const cld = new Cloudinary({
@@ -26,13 +28,43 @@ export async function uploadToCloudinary(image, options = {}) {
 }
 
 /**
+ * checkStatus
+ */
+
+export async function checkStatus(results) {
+  const resource = await fetch(`/api/cloudinary/resource/?publicId=${results.public_id}`).then((r) => r.json());
+
+  const infoState = getInfoStateFromResource(resource);
+
+  if (infoState.includes('pending')) {
+    await timeout(500);
+    return await checkStatus(results);
+  }
+
+  return resource;
+}
+
+/**
+ * getInfoStateFromResource
+ */
+
+export function getInfoStateFromResource(results) {
+  return (
+    results?.info &&
+    Object.keys(results.info).flatMap((jobKey) => {
+      return Object.keys(results.info[jobKey]).map((toolKey) => results.info[jobKey][toolKey].status);
+    })
+  );
+}
+
+/**
  * constructCldUrl
  */
 
 export function constructCldUrl(options = {}) {
   const { publicId: userPublicId, width, height, filters, event, applyWatermark = true } = options;
   const publicId = userPublicId.replace('/', ':');
-  const hasFilters = Object.keys(filters).length > 0;
+  const hasFilters = filters && Object.keys(filters).length > 0;
 
   const cloudImage = cld.image(`${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`);
 
@@ -53,7 +85,7 @@ export function constructCldUrl(options = {}) {
       .filter(({ baseTransformations }) => !!baseTransformations)
       .flatMap(({ baseTransformations }) => baseTransformations);
 
-  const baseTransformationsString = baseTransformations.length > 0 && `,${baseTransformations.join('/')}`;
+  const baseTransformationsString = baseTransformations?.length > 0 && `,${baseTransformations.join('/')}`;
 
   cloudImage.addTransformation(`l_${publicId},w_$imgWidth,h_$imgHeight${baseTransformationsString || ''}`);
 

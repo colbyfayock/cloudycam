@@ -67,6 +67,40 @@
     }
   }
 
+  &[data-color="cloudinary-orange"] {
+    color: white;
+    background-color: $color-cloudinary-orange;
+
+    &:hover {
+      background-color: lighten($color-cloudinary-orange, 10);
+    }
+
+    &:disabled {
+      background-color: desaturate($color-cloudinary-orange, 10);
+    }
+
+    &[data-shape="link"] {
+      color: $color-cloudinary-orange;
+    }
+  }
+
+  &[data-color="cloudinary-aqua"] {
+    color: white;
+    background-color: $color-cloudinary-aqua;
+
+    &:hover {
+      background-color: lighten($color-cloudinary-aqua, 10);
+    }
+
+    &:disabled {
+      background-color: desaturate($color-cloudinary-aqua, 10);
+    }
+
+    &[data-shape="link"] {
+      color: $color-cloudinary-aqua;
+    }
+  }
+
   &[data-color="twitter-blue"] {
     background-color: $color-twitter-blue;
 
@@ -80,6 +114,14 @@
   }
 
   // Shape
+
+  &[data-shape="link"] {
+    &,
+    &:hover,
+    &:disabled {
+      background: transparent;
+    }
+  }
 
   &[data-shape="capsule"] {
     height: 3em;
@@ -111,6 +153,12 @@
   &[data-icon-position="right"] {
     svg {
       margin-left: 0.5em;
+    }
+  }
+
+  &[data-icon-size="large"] {
+    svg {
+      transform: scale(1.3);
     }
   }
 }

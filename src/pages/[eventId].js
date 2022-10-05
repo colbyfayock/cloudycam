@@ -1,11 +1,11 @@
-import Home from './';
+import Camera from './camera';
 
 import { events } from '@data/events';
 
 const eventIds = Object.keys(events);
 
 export default function EventHome(props) {
-  return <Home {...props} />;
+  return <Camera {...props} />;
 }
 
 export async function getStaticProps({ params }) {

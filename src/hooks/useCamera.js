@@ -19,15 +19,20 @@ export function useCameraState() {
    */
 
   async function capture() {
-    const imageSrc = await ref.current.getScreenshot();
+    const imageData = await ref.current.getScreenshot();
 
-    if (!imageSrc) return null;
+    if (!imageData) return null;
 
-    const imageHash = await createHashFromString(imageSrc);
+    const imageHash = await createHashFromString(imageData);
 
-    setImage(imageSrc);
+    setImage(imageData);
     setHash(imageHash);
     setIsActive(false);
+
+    return {
+      data: imageData,
+      hash: imageHash,
+    };
   }
 
   /**

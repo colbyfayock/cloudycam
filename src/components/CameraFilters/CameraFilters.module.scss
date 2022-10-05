@@ -1,0 +1,132 @@
+@import "@styles/settings/__settings";
+@import "@styles/util/__util";
+
+.cameraFilters {
+  position: relative;
+}
+
+.effectsHeaders {
+  overflow-x: hidden;
+  padding: 0;
+  border-top: solid 5px $color-cloudinary-orange;
+  border-bottom: solid 5px $color-cloudinary-orange;
+  margin: 0 0 1.5em;
+
+  ul {
+    overflow: hidden;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    list-style: none;
+    padding: 0 0.5em;
+    margin: 0;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+
+  li {
+    display: inline-block;
+    position: relative;
+    padding: 0.5em 0.8em;
+    margin: 0 1em;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:after {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      content: "";
+      width: 0.5em;
+      height: 0.5em;
+      background-color: $color-cloudinary-orange;
+      border-radius: 100%;
+      transform: translate3d(-0.25em, -0.25em, 0);
+    }
+  }
+}
+
+.effectsHeaderLabel {
+  color: $color-gray-600;
+  font-size: 1.4em;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+
+  [aria-disabled="true"] & {
+    color: $color-gray-300;
+  }
+
+  [data-effects-active="true"] [aria-selected="true"] & {
+    color: $color-cloudinary-orange;
+  }
+}
+
+.filters {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  [data-effects-active="false"] & {
+    overflow-x: hidden;
+  }
+
+  li {
+    display: inline-block;
+  }
+}
+
+.filterThumb {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  padding: 0.5em;
+  border: none;
+  cursor: pointer;
+
+  [data-effects-active="false"] & {
+    visibility: hidden;
+  }
+
+  span,
+  img {
+    display: block;
+  }
+}
+
+.filterThumbImage {
+  display: block;
+  overflow: hidden;
+  background-color: $color-gray-100;
+  border: solid 5px $color-gray-100;
+  margin-bottom: 0.5em;
+
+  img {
+    display: block;
+  }
+
+  [data-is-active-filter="true"] & {
+    border: solid 5px $color-cloudinary-orange;
+    box-shadow: 0 2px 15px rgba($color-cloudinary-orange, 0.6);
+  }
+}
+
+.filterThumbImageLabel {
+  display: block;
+  font-size: 1.4em;
+  margin-top: 0.5em;
+}

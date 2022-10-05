@@ -15,7 +15,7 @@ export const FILTER_TYPES = [
   {
     id: 'backgrounds',
     title: 'Backgrounds',
-    checkActive: (cldData) => !!cldData.transparent?.public_id,
+    checkActive: ({ transparent }) => !!transparent?.public_id,
   },
   // {
   //   id: 'crops',

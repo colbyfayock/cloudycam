@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import styles from './Button.module.scss';
 
 const Button = (props, ref) => {
-  const { children, href, className, color, shape, iconPosition, ...rest } = props;
+  const { children, href, className, color, shape, iconPosition, iconSize, ...rest } = props;
 
   let buttonClassName = styles.button;
 
@@ -15,6 +15,7 @@ const Button = (props, ref) => {
     'data-color': color,
     'data-shape': shape,
     'data-icon-position': iconPosition,
+    'data-icon-size': iconSize,
     ...rest,
   };
 

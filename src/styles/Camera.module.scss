@@ -1,0 +1,79 @@
+@import "@styles/settings/__settings";
+@import "@styles/util/__util";
+
+.cameraHeroSection {
+  padding: 0;
+  margin: 0;
+}
+
+.cameraHeroContainer {
+  display: flex;
+  width: 100%;
+  padding: 0;
+}
+
+.camera {
+  width: 720px;
+  flex-shrink: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $color-blue-50;
+  flex-grow: 1;
+  background-color: $color-cloudinary-blue-dark;
+  padding: 1.5em;
+
+  h2 {
+    color: white;
+    font-size: 2.2em;
+    margin-bottom: 0.2em;
+  }
+
+  p {
+    font-size: 1.4em;
+  }
+}
+
+// Camera Controls
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 1.2em 0 0;
+}
+
+.control {
+  width: 100%;
+
+  button,
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1.2em;
+  }
+
+  [data-is-loading="true"] {
+    svg {
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+.controlShare {
+  margin-bottom: 1em;
+}
+
+// Camera page content
+
+.cameraBodySection {
+  margin-top: 0;
+}
