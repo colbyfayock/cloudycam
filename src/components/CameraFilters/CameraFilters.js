@@ -36,21 +36,13 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
 
   return (
     <div className={cameraFiltersClassName} data-effects-active={!!srcMain?.public_id}>
-      <Tabs key={`${srcMain?.public_id}-${srcTransparent?.public_id}`}>
+      {/* TODO: is this needed? <Tabs key={`${srcMain?.public_id}-${srcTransparent?.public_id}`}> */}
+      <Tabs>
         <div className={styles.effectsHeaders}>
           <TabList>
             {types.map((type) => {
-              let isActive = true;
-
-              if (typeof type.checkActive === 'function') {
-                isActive = type.checkActive({
-                  main: srcMain,
-                  transparent: srcTransparent,
-                });
-              }
-
               return (
-                <Tab key={type.id} disabled={!srcMain || !isActive} data-type={type.id}>
+                <Tab key={type.id} disabled={!srcMain} data-type={type.id}>
                   <span className={styles.effectsHeaderLabel}>{type.title}</span>
                 </Tab>
               );
@@ -65,6 +57,15 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
 
           if (srcTransparent && type.id === 'backgrounds') {
             publicId = srcTransparent.public_id;
+          }
+
+          let isActive = true;
+
+          if (typeof type.checkActive === 'function') {
+            isActive = type.checkActive({
+              main: srcMain,
+              transparent: srcTransparent,
+            });
           }
 
           return (
@@ -87,6 +88,7 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                             effects={filter.thumb?.effects || filter.effects}
                             alt={filter.name}
                             watermark={false}
+                            isLoading={!isActive}
                           />
                         </span>
                         <span className={styles.filterThumbImageLabel}>{filter.title}</span>

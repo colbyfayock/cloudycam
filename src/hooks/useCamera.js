@@ -1,6 +1,11 @@
 import { useState, createContext, useContext, useRef } from 'react';
 import { createHashFromString } from '@lib/util';
 
+const DEFAULT_STATE = {
+  active: false,
+  error: false,
+};
+
 export const CameraContext = createContext();
 
 export const CameraProvider = ({ children }) => {
@@ -12,7 +17,8 @@ export function useCameraState() {
   const ref = useRef();
   const [image, setImage] = useState();
   const [hash, setHash] = useState();
-  const [isActive, setIsActive] = useState(false);
+  const [state, setState] = useState(DEFAULT_STATE);
+  const [error, setError] = useState();
 
   /**
    * capture
@@ -27,7 +33,10 @@ export function useCameraState() {
 
     setImage(imageData);
     setHash(imageHash);
-    setIsActive(false);
+    setState((prev) => ({
+      ...prev,
+      active: false,
+    }));
 
     return {
       data: imageData,
@@ -49,17 +58,36 @@ export function useCameraState() {
    */
 
   function onUserMedia() {
-    setIsActive(true);
+    setState((prev) => ({
+      ...prev,
+      active: true,
+      error: false,
+    }));
+  }
+
+  /**
+   * onUserMediaError
+   */
+
+  function onUserMediaError(error) {
+    setState((prev) => ({
+      ...prev,
+      active: false,
+      error: true,
+    }));
+    setError(error.name);
   }
 
   return {
     ref,
     image,
     hash,
-    isActive,
+    state,
+    error,
     capture,
     reset,
     onUserMedia,
+    onUserMediaError,
   };
 }
 

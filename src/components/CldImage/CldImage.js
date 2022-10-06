@@ -1,6 +1,26 @@
+import { useRef } from 'react';
+
 import { constructCldUrl } from '@lib/cloudinary';
 
-const CldImage = ({ src, width, height, resize, transformations, effects, watermark, event, alt, ...props }) => {
+import { useImageEvents } from '@hooks/useImageEvents';
+
+import styles from './CldImage.module.scss';
+
+const CldImage = ({
+  src,
+  width,
+  height,
+  resize,
+  transformations,
+  effects,
+  watermark,
+  event,
+  alt,
+  isLoading,
+  ...props
+}) => {
+  const imageRef = useRef();
+
   const cldImageUrl = constructCldUrl({
     publicId: src,
     width: resize?.width || width,
@@ -15,7 +35,20 @@ const CldImage = ({ src, width, height, resize, transformations, effects, waterm
     event,
   });
 
-  return <img width={width} height={height} src={cldImageUrl} loading="lazy" alt={alt} {...props} />;
+  const { loading, loaded } = useImageEvents({
+    ref: imageRef,
+    src: cldImageUrl,
+  });
+
+  return (
+    <span
+      className={styles.cldImage}
+      data-image-loading={loading || isLoading}
+      data-image-loaded={loaded && !isLoading}
+    >
+      <img ref={imageRef} width={width} height={height} src={cldImageUrl} loading="lazy" alt={alt} {...props} />
+    </span>
+  );
 };
 
 export default CldImage;
