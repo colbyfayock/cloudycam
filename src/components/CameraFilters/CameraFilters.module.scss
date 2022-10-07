@@ -129,8 +129,11 @@
   border: solid 5px $color-gray-100;
   margin-bottom: 0.5em;
 
+  span,
   img {
-    display: block;
+    // Temporary overrride to fix spacing issue with inline-block span
+    // Once next-cloudinary is updated with next/future/image can go away
+    display: block !important;
   }
 
   [data-is-active-filter="true"] & {
@@ -143,7 +146,9 @@
     background-color: white;
 
     span {
-      display: flex;
+      // Temporary overrride to fix spacing issue with inline-block span
+      // Once next-cloudinary is updated with next/future/image can go away
+      display: flex !important;
       justify-content: center;
       align-items: center;
       font-size: 5em;

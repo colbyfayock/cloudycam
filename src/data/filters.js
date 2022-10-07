@@ -35,7 +35,7 @@ export const FILTERS_EFFECTS = [
     title: 'Unicorn',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_1.7,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_80,y_-90,a_-10`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_3.3,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_35,y_-80,a_-15`,
     ],
   },
   {
@@ -43,7 +43,7 @@ export const FILTERS_EFFECTS = [
     title: 'Darth Vader',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_1.0,fl_region_relative/fl_layer_apply,g_adv_faces`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_2.0,fl_region_relative/fl_layer_apply,g_adv_faces,x_10,y_-10`,
     ],
   },
   {
@@ -51,7 +51,7 @@ export const FILTERS_EFFECTS = [
     title: 'Guy Fawkes',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_0.8,fl_region_relative/fl_layer_apply,g_adv_faces`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_1.3,fl_region_relative/fl_layer_apply,g_adv_faces,x_5`,
     ],
   },
   {
@@ -59,7 +59,7 @@ export const FILTERS_EFFECTS = [
     title: 'Dali',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.15,fl_region_relative/fl_layer_apply,g_adv_faces,y_-10`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.7,fl_region_relative/fl_layer_apply,g_adv_faces,x_5,y_0`,
     ],
   },
   {
@@ -67,7 +67,7 @@ export const FILTERS_EFFECTS = [
     title: 'Deal With It',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_0.7,fl_region_relative/fl_layer_apply,g_adv_faces,y_-60`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_1.0,fl_region_relative/fl_layer_apply,g_adv_faces,y_-30`,
     ],
   },
   {
@@ -79,11 +79,11 @@ export const FILTERS_EFFECTS = [
 ];
 
 export const FILTERS_STYLES = [
-  { type: 'styles', id: 'grayscale', title: 'Grayscale', effects: ['e_grayscale'] },
-  { type: 'styles', id: 'negative', title: 'Negative', effects: ['e_negate'] },
-  { type: 'styles', id: 'sepia', title: 'Sepia', effects: ['e_sepia'] },
-  { type: 'styles', id: 'vibe', title: 'Vibe', effects: ['e_tint:100:0000FF:0p:FF1493:100p'] },
-  { type: 'styles', id: 'vectorize', title: 'Vectorize', effects: ['e_vectorize:3:0.5:0.1'] },
+  { type: 'styles', id: 'grayscale', title: 'Grayscale', transformations: ['e_grayscale'] },
+  { type: 'styles', id: 'negative', title: 'Negative', transformations: ['e_negate'] },
+  { type: 'styles', id: 'sepia', title: 'Sepia', transformations: ['e_sepia'] },
+  { type: 'styles', id: 'vibe', title: 'Vibe', transformations: ['e_tint:100:0000FF:0p:FF1493:100p'] },
+  { type: 'styles', id: 'vectorize', title: 'Vectorize', transformations: ['e_vectorize:3:0.5:0.1'] },
 ];
 
 export const FILTERS_BACKGROUNDS = [
@@ -160,55 +160,57 @@ export const FILTERS_BACKGROUNDS = [
     id: 'mississippi-capitol',
     title: 'Mississippi Capitol',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
+    ],
   },
   {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'this-is-fine',
     title: 'This Is Fine',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'mario',
     title: 'Mario',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'the-office',
     title: 'The Office',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'whats-going-on',
     title: "What's going on?",
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:whats-going-on,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:whats-going-on,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'beach',
     title: 'Beach',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'pixel-canvas',
     title: 'Pixel Canvas',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:pixel-canvas,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:pixel-canvas,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'matrix',
     title: 'Matrix',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
 ];
 
@@ -221,7 +223,7 @@ export const FILTERS_MORE = [
       base: 'c_thumb,g_faces,h_480,w_360',
       applied: 'g_north_west,x_170,y_130',
     },
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative/fl_layer_apply`],
+    finalTransformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative/fl_layer_apply`],
   },
   // {
   //   id: 'pop',

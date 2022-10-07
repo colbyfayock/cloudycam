@@ -6,8 +6,9 @@ const Tabs = dynamic(
 );
 import { Tab, TabList, TabPanel } from 'react-tabs';
 import { FaBan } from 'react-icons/fa';
+import { CldImage } from 'next-cloudinary';
 
-import CldImage from '@components/CldImage';
+// import CldImage from '@components/CldImage';
 
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 import { FILTER_ID_NONE } from '@data/filters';
@@ -56,20 +57,20 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
           const typeFilters = filters.filter((filter) => filter.type === type.id);
           const typeIsActive = typeFilters.filter(({ active }) => !!active).length > 0;
 
-          let publicId = srcMain?.public_id;
+          let activePublicId = srcMain?.public_id;
 
           if (srcTransparent && type.id === 'backgrounds') {
-            publicId = srcTransparent.public_id;
+            activePublicId = srcTransparent.public_id;
           }
 
-          let isActive = true;
+          // let isActive = true;
 
-          if (typeof type.checkActive === 'function') {
-            isActive = type.checkActive({
-              main: srcMain,
-              transparent: srcTransparent,
-            });
-          }
+          // if (typeof type.checkActive === 'function') {
+          //   isActive = type.checkActive({
+          //     main: srcMain,
+          //     transparent: srcTransparent,
+          //   });
+          // }
 
           return (
             <TabPanel key={type.id} className={styles.effectsPanel}>
@@ -94,6 +95,11 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                   </button>
                 </li>
                 {typeFilters.map((filter) => {
+                  const activeTransformations = [
+                    `l_${activePublicId?.replaceAll('/', ':')},w_1.0,h_1.0,fl_region_relative/fl_layer_apply`,
+                    ...(filter?.transformations || []),
+                  ];
+
                   return (
                     <li key={filter.id} data-is-active-filter={filter.active}>
                       <button
@@ -104,6 +110,16 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                       >
                         <span className={styles.filterThumbImage}>
                           <CldImage
+                            src={activePublicId || `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`}
+                            width={FILTER_THUMB_WIDTH}
+                            height={FILTER_THUMB_HEIGHT}
+                            rawTransformations={activeTransformations}
+                            // effects={filter.effects}
+                            alt={filter.name}
+                            // watermark={false}
+                            // isLoading={!isActive}
+                          />
+                          {/* <CldImage
                             publicId={publicId || `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`}
                             publicIdTransparent={srcTransparent?.public_id}
                             width={FILTER_THUMB_WIDTH}
@@ -113,7 +129,7 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                             alt={filter.name}
                             watermark={false}
                             isLoading={!isActive}
-                          />
+                          /> */}
                         </span>
                         <span className={styles.filterThumbImageLabel}>{filter.title}</span>
                       </button>

@@ -107,6 +107,11 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
 
   activePublicId = hasBackgroundFilter ? dataTransparent?.public_id : dataMain?.public_id;
 
+  const activeTransformations = [
+    `l_${activePublicId?.replaceAll('/', ':')},w_1.0,h_1.0,fl_region_relative/fl_layer_apply`,
+    ...activeFilters.flatMap(({ transformations }) => transformations),
+  ];
+
   if (activePublicId) {
     src = constructCldUrl({
       publicId: activePublicId,
@@ -120,7 +125,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
 
   // We want to make sure that we're not showing the webcam if we already have an image to work with
 
-  const canCapture = !image && !activePublicId;
+  const allowCapture = !image && !activePublicId;
 
   // Construct props to use as data attributes that allow the ability to target different
   // loading states with styling
@@ -224,14 +229,22 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
       <div {...assetStateProps}>
         <Section className={styles.cameraHeroSection}>
           <Container className={styles.cameraHeroContainer}>
-            <Camera className={styles.camera} src={src} controls={false} />
+            {!allowCapture && (
+              <CldImage
+                src={activePublicId}
+                width={CAMERA_WIDTH}
+                height={CAMERA_HEIGHT}
+                rawTransformations={activeTransformations}
+              />
+            )}
+            {allowCapture && <Camera className={styles.camera} src={src} controls={false} />}
 
             <div className={styles.sidebar}>
-              {canCapture && (
+              {allowCapture && (
                 <>
                   <h2>First step? Take a picture!</h2>
                   <p>We&apos;ll give you filters and effects powered by Cloudinary that you can add to your photo.</p>
-                  <ul className={styles.controls} data-can-capture={canCapture}>
+                  <ul className={styles.controls} data-can-capture={allowCapture}>
                     <li className={styles.control}>
                       <Button onClick={capture} color="cloudinary-yellow" shape="capsule" iconPosition="left">
                         <FaCamera />
@@ -241,9 +254,9 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                   </ul>
                 </>
               )}
-              {!canCapture && (
+              {!allowCapture && (
                 <>
-                  <ul className={styles.controls} data-can-capture={canCapture}>
+                  <ul className={styles.controls} data-can-capture={allowCapture}>
                     <li className={`${styles.control} ${styles.controlShare}`}>
                       <Button
                         color="cloudinary-yellow"
