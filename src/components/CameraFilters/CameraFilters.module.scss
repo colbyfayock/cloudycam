@@ -93,6 +93,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
   background: none;
   padding: 0.5em;
   border: none;
@@ -104,6 +105,7 @@
 
   span,
   img {
+    width: 100%;
     display: block;
   }
 }
@@ -122,6 +124,18 @@
   [data-is-active-filter="true"] & {
     border: solid 5px $color-cloudinary-orange;
     box-shadow: 0 2px 15px rgba($color-cloudinary-orange, 0.6);
+  }
+
+  [data-filter-id="NONE"] & {
+    color: $color-gray-100;
+    background-color: white;
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 5em;
+    }
   }
 }
 

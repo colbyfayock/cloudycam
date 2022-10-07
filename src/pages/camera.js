@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { CldImage } from 'next-cloudinary';
 import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
 
 import { useApp } from '@hooks/useApp';
@@ -28,7 +29,7 @@ import { events } from '@data/events';
 
 import styles from '@styles/Camera.module.scss';
 
-export default function PageCamera({ defaultEventId }) {
+export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   const router = useRouter();
 
   const { eventId = defaultEventId } = useApp();
@@ -48,7 +49,10 @@ export default function PageCamera({ defaultEventId }) {
   } = useCloudinaryUpload({
     image,
     publicId: hash,
-    tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_ORIGINAL],
+    tags: [`event-${eventId}`, CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_ORIGINAL],
+    context: {
+      event_id: eventId,
+    },
   });
 
   // const dataMain = {
@@ -63,7 +67,7 @@ export default function PageCamera({ defaultEventId }) {
   const { data: dataTransparent, reset: resetTransparent } = useCloudinaryUpload({
     image: dataMain?.secure_url,
     publicId: hash && `${hash}-transparent`,
-    tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSPARENT],
+    tags: [`event-${eventId}`, CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSPARENT],
     context: {
       original_public_id: dataMain?.public_id,
     },
@@ -79,7 +83,10 @@ export default function PageCamera({ defaultEventId }) {
   // };
 
   const { upload: uploadShare, state: stateShare } = useCloudinaryUpload({
-    tags: [CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
+    tags: [`event-${eventId}`, CLOUDINARY_TAG_ASSET, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
+    context: {
+      event_id: eventId,
+    },
   });
 
   // Filters
@@ -103,6 +110,7 @@ export default function PageCamera({ defaultEventId }) {
   if (activePublicId) {
     src = constructCldUrl({
       publicId: activePublicId,
+      publicIdTransparent: dataTransparent?.public_id,
       width: CAMERA_WIDTH,
       height: CAMERA_HEIGHT,
       filters: activeFilters,
@@ -148,12 +156,12 @@ export default function PageCamera({ defaultEventId }) {
    * handleOnFilterSelect
    */
 
-  function handleOnFilterSelect({ filterId }) {
-    toggleFilter(filterId);
+  function handleOnFilterSelect({ filterId, filterType }) {
+    toggleFilter({ filterId, filterType });
     pushEvent({
       action: 'click',
       category: 'camera',
-      label: `toggle | ${filterId} | ${filters[filterId] ? 'off' : 'on'}`,
+      label: `toggle | ${filterId} | ${filterType} | ${filters[filterId] ? 'off' : 'on'}`,
     });
   }
 
@@ -275,10 +283,22 @@ export default function PageCamera({ defaultEventId }) {
           </Container>
         </Section>
 
-        {!dataMain && (
+        {!dataMain && Array.isArray(eventImages) && eventImages.length > 0 && (
           <Section className={styles.cameraBodySection}>
             <Container>
-              <h2>Who else is at #MagnoliaJS?</h2>
+              <h2 className={styles.eventGalleryTitle}>
+                Who else is at <strong>#{event.hashtags[0]}</strong>?
+              </h2>
+
+              <ul className={styles.eventGalleryImages}>
+                {eventImages.map(({ publicId, width, height }) => {
+                  return (
+                    <li key={publicId}>
+                      <CldImage src={publicId} width={width} height={height} alt="" />
+                    </li>
+                  );
+                })}
+              </ul>
             </Container>
           </Section>
         )}

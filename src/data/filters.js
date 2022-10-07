@@ -1,5 +1,7 @@
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
+export const FILTER_ID_NONE = 'NONE';
+
 // Ideas
 // https://cloudinary.com/product_updates/outline_effect
 
@@ -30,27 +32,35 @@ export const FILTER_TYPES = [
 export const FILTERS_EFFECTS = [
   {
     id: 'vader',
-    title: 'Vader',
+    title: 'Darth Vader',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,g_faces,h_1.0,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_1.0,fl_region_relative/fl_layer_apply,g_adv_faces`,
+    ],
   },
   {
     id: 'guy-fawkes',
     title: 'Guy Fawkes',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,g_faces,h_0.8,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_0.8,fl_region_relative/fl_layer_apply,g_adv_faces`,
+    ],
   },
   {
     id: 'dali',
     title: 'Dali',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:dali,g_faces,h_1.0,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.15,fl_region_relative/fl_layer_apply,g_adv_faces,y_-10`,
+    ],
   },
   {
     id: 'deal-with-it',
     title: 'Deal With It',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_0.7,fl_region_relative/fl_layer_apply,g_adv_faces,y_-60`,
+    ],
   },
   {
     id: 'pixelate',
@@ -199,8 +209,11 @@ export const FILTERS_MORE = [
     id: 'friends',
     title: 'Friends',
     type: 'more',
-    baseTransformations: ['c_thumb,g_faces,h_480,w_360', 'fl_layer_apply,g_north_west,x_170,y_130'],
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`],
+    baseTransformations: {
+      base: 'c_thumb,g_faces,h_480,w_360',
+      applied: 'g_north_west,x_170,y_130',
+    },
+    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative/fl_layer_apply`],
   },
   // {
   //   id: 'pop',
@@ -208,22 +221,52 @@ export const FILTERS_MORE = [
   //   type: 'more',
   //   transformations: [
   //     ({ options }) => {
-  //       const publicId = options.publicId.replaceAll('/', ':');
+  //       let publicId = options.publicIdTransparent || options.publicId;
+
+  //       publicId = publicId.replaceAll('/', ':');
 
   //       const w = options.width / 2;
   //       const h = options.width / 2;
 
-  //       return [
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:90`,
-  //         'fl_layer_apply,x_0,y_0,g_north_west',
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:-40`,
-  //         'fl_layer_apply,x_0,y_0,g_north_east',
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,a_0,e_hue:40`,
-  //         'fl_layer_apply,x_0,y_0,g_south_west',
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,a_0,e_hue:20`,
-  //         'fl_layer_apply,x_0,y_0,g_south_east',
-  //       ].join('/')
-  //     }
+  //       const variations = [
+  //         {
+  //           hue: 90,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'north_west',
+  //           b: 'red'
+  //         },
+  //         {
+  //           hue: -40,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'north_east',
+  //           b: 'red'
+  //         },
+  //         {
+  //           hue: 40,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'south_west',
+  //           b: 'red'
+  //         },
+  //         {
+  //           hue: 20,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'south_east',
+  //           b: 'red'
+  //         },
+  //       ];
+
+  //       return variations.flatMap(variation => {
+  //         const { hue, x, y, g, b } = variation;
+  //         return [
+  //           `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:${hue},b_${b}`,
+  //           `fl_layer_apply,x_${x},y_${y},g_${g}`,
+  //         ];
+  //       }).join('/')
+  //     },
   //   ],
   // },
 ];

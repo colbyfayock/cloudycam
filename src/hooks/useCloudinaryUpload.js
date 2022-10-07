@@ -8,6 +8,10 @@ const DEFAULT_STATE = {
   error: false,
 };
 
+const DEFAULT_OPTIONS = {
+  detection: 'adv_face',
+};
+
 // TODO: make status check cancellable to trigger from outside
 
 export function useCloudinaryUpload(options) {
@@ -48,6 +52,7 @@ export function useCloudinaryUpload(options) {
           ...uploadContext,
         },
         options: {
+          ...DEFAULT_OPTIONS,
           public_id: uploadPublicId,
           ...options.options,
         },
@@ -59,7 +64,7 @@ export function useCloudinaryUpload(options) {
         const resource = await checkStatus(results);
         const finishedInfoState = getInfoStateFromResource(resource);
 
-        if (!finishedInfoState.includes('complete')) {
+        if (!Array.isArray(finishedInfoState) || !finishedInfoState.includes('complete')) {
           throw new Error('Failed to complete update job');
         }
 
@@ -89,8 +94,6 @@ export function useCloudinaryUpload(options) {
   }
 
   useEffect(() => {
-    console.log('image', image);
-    console.log('publicId', publicId);
     if (!image || !publicId) {
       setState(DEFAULT_STATE);
       return;

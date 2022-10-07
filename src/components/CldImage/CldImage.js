@@ -7,7 +7,8 @@ import { useImageEvents } from '@hooks/useImageEvents';
 import styles from './CldImage.module.scss';
 
 const CldImage = ({
-  src,
+  publicId,
+  publicIdTransparent,
   width,
   height,
   resize,
@@ -22,7 +23,8 @@ const CldImage = ({
   const imageRef = useRef();
 
   const cldImageUrl = constructCldUrl({
-    publicId: src,
+    publicId,
+    publicIdTransparent,
     width: resize?.width || width,
     height: resize?.height || height,
     filters: [

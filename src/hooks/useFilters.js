@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ALL_FILTERS, FILTER_TYPES } from '@data/filters';
+import { ALL_FILTERS, FILTER_TYPES, FILTER_ID_NONE } from '@data/filters';
 
 const DEFAULT_FILTERS = {};
 
@@ -19,8 +19,26 @@ export function useFilters({ backgroundReady }) {
    * @description Given a filter's ID, attempt to switch it on or off based on current state
    */
 
-  function toggle(filterId) {
-    const filter = ALL_FILTERS.find(({ id }) => id === filterId);
+  function toggle({ filterId, filterType }) {
+    const filter = ALL_FILTERS.find(({ id, type }) => id === filterId && type === filterType);
+
+    if (!filter || filterId === FILTER_ID_NONE) {
+      setActiveFilters((prev) => {
+        const next = { ...prev };
+
+        // Clear all filters with the same type to avoid multiple
+        // overlapping filters that won't work properly
+
+        Object.keys(next).forEach((key) => {
+          if (next[key].type === filterType) {
+            delete next[key];
+          }
+        });
+
+        return next;
+      });
+      return;
+    }
 
     setActiveFilters((prev) => {
       const next = { ...prev };
@@ -59,12 +77,11 @@ export function useFilters({ backgroundReady }) {
         randomized = randomized.filter(({ type }) => type !== 'backgrounds');
       }
 
-      randomized = randomized.filter(({ id }) => !activeFilters[id]);
       randomized = randomized.sort(() => 0.5 - Math.random())[0];
 
       return randomized;
     });
-    randomFilters.filter((filter) => !!filter).forEach(({ id }) => toggle(id));
+    randomFilters.filter((filter) => !!filter).forEach(({ id, type }) => toggle({ filterId: id, filterType: type }));
   }
 
   /**

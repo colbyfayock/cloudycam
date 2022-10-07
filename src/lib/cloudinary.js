@@ -22,6 +22,7 @@ export async function uploadToCloudinary(image, options = {}) {
     method: 'POST',
     body: JSON.stringify({
       image,
+      uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
       ...options,
     }),
   }).then((r) => r.json());
@@ -36,7 +37,7 @@ export async function checkStatus(results) {
 
   const infoState = getInfoStateFromResource(resource);
 
-  if (infoState.includes('pending')) {
+  if (Array.isArray(infoState) && infoState.includes('pending')) {
     await timeout(500);
     return await checkStatus(results);
   }
@@ -73,7 +74,7 @@ export function constructCldUrl(options = {}) {
 
   // Resized image with base auto optimization settings
 
-  cloudImage.resize('w_$imgWidth,h_$imgHeight').format('auto').quality('auto');
+  cloudImage.addTransformation('w_$imgWidth,h_$imgHeight,q_auto,f_auto');
 
   // Add the photo as an overlay giving us more flexibility with how we arrange it on the canvas
   // particularly for crops and framing
@@ -85,9 +86,27 @@ export function constructCldUrl(options = {}) {
       .filter(({ baseTransformations }) => !!baseTransformations)
       .flatMap(({ baseTransformations }) => baseTransformations);
 
-  const baseTransformationsString = baseTransformations?.length > 0 && `,${baseTransformations.join('/')}`;
+  let baseLayer = `l_${publicId},w_$imgWidth,h_$imgHeight`;
 
-  cloudImage.addTransformation(`l_${publicId},w_$imgWidth,h_$imgHeight${baseTransformationsString || ''}`);
+  if (baseTransformations.length > 0) {
+    baseTransformations.forEach(({ base }) => {
+      if (base) {
+        baseLayer = `${baseLayer},${base}`;
+      }
+    });
+  }
+
+  baseLayer = `${baseLayer}/fl_layer_apply`;
+
+  if (baseTransformations.length > 0) {
+    baseTransformations.forEach(({ applied }) => {
+      if (applied) {
+        baseLayer = `${baseLayer},${applied}`;
+      }
+    });
+  }
+
+  cloudImage.addTransformation(baseLayer);
 
   // If filters are applied, work through them and add each one
 
@@ -97,7 +116,7 @@ export function constructCldUrl(options = {}) {
 
       filter.transformations?.forEach((transformation) => {
         if (typeof transformation === 'function') {
-          transformation = transformation({ options });
+          transformation = transformation({ cld, cloudImage, options });
         }
         cloudImage.addTransformation(transformation);
       });
@@ -112,10 +131,10 @@ export function constructCldUrl(options = {}) {
 
   if (applyWatermark) {
     cloudImage.addTransformation(
-      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63,g_south_east,x_0,y_10`
+      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63/fl_layer_apply,g_south_east,x_0,y_10`
     );
     cloudImage.addTransformation(
-      `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47,g_south_east,x_10,y_18,b_red`
+      `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47/fl_layer_apply,x_10,y_18,g_south_east`
     );
   }
 
@@ -129,10 +148,12 @@ export function constructCldUrl(options = {}) {
     cloudImage.addTransformation(
       `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,${
         event.hashtags ? 'w_310' : 'w_160'
-      },h_42,g_north_west,x_0,y_10`
+      },h_42/fl_layer_apply,g_north_west,x_0,y_10`
     );
     cloudImage.addTransformation(
-      `l_text:Source Sans Pro_22_bold:${hashtags.map((tag) => '%23' + tag).join('  ')},g_north_west,x_10,y_23,co_white`
+      `l_text:Source Sans Pro_22_bold:${hashtags
+        .map((tag) => '%23' + tag)
+        .join('  ')},co_white/fl_layer_apply,g_north_west,x_10,y_23`
     );
   }
 

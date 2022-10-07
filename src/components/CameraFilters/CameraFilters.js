@@ -5,10 +5,12 @@ const Tabs = dynamic(
   { ssr: false }
 );
 import { Tab, TabList, TabPanel } from 'react-tabs';
+import { FaBan } from 'react-icons/fa';
 
 import CldImage from '@components/CldImage';
 
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
+import { FILTER_ID_NONE } from '@data/filters';
 
 import styles from './CameraFilters.module.scss';
 
@@ -29,14 +31,14 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
 
   function handleOnFilterSelect(e) {
     const filterId = e.currentTarget.dataset.filterId;
+    const filterType = e.currentTarget.dataset.filterType;
     if (typeof onFilterSelect === 'function') {
-      onFilterSelect({ filterId }, e);
+      onFilterSelect({ filterId, filterType }, e);
     }
   }
 
   return (
     <div className={cameraFiltersClassName} data-effects-active={!!srcMain?.public_id}>
-      {/* TODO: is this needed? <Tabs key={`${srcMain?.public_id}-${srcTransparent?.public_id}`}> */}
       <Tabs>
         <div className={styles.effectsHeaders}>
           <TabList>
@@ -52,6 +54,7 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
 
         {types.map((type) => {
           const typeFilters = filters.filter((filter) => filter.type === type.id);
+          const typeIsActive = typeFilters.filter(({ active }) => !!active).length > 0;
 
           let publicId = srcMain?.public_id;
 
@@ -71,13 +74,38 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
           return (
             <TabPanel key={type.id} className={styles.effectsPanel}>
               <ul className={styles.filters}>
+                <li data-is-active-filter={!typeIsActive}>
+                  <button
+                    className={styles.filterThumb}
+                    data-filter-id={FILTER_ID_NONE}
+                    data-filter-type={type.id}
+                    onClick={handleOnFilterSelect}
+                  >
+                    <span className={styles.filterThumbImage}>
+                      <span
+                        style={{
+                          aspectRatio: FILTER_THUMB_WIDTH / FILTER_THUMB_HEIGHT,
+                        }}
+                      >
+                        <FaBan />
+                      </span>
+                    </span>
+                    <span className={styles.filterThumbImageLabel}>None</span>
+                  </button>
+                </li>
                 {typeFilters.map((filter) => {
                   return (
                     <li key={filter.id} data-is-active-filter={filter.active}>
-                      <button className={styles.filterThumb} data-filter-id={filter.id} onClick={handleOnFilterSelect}>
+                      <button
+                        className={styles.filterThumb}
+                        data-filter-id={filter.id}
+                        data-filter-type={type.id}
+                        onClick={handleOnFilterSelect}
+                      >
                         <span className={styles.filterThumbImage}>
                           <CldImage
-                            src={publicId || `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`}
+                            publicId={publicId || `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`}
+                            publicIdTransparent={srcTransparent?.public_id}
                             width={FILTER_THUMB_WIDTH}
                             height={FILTER_THUMB_HEIGHT}
                             resize={{
