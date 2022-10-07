@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { CldImage } from 'next-cloudinary';
 import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
 
 import { useApp } from '@hooks/useApp';
@@ -9,13 +8,15 @@ import { useCloudinaryUpload } from '@hooks/useCloudinaryUpload';
 import { useFilters } from '@hooks/useFilters';
 
 import { event as pushEvent } from '@lib/gtag';
-import { constructCldUrl } from '@lib/cloudinary';
+import { createHashtagBadgeTransformations, createLogoBadgeTransformations } from '@lib/cloudinary';
+import { sortByKey } from '@lib/util';
 
 import Section from '@components/Section';
 import Container from '@components/Container';
 import Button from '@components/Button';
 import CameraFilters from '@components/CameraFilters';
 import Camera from '@components/Camera';
+import CldImage from '@components/CldImage';
 
 import {
   CLOUDINARY_UPLOADS_FOLDER,
@@ -109,19 +110,22 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
 
   const activeTransformations = [
     `l_${activePublicId?.replaceAll('/', ':')},w_1.0,h_1.0,fl_region_relative/fl_layer_apply`,
-    ...activeFilters.flatMap(({ transformations }) => transformations),
   ];
 
-  if (activePublicId) {
-    src = constructCldUrl({
-      publicId: activePublicId,
-      publicIdTransparent: dataTransparent?.public_id,
-      width: CAMERA_WIDTH,
-      height: CAMERA_HEIGHT,
-      filters: activeFilters,
-      event,
+  sortByKey(types, 'applyOrder').forEach(({ id }) => {
+    const filter = activeFilters.find((filter) => filter.type === id);
+    filter?.transformations.forEach((transformation) => {
+      activeTransformations.push(transformation);
     });
-  }
+  });
+
+  createHashtagBadgeTransformations(event?.hashtags).forEach((transformation) => {
+    activeTransformations.push(transformation);
+  });
+
+  createLogoBadgeTransformations(event?.hashtags).forEach((transformation) => {
+    activeTransformations.push(transformation);
+  });
 
   // We want to make sure that we're not showing the webcam if we already have an image to work with
 

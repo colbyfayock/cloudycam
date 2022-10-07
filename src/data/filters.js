@@ -9,24 +9,28 @@ export const FILTER_TYPES = [
   {
     id: 'effects',
     title: 'Effects',
+    applyOrder: 2,
   },
   {
     id: 'styles',
     title: 'Styles',
+    applyOrder: 3,
   },
   {
     id: 'backgrounds',
     title: 'Backgrounds',
     checkActive: ({ transparent }) => !!transparent?.public_id,
+    applyOrder: 1,
+  },
+  {
+    id: 'more',
+    title: 'More',
+    applyOrder: 4,
   },
   // {
   //   id: 'crops',
   //   title: 'Crops',
   // },
-  {
-    id: 'more',
-    title: 'More',
-  },
 ];
 
 export const FILTERS_EFFECTS = [
@@ -35,7 +39,7 @@ export const FILTERS_EFFECTS = [
     title: 'Unicorn',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_3.3,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_35,y_-80,a_-15`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_3.3,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_0.03,y_-0.14,a_-15`,
     ],
   },
   {
@@ -43,7 +47,7 @@ export const FILTERS_EFFECTS = [
     title: 'Darth Vader',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_2.0,fl_region_relative/fl_layer_apply,g_adv_faces,x_10,y_-10`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_2.0,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_0.01,y_-0.05`,
     ],
   },
   {
@@ -51,7 +55,7 @@ export const FILTERS_EFFECTS = [
     title: 'Guy Fawkes',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_1.3,fl_region_relative/fl_layer_apply,g_adv_faces,x_5`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_1.35,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces`,
     ],
   },
   {
@@ -59,7 +63,7 @@ export const FILTERS_EFFECTS = [
     title: 'Dali',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.7,fl_region_relative/fl_layer_apply,g_adv_faces,x_5,y_0`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.65,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces`,
     ],
   },
   {
@@ -67,7 +71,7 @@ export const FILTERS_EFFECTS = [
     title: 'Deal With It',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_1.0,fl_region_relative/fl_layer_apply,g_adv_faces,y_-30`,
+      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_1.0,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,y_-0.07`,
     ],
   },
   {

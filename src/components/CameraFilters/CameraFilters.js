@@ -6,9 +6,8 @@ const Tabs = dynamic(
 );
 import { Tab, TabList, TabPanel } from 'react-tabs';
 import { FaBan } from 'react-icons/fa';
-import { CldImage } from 'next-cloudinary';
 
-// import CldImage from '@components/CldImage';
+import CldImage from '@components/CldImage';
 
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 import { FILTER_ID_NONE } from '@data/filters';
@@ -55,7 +54,6 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
 
         {types.map((type) => {
           const typeFilters = filters.filter((filter) => filter.type === type.id);
-          const typeIsActive = typeFilters.filter(({ active }) => !!active).length > 0;
 
           let activePublicId = srcMain?.public_id;
 
@@ -63,19 +61,19 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
             activePublicId = srcTransparent.public_id;
           }
 
-          // let isActive = true;
+          let typeIsActive = true;
 
-          // if (typeof type.checkActive === 'function') {
-          //   isActive = type.checkActive({
-          //     main: srcMain,
-          //     transparent: srcTransparent,
-          //   });
-          // }
+          if (typeof type.checkActive === 'function') {
+            typeIsActive = type.checkActive({
+              main: srcMain,
+              transparent: srcTransparent,
+            });
+          }
 
           return (
             <TabPanel key={type.id} className={styles.effectsPanel}>
               <ul className={styles.filters}>
-                <li data-is-active-filter={!typeIsActive}>
+                <li>
                   <button
                     className={styles.filterThumb}
                     data-filter-id={FILTER_ID_NONE}
@@ -114,22 +112,9 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                             width={FILTER_THUMB_WIDTH}
                             height={FILTER_THUMB_HEIGHT}
                             rawTransformations={activeTransformations}
-                            // effects={filter.effects}
                             alt={filter.name}
-                            // watermark={false}
-                            // isLoading={!isActive}
+                            loading={!typeIsActive}
                           />
-                          {/* <CldImage
-                            publicId={publicId || `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`}
-                            publicIdTransparent={srcTransparent?.public_id}
-                            width={FILTER_THUMB_WIDTH}
-                            height={FILTER_THUMB_HEIGHT}
-                            transformations={filter.thumb?.transformations || filter.transformations}
-                            effects={filter.thumb?.effects || filter.effects}
-                            alt={filter.name}
-                            watermark={false}
-                            isLoading={!isActive}
-                          /> */}
                         </span>
                         <span className={styles.filterThumbImageLabel}>{filter.title}</span>
                       </button>
