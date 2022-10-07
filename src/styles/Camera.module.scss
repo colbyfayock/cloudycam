@@ -10,11 +10,19 @@
   display: flex;
   width: 100%;
   padding: 0;
+  margin-bottom: 2em;
+
+  @include smaller-than-tablet() {
+    flex-direction: column;
+    margin-bottom: 1em;
+  }
 }
 
 .camera {
-  width: 720px;
-  flex-shrink: 0;
+  @include tablet-or-larger() {
+    flex-shrink: 0;
+    max-width: 720px;
+  }
 }
 
 .sidebar {
@@ -26,14 +34,27 @@
   background-color: $color-cloudinary-blue-dark;
   padding: 1.5em;
 
+  @include smaller-than-tablet() {
+    text-align: center;
+  }
+
   h2 {
     color: white;
     font-size: 2.2em;
     margin-bottom: 0.2em;
+
+    @include smaller-than-tablet() {
+      font-size: 1.5em;
+    }
   }
 
   p {
     font-size: 1.4em;
+
+    @include smaller-than-tablet() {
+      font-size: 1em;
+      margin-bottom: 0.3em;
+    }
   }
 }
 
@@ -59,6 +80,9 @@
     align-items: center;
     width: 100%;
     font-size: 1.2em;
+
+    @include smaller-than-tablet() {
+    }
   }
 
   [data-is-loading="true"] {
@@ -84,6 +108,11 @@
   text-align: center;
   margin: 5em 0 2em;
 
+  @include smaller-than-tablet() {
+    font-size: 1.4em;
+    margin-bottom: 1.4em;
+  }
+
   strong {
     color: $color-cloudinary-orange;
     font-weight: inherit;
@@ -97,6 +126,10 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
+  @include smaller-than-tablet() {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   li {
     margin: 0;

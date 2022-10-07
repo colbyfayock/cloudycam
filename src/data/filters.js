@@ -31,6 +31,14 @@ export const FILTER_TYPES = [
 
 export const FILTERS_EFFECTS = [
   {
+    id: 'unicorn-mask',
+    title: 'Unicorn',
+    type: 'effects',
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_1.7,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_80,y_-90,a_-10`,
+    ],
+  },
+  {
     id: 'vader',
     title: 'Darth Vader',
     type: 'effects',

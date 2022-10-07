@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       expression = `${expression} AND tags=${tags}`;
     }
   }
-  console.log('expression', expression);
+
   let results;
 
   try {

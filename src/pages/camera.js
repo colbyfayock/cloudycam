@@ -287,14 +287,14 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
           <Section className={styles.cameraBodySection}>
             <Container>
               <h2 className={styles.eventGalleryTitle}>
-                Who else is at <strong>#{event.hashtags[0]}</strong>?
+                Who else is at <strong>#{event?.hashtags?.[0]}</strong>? 👀
               </h2>
 
               <ul className={styles.eventGalleryImages}>
-                {eventImages.map(({ publicId, width, height }) => {
+                {eventImages.map(({ publicId }) => {
                   return (
                     <li key={publicId}>
-                      <CldImage src={publicId} width={width} height={height} alt="" />
+                      <CldImage src={publicId} width={700} height={700} alt="" />
                     </li>
                   );
                 })}

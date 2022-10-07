@@ -22,6 +22,10 @@ const CldImage = ({
 }) => {
   const imageRef = useRef();
 
+  console.log('transformations', transformations);
+  console.log('effects', effects);
+  console.log('watermark', watermark);
+
   const cldImageUrl = constructCldUrl({
     publicId,
     publicIdTransparent,

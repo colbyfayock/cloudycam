@@ -108,10 +108,6 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                             publicIdTransparent={srcTransparent?.public_id}
                             width={FILTER_THUMB_WIDTH}
                             height={FILTER_THUMB_HEIGHT}
-                            resize={{
-                              width: FILTER_THUMB_WIDTH * 2,
-                              height: FILTER_THUMB_HEIGHT * 2,
-                            }}
                             transformations={filter.thumb?.transformations || filter.transformations}
                             effects={filter.thumb?.effects || filter.effects}
                             alt={filter.name}

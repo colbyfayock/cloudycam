@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -132,6 +132,7 @@ function parseEffectsStringToReadable(transformation) {
 }
 
 export default function Share({ resource, original, filters, ogImageUrl }) {
+  const cloudinarySectionRef = useRef();
   const router = useRouter();
 
   const { eventId } = useApp();
@@ -158,7 +159,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
 
       await fetch(ogImageUrl);
     })();
-  }, []);
+  }, [resource.secure_url, ogImageUrl]);
 
   /**
    * handleOnTwitterClick
@@ -187,6 +188,14 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
 
     openTweet({
       message: twitterAction,
+    });
+
+    handleOnShare();
+  }
+
+  function handleOnShare() {
+    cloudinarySectionRef.current.scrollIntoView({
+      behavior: 'smooth',
     });
   }
 
@@ -232,6 +241,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
                   target="_blank"
                   disabled={!downloadData?.objectUrl}
                   data-is-loading={!downloadData?.objectUrl}
+                  onClick={handleOnShare}
                 >
                   {!downloadData?.objectUrl && <FaSpinner />}
                   {downloadData?.objectUrl && <FaSave />}
@@ -250,7 +260,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
         </Container>
       </Section>
 
-      <Section className={styles.cloudinarySection}>
+      <Section ref={cloudinarySectionRef} className={styles.cloudinarySection}>
         <Container className={styles.cloudinary}>
           <div className={styles.cloudinaryContent}>
             <h2 className={styles.cloudinaryHeadline}>Incredible media transformations made simple</h2>

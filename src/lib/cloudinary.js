@@ -72,10 +72,6 @@ export function constructCldUrl(options = {}) {
   cloudImage.addVariable(`$imgWidth_${width}`);
   cloudImage.addVariable(`$imgHeight_${height}`);
 
-  // Resized image with base auto optimization settings
-
-  cloudImage.addTransformation('w_$imgWidth,h_$imgHeight,q_auto,f_auto');
-
   // Add the photo as an overlay giving us more flexibility with how we arrange it on the canvas
   // particularly for crops and framing
 
@@ -156,6 +152,10 @@ export function constructCldUrl(options = {}) {
         .join('  ')},co_white/fl_layer_apply,g_north_west,x_10,y_23`
     );
   }
+
+  // Resized image with base auto optimization settings
+
+  cloudImage.addTransformation('w_$imgWidth,h_$imgHeight,q_auto,f_auto');
 
   return cloudImage.toURL();
 }

@@ -1,6 +1,10 @@
+import { forwardRef } from 'react';
+
 import styles from './Section.module.scss';
 
-const Section = ({ children, className, backgroundColor, ...rest }) => {
+const Section = forwardRef(function Section(props, ref) {
+  const { children, className, backgroundColor, ...rest } = props;
+
   let sectionClassName = styles.section;
 
   if (className) {
@@ -8,10 +12,10 @@ const Section = ({ children, className, backgroundColor, ...rest }) => {
   }
 
   return (
-    <section className={sectionClassName} data-background-color={backgroundColor} {...rest}>
+    <section ref={ref} className={sectionClassName} data-background-color={backgroundColor} {...rest}>
       {children}
     </section>
   );
-};
+});
 
 export default Section;
