@@ -134,26 +134,38 @@ export function constructCldUrl(options = {}) {
     );
   }
 
-  if (event) {
-    const hashtags = ['CloudyCam'];
+  if (event?.hashtags?.[0]) {
+    const hashtags = [];
 
     if (Array.isArray(event.hashtags) && event.hashtags.length > 0) {
       event.hashtags.forEach((tag) => hashtags.push(tag));
     }
 
-    cloudImage.addTransformation(
-      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,${
-        event.hashtags ? 'w_310' : 'w_160'
-      },h_42/fl_layer_apply,g_north_west,x_0,y_10`
-    );
-    cloudImage.addTransformation(
-      `l_text:Source Sans Pro_22_bold:${hashtags
-        .map((tag) => '%23' + tag)
-        .join('  ')},co_white/fl_layer_apply,g_north_west,x_10,y_23`
-    );
-  }
+    const hashtagsString = hashtags.map((tag) => `%23${tag}`).join('   ');
 
-  // Resized image with base auto optimization settings
+    // Add the text overlay first as transparent text, this will help us
+    // create the dynamic sizing of the box
+
+    cloudImage.addTransformation(`l_text:Source Sans Pro_28_bold:${hashtagsString},co_white,o_0`);
+
+    console.log('hashtagsString', hashtagsString);
+
+    // Add the color block behind "nested" so that it can take advantage of relative sizing
+
+    cloudImage.addTransformation(
+      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,w_1.2,h_2.0,fl_region_relative/fl_layer_apply,g_north_west,x_0,y_0`
+    );
+
+    // Add the actual text
+
+    cloudImage.addTransformation(
+      `l_text:Source Sans Pro_28_bold:${hashtagsString},co_white,c_fit,w_1.0,fl_region_relative/fl_layer_apply`
+    );
+
+    // "Close" the transparent text transformation and apply positioning
+
+    cloudImage.addTransformation('fl_layer_apply,g_north_west,x_0,y_23');
+  }
 
   cloudImage.addTransformation('w_$imgWidth,h_$imgHeight,q_auto,f_auto');
 
