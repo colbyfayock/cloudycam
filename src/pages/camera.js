@@ -8,7 +8,11 @@ import { useCloudinaryUpload } from '@hooks/useCloudinaryUpload';
 import { useFilters } from '@hooks/useFilters';
 
 import { event as pushEvent } from '@lib/gtag';
-import { createHashtagBadgeTransformations, createLogoBadgeTransformations } from '@lib/cloudinary';
+import {
+  constructCloudinaryUrl,
+  createHashtagBadgeTransformations,
+  createLogoBadgeTransformations,
+} from '@lib/cloudinary';
 import { sortByKey } from '@lib/util';
 
 import Section from '@components/Section';
@@ -39,7 +43,6 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   const { image, hash, capture, reset: resetCamera } = useCamera();
 
   let activePublicId = image;
-  let src;
 
   // Once we have an image stored, attempt to upload it to Cloudinary
 
@@ -127,6 +130,11 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
     activeTransformations.push(transformation);
   });
 
+  const src = constructCloudinaryUrl({
+    publicId: activePublicId,
+    transformations: activeTransformations,
+  });
+
   // We want to make sure that we're not showing the webcam if we already have an image to work with
 
   const allowCapture = !image && !activePublicId;
@@ -150,7 +158,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
    */
 
   async function handleOnShare() {
-    const { public_id } = await uploadShare({
+    const results = await uploadShare({
       image: src,
       publicId: hash && `${hash}-transformation`,
       context: {
@@ -158,6 +166,9 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
         cloudycam_filters: JSON.stringify(activeFilters),
       },
     });
+
+    const { public_id } = results;
+
     router.push(`/share/${public_id.replace(CLOUDINARY_UPLOADS_FOLDER + '/', '')}`);
   }
 

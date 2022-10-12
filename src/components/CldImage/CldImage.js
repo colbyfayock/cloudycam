@@ -11,8 +11,6 @@ const CldImage = ({ onLoadingComplete, loading = false, ...props }) => {
   const [state, setState] = useState(DEFAULT_STATE);
   const key = `${props.src}/${props.rawTransformations?.map(({ id }) => id).join('/')}`;
 
-  console.log('loading', loading);
-
   useLayoutEffect(() => {
     setState({
       loading,

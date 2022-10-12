@@ -1,6 +1,31 @@
+import { Cloudinary } from '@cloudinary/url-gen';
+
 import { timeout } from '@lib/util';
 
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
+
+const cld = new Cloudinary({
+  cloud: {
+    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  },
+  url: {
+    analytics: false,
+  },
+});
+
+/**
+ * constructCloudinaryUrl
+ */
+
+export function constructCloudinaryUrl({ publicId, transformations }) {
+  const image = cld.image(publicId);
+
+  transformations.forEach((transformation) => {
+    image.addTransformation(transformation);
+  });
+
+  return image.toURL();
+}
 
 /**
  * uploadToCloudinary
