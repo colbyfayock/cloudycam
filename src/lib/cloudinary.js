@@ -2,7 +2,7 @@ import { Cloudinary } from '@cloudinary/url-gen';
 
 import { timeout } from '@lib/util';
 
-import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
+import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_EFFECT_PROPERTIES, CLOUDINARY_PROPERTIES } from '@data/cloudinary';
 
 const cld = new Cloudinary({
   cloud: {
@@ -17,12 +17,14 @@ const cld = new Cloudinary({
  * constructCloudinaryUrl
  */
 
-export function constructCloudinaryUrl({ publicId, transformations }) {
+export function constructCloudinaryUrl({ publicId, transformations = [], format = 'auto', quality = 'auto' }) {
   const image = cld.image(publicId);
 
-  transformations.forEach((transformation) => {
+  transformations?.forEach((transformation) => {
     image.addTransformation(transformation);
   });
+
+  image.format(format).delivery(`q_${quality}`);
 
   return image.toURL();
 }
@@ -110,4 +112,55 @@ export function createLogoBadgeTransformations() {
     `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63/fl_layer_apply,g_south_east,x_0,y_10`,
     `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47/fl_layer_apply,x_10,y_18,g_south_east`,
   ];
+}
+
+/**
+ * parseTransformationStringToReadable
+ */
+
+export function parseTransformationStringToReadable(transformation) {
+  const segments = transformation.split(',');
+  return segments.map((segment, index) => {
+    const matches = segment.match(/([a-zA-Z]+)_([a-zA-Z0-9_:\-.]+)/);
+
+    if (!matches) {
+      return {
+        id: `${segment}-${index}`,
+        name: 'Other',
+        value: segment,
+      };
+    }
+
+    const [, id, value] = matches;
+    const property = CLOUDINARY_PROPERTIES.find((prop) => prop.id === id);
+
+    return {
+      ...property,
+      value,
+    };
+  });
+}
+
+/**
+ * parseEffectsStringToReadable
+ */
+
+export function parseEffectsStringToReadable(transformation) {
+  const matches = transformation.match(/([a-zA-Z]+):([a-zA-Z0-9_:\-.]+)/);
+
+  if (!matches) {
+    return {
+      id: transformation,
+      name: 'Other',
+      value: transformation,
+    };
+  }
+
+  const [, id, value] = matches;
+  const property = CLOUDINARY_EFFECT_PROPERTIES.find((prop) => prop.id === id);
+
+  return {
+    ...property,
+    value,
+  };
 }

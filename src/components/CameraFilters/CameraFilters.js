@@ -105,6 +105,7 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                         data-filter-id={filter.id}
                         data-filter-type={type.id}
                         onClick={handleOnFilterSelect}
+                        disabled={!typeIsActive}
                       >
                         <span className={styles.filterThumbImage}>
                           <CldImage

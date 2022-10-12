@@ -25,72 +25,7 @@
   }
 }
 
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: $color-blue-50;
-  flex-grow: 1;
-  background-color: $color-cloudinary-blue-dark;
-  padding: 1.5em;
-
-  @include smaller-than-tablet() {
-    text-align: center;
-  }
-
-  h2 {
-    color: white;
-    font-size: 2.2em;
-    margin-bottom: 0.2em;
-
-    @include smaller-than-tablet() {
-      font-size: 1.5em;
-    }
-  }
-
-  p {
-    font-size: 1.4em;
-
-    @include smaller-than-tablet() {
-      font-size: 1em;
-      margin-bottom: 0.3em;
-    }
-  }
-}
-
 // Camera Controls
-
-.controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-  margin: 1.2em 0 0;
-}
-
-.control {
-  width: 100%;
-
-  button,
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    font-size: 1.2em;
-
-    @include smaller-than-tablet() {
-    }
-  }
-
-  [data-is-loading="true"] {
-    svg {
-      animation: spin 1s linear infinite;
-    }
-  }
-}
 
 .controlShare {
   margin-bottom: 1em;

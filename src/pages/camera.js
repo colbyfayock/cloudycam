@@ -17,6 +17,10 @@ import { sortByKey } from '@lib/util';
 
 import Section from '@components/Section';
 import Container from '@components/Container';
+import Sidebar from '@components/Sidebar';
+import SidebarTitle from '@components/SidebarTitle';
+import Controls from '@components/Controls';
+import Control from '@components/Control';
 import Button from '@components/Button';
 import CameraFilters from '@components/CameraFilters';
 import Camera from '@components/Camera';
@@ -117,7 +121,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
 
   sortByKey(types, 'applyOrder').forEach(({ id }) => {
     const filter = activeFilters.find((filter) => filter.type === id);
-    filter?.transformations.forEach((transformation) => {
+    filter?.transformations?.forEach((transformation) => {
       activeTransformations.push(transformation);
     });
   });
@@ -254,25 +258,25 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
             )}
             {allowCapture && <Camera className={styles.camera} src={src} controls={false} />}
 
-            <div className={styles.sidebar}>
+            <Sidebar>
               {allowCapture && (
                 <>
-                  <h2>First step? Take a picture!</h2>
+                  <SidebarTitle>First step? Take a picture!</SidebarTitle>
                   <p>We&apos;ll give you filters and effects powered by Cloudinary that you can add to your photo.</p>
-                  <ul className={styles.controls} data-can-capture={allowCapture}>
-                    <li className={styles.control}>
+                  <Controls data-can-capture={allowCapture}>
+                    <Control>
                       <Button onClick={capture} color="cloudinary-yellow" shape="capsule" iconPosition="left">
                         <FaCamera />
                         <span>Capture</span>
                       </Button>
-                    </li>
-                  </ul>
+                    </Control>
+                  </Controls>
                 </>
               )}
               {!allowCapture && (
                 <>
-                  <ul className={styles.controls} data-can-capture={allowCapture}>
-                    <li className={`${styles.control} ${styles.controlShare}`}>
+                  <Controls data-can-capture={allowCapture}>
+                    <Control className={styles.controlShare}>
                       <Button
                         color="cloudinary-yellow"
                         shape="capsule"
@@ -285,29 +289,29 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                         {!stateShare?.loading && !stateShare?.loaded && <FaShare />}
                         <span>Share</span>
                       </Button>
-                    </li>
-                    <li className={styles.control}>
+                    </Control>
+                    <Control>
                       <Button onClick={handleOnRemix} shape="link" iconPosition="left">
                         <FaMagic />
                         <span>Randomize</span>
                       </Button>
-                    </li>
-                    <li className={styles.control}>
+                    </Control>
+                    <Control>
                       <Button onClick={handleOnClearFilters} shape="link" iconPosition="left" iconSize="large">
                         <FaTimes />
                         <span>Clear Filters</span>
                       </Button>
-                    </li>
-                    <li className={styles.control}>
+                    </Control>
+                    <Control>
                       <Button onClick={handleOnReset} color="cloudinary-orange" shape="link" iconPosition="left">
                         <FaUndo />
                         <span>Start Over</span>
                       </Button>
-                    </li>
-                  </ul>
+                    </Control>
+                  </Controls>
                 </>
               )}
-            </div>
+            </Sidebar>
           </Container>
         </Section>
 

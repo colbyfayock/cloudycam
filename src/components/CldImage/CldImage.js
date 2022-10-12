@@ -1,5 +1,7 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CldImage as NextCldImage } from 'next-cloudinary';
+
+import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
 import styles from './CldImage.module.scss';
 
@@ -7,17 +9,23 @@ const DEFAULT_STATE = {
   loading: true,
 };
 
-const CldImage = ({ onLoadingComplete, loading = false, ...props }) => {
-  const [state, setState] = useState(DEFAULT_STATE);
-  const key = `${props.src}/${props.rawTransformations?.map(({ id }) => id).join('/')}`;
+const CldImage = ({ className, onLoadingComplete, loading = false, ...props }) => {
+  let componentClassName = styles.cldImage;
 
-  useLayoutEffect(() => {
+  if (className) {
+    componentClassName = `${componentClassName} ${className}`;
+  }
+
+  const [state, setState] = useState(DEFAULT_STATE);
+  const key = `${props.src}/${props.rawTransformations?.map((transform) => transform).join('/')}`;
+
+  useEffect(() => {
     setState({
       loading,
     });
   }, [loading]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!props.src) return;
     setState({
       loading: true,
@@ -29,6 +37,11 @@ const CldImage = ({ onLoadingComplete, loading = false, ...props }) => {
   Object.keys(state).forEach((stateKey) => {
     stateProps[`data-image-${stateKey}`] = state[stateKey];
   });
+
+  if (!props.src) {
+    props.src = `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`;
+    props.rawTransformations = [];
+  }
 
   /**
    * handleOnLoadingComplete
@@ -47,7 +60,7 @@ const CldImage = ({ onLoadingComplete, loading = false, ...props }) => {
   }
 
   return (
-    <span className={styles.cldImage} {...stateProps}>
+    <span className={componentClassName} {...stateProps}>
       <NextCldImage key={key} {...props} onLoadingComplete={handleOnLoadingComplete} />
     </span>
   );
