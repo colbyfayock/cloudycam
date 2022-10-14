@@ -1,0 +1,76 @@
+@import "@styles/settings/__settings";
+@import "@styles/util/__util";
+
+.cameraHeroSection {
+  padding: 0;
+  margin: 0;
+}
+
+.cameraHeroContainer {
+  display: flex;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 2em;
+
+  @include smaller-than-tablet() {
+    flex-direction: column;
+    margin-bottom: 1em;
+  }
+}
+
+.camera {
+  @include tablet-or-larger() {
+    flex-shrink: 0;
+    max-width: 720px;
+  }
+}
+
+// Camera Controls
+
+.controlShare {
+  margin-bottom: 1em;
+}
+
+// Camera page content
+
+.cameraBodySection {
+  margin-top: 0;
+}
+
+.eventGalleryTitle {
+  font-size: 2em;
+  font-weight: $font-weight-black;
+  text-align: center;
+  margin: 5em 0 2em;
+
+  @include smaller-than-tablet() {
+    font-size: 1.4em;
+    margin-bottom: 1.4em;
+  }
+
+  strong {
+    color: $color-cloudinary-orange;
+    font-weight: inherit;
+  }
+}
+
+.eventGalleryImages {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: repeat(3, 1fr);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  @include smaller-than-tablet() {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  li {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+  }
+}

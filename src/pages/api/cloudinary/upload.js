@@ -10,11 +10,12 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const { image, folder = CLOUDINARY_UPLOADS_FOLDER, context, tags, options } = JSON.parse(req.body);
+  const { image, folder = CLOUDINARY_UPLOADS_FOLDER, context, tags, uploadPreset, options } = JSON.parse(req.body);
 
   const uploadOptions = {
     folder,
     ...options,
+    upload_preset: uploadPreset,
   };
 
   if (context) {

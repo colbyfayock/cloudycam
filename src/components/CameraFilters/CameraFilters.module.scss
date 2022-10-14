@@ -1,0 +1,167 @@
+@import "@styles/settings/__settings";
+@import "@styles/util/__util";
+
+.cameraFilters {
+  position: relative;
+}
+
+.effectsHeaders {
+  overflow-x: hidden;
+  padding: 0;
+  border-top: solid 5px $color-cloudinary-orange;
+  border-bottom: solid 5px $color-cloudinary-orange;
+  margin: 0 0 1.5em;
+
+  ul {
+    overflow: hidden;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    list-style: none;
+    padding: 0 0.5em;
+    margin: 0;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+
+  li {
+    display: inline-block;
+    position: relative;
+    padding: 0.5em 0.8em;
+    margin: 0 1em;
+
+    @include smaller-than-tablet() {
+      margin: 0 0.5em;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:after {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      content: "";
+      width: 0.5em;
+      height: 0.5em;
+      background-color: $color-cloudinary-orange;
+      border-radius: 100%;
+      transform: translate3d(-0.25em, -0.25em, 0);
+    }
+  }
+}
+
+.effectsHeaderLabel {
+  color: $color-gray-600;
+  font-size: 1.4em;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+
+  @include smaller-than-tablet() {
+    font-size: 1.2em;
+  }
+
+  [aria-disabled="true"] & {
+    color: $color-gray-300;
+  }
+
+  [data-effects-active="true"] [aria-selected="true"] & {
+    color: $color-cloudinary-orange;
+  }
+}
+
+.filters {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  @include smaller-than-tablet() {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  [data-effects-active="false"] & {
+    overflow-x: hidden;
+  }
+
+  li {
+    display: inline-block;
+  }
+}
+
+.filterThumb {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: none;
+  padding: 0.5em;
+  border: none;
+  cursor: pointer;
+
+  [data-effects-active="false"] & {
+    visibility: hidden;
+  }
+
+  span,
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+.filterThumbImage {
+  display: block;
+  overflow: hidden;
+  background-color: $color-gray-100;
+  border: solid 5px $color-gray-100;
+  margin-bottom: 0.5em;
+
+  span,
+  img {
+    // Temporary overrride to fix spacing issue with inline-block span
+    // Once next-cloudinary is updated with next/future/image can go away
+    display: block !important;
+  }
+
+  [data-is-active-filter="true"] & {
+    border: solid 5px $color-cloudinary-orange;
+    box-shadow: 0 2px 15px rgba($color-cloudinary-orange, 0.6);
+  }
+
+  [data-filter-id="NONE"] & {
+    color: $color-gray-100;
+    background-color: white;
+
+    span {
+      // Temporary overrride to fix spacing issue with inline-block span
+      // Once next-cloudinary is updated with next/future/image can go away
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      font-size: 5em;
+    }
+  }
+}
+
+.filterThumbImageLabel {
+  display: block;
+  font-size: 1.4em;
+  margin-top: 0.5em;
+}
+
+.filtersLoading {
+  text-align: center;
+}

@@ -17,8 +17,8 @@ export default function Home() {
         <meta name="description" content="From Cloudinary" />
       </Head>
 
-      <Section>
-        <Container className={styles.homeContainer}>
+      <Section className={styles.homeHeroSection}>
+        <Container className={styles.homeImageContainer}>
           <ul className={styles.imageGrid}>
             <li>
               <img src="/images/cloudycam-example-dali.jpg" alt="Is it a money heist?" />
@@ -32,7 +32,15 @@ export default function Home() {
             <li>
               <img src="/images/cloudycam-example-cityjsbrazil.jpg" alt="Darth Vader in CityJS Brazil" />
             </li>
+            <li>
+              <img src="/images/cloudycam-example-cityjsbrazil.jpg" alt="Darth Vader in CityJS Brazil" />
+            </li>
+            <li>
+              <img src="/images/cloudycam-example-cityjsbrazil.jpg" alt="Darth Vader in CityJS Brazil" />
+            </li>
           </ul>
+        </Container>
+        <Container>
           <p className={styles.try}>
             <Link href="/camera" passHref={true}>
               <Button className={styles.tryButton} shape="capsule" iconPosition="left">
@@ -46,7 +54,7 @@ export default function Home() {
             <a href="https://cloudinary.com/documentation/image_transformations" rel="noreferrer" target="_blank">
               Cloudinary transformations
             </a>
-            , and share on Twitter!
+            , and share with your friends!
           </p>
         </Container>
       </Section>

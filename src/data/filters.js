@@ -1,5 +1,7 @@
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
+export const FILTER_ID_NONE = 'NONE';
+
 // Ideas
 // https://cloudinary.com/product_updates/outline_effect
 
@@ -7,50 +9,70 @@ export const FILTER_TYPES = [
   {
     id: 'effects',
     title: 'Effects',
+    applyOrder: 2,
   },
   {
     id: 'styles',
     title: 'Styles',
+    applyOrder: 3,
   },
   {
     id: 'backgrounds',
     title: 'Backgrounds',
-    checkActive: (cldData) => !!cldData.transparent?.public_id,
+    checkActive: ({ transparent }) => !!transparent?.public_id,
+    applyOrder: 1,
+  },
+  {
+    id: 'more',
+    title: 'More',
+    applyOrder: 4,
   },
   // {
   //   id: 'crops',
   //   title: 'Crops',
   // },
-  {
-    id: 'more',
-    title: 'More',
-  },
 ];
 
 export const FILTERS_EFFECTS = [
   {
-    id: 'vader',
-    title: 'Vader',
+    id: 'unicorn-mask',
+    title: 'Unicorn',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,g_faces,h_1.0,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_3.3,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_0.03,y_-0.14,a_-15`,
+    ],
+  },
+  {
+    id: 'vader',
+    title: 'Darth Vader',
+    type: 'effects',
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_2.0,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_0.01,y_-0.05`,
+    ],
   },
   {
     id: 'guy-fawkes',
     title: 'Guy Fawkes',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,g_faces,h_0.8,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_1.35,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces`,
+    ],
   },
   {
     id: 'dali',
     title: 'Dali',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:dali,g_faces,h_1.0,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.65,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces`,
+    ],
   },
   {
     id: 'deal-with-it',
     title: 'Deal With It',
     type: 'effects',
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,g_faces,w_0.7,y_-0.05,fl_region_relative`],
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_1.0,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,y_-0.07`,
+    ],
   },
   {
     id: 'pixelate',
@@ -61,11 +83,11 @@ export const FILTERS_EFFECTS = [
 ];
 
 export const FILTERS_STYLES = [
-  { type: 'styles', id: 'grayscale', title: 'Grayscale', effects: ['e_grayscale'] },
-  { type: 'styles', id: 'negative', title: 'Negative', effects: ['e_negate'] },
-  { type: 'styles', id: 'sepia', title: 'Sepia', effects: ['e_sepia'] },
-  { type: 'styles', id: 'vibe', title: 'Vibe', effects: ['e_tint:100:0000FF:0p:FF1493:100p'] },
-  { type: 'styles', id: 'vectorize', title: 'Vectorize', effects: ['e_vectorize:3:0.5:0.1'] },
+  { type: 'styles', id: 'grayscale', title: 'Grayscale', transformations: ['e_grayscale'] },
+  { type: 'styles', id: 'negative', title: 'Negative', transformations: ['e_negate'] },
+  { type: 'styles', id: 'sepia', title: 'Sepia', transformations: ['e_sepia'] },
+  { type: 'styles', id: 'vibe', title: 'Vibe', transformations: ['e_tint:100:0000FF:0p:FF1493:100p'] },
+  { type: 'styles', id: 'vectorize', title: 'Vectorize', transformations: ['e_vectorize:3:0.5:0.1'] },
 ];
 
 export const FILTERS_BACKGROUNDS = [
@@ -142,55 +164,57 @@ export const FILTERS_BACKGROUNDS = [
     id: 'mississippi-capitol',
     title: 'Mississippi Capitol',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
+    ],
   },
   {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'this-is-fine',
     title: 'This Is Fine',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'mario',
     title: 'Mario',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'the-office',
     title: 'The Office',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'whats-going-on',
     title: "What's going on?",
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:whats-going-on,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:whats-going-on,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'beach',
     title: 'Beach',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'pixel-canvas',
     title: 'Pixel Canvas',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:pixel-canvas,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:pixel-canvas,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'matrix',
     title: 'Matrix',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
 ];
 
@@ -199,8 +223,11 @@ export const FILTERS_MORE = [
     id: 'friends',
     title: 'Friends',
     type: 'more',
-    baseTransformations: ['c_thumb,g_faces,h_480,w_360', 'fl_layer_apply,g_north_west,x_170,y_130'],
-    transformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative`],
+    baseTransformations: {
+      base: 'c_thumb,g_faces,h_480,w_360',
+      applied: 'g_north_west,x_170,y_130',
+    },
+    finalTransformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative/fl_layer_apply`],
   },
   // {
   //   id: 'pop',
@@ -208,22 +235,52 @@ export const FILTERS_MORE = [
   //   type: 'more',
   //   transformations: [
   //     ({ options }) => {
-  //       const publicId = options.publicId.replaceAll('/', ':');
+  //       let publicId = options.publicIdTransparent || options.publicId;
+
+  //       publicId = publicId.replaceAll('/', ':');
 
   //       const w = options.width / 2;
   //       const h = options.width / 2;
 
-  //       return [
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:90`,
-  //         'fl_layer_apply,x_0,y_0,g_north_west',
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:-40`,
-  //         'fl_layer_apply,x_0,y_0,g_north_east',
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,a_0,e_hue:40`,
-  //         'fl_layer_apply,x_0,y_0,g_south_west',
-  //         `l_${publicId},w_${w},h_${h},c_thumb,g_faces,a_0,e_hue:20`,
-  //         'fl_layer_apply,x_0,y_0,g_south_east',
-  //       ].join('/')
-  //     }
+  //       const variations = [
+  //         {
+  //           hue: 90,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'north_west',
+  //           b: 'red'
+  //         },
+  //         {
+  //           hue: -40,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'north_east',
+  //           b: 'red'
+  //         },
+  //         {
+  //           hue: 40,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'south_west',
+  //           b: 'red'
+  //         },
+  //         {
+  //           hue: 20,
+  //           x: 0,
+  //           y: 0,
+  //           g: 'south_east',
+  //           b: 'red'
+  //         },
+  //       ];
+
+  //       return variations.flatMap(variation => {
+  //         const { hue, x, y, g, b } = variation;
+  //         return [
+  //           `l_${publicId},w_${w},h_${h},c_thumb,g_faces,e_hue:${hue},b_${b}`,
+  //           `fl_layer_apply,x_${x},y_${y},g_${g}`,
+  //         ];
+  //       }).join('/')
+  //     },
   //   ],
   // },
 ];

@@ -5,12 +5,12 @@
   font-size: 1em;
   color: white;
   padding: 0;
-  margin-top: 2em;
+  margin: 2em 0;
 }
 
 .headerContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   @media (max-width: 720px) {
@@ -21,8 +21,9 @@
 .headerTitle {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-grow: 1;
-  font-size: 1.3em;
+  font-size: 2em;
   font-weight: $font-weight-black;
   margin: 0;
 

@@ -10,11 +10,7 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const {
-    expression: userExpression,
-    maxResults,
-    folder = CLOUDINARY_UPLOADS_FOLDER,
-  } = req.body ? JSON.parse(req.body) : {};
+  const { maxResults, folder = CLOUDINARY_UPLOADS_FOLDER, tags } = req.body ? JSON.parse(req.body) : {};
 
   let expression = '';
 
@@ -22,8 +18,12 @@ export default async function handler(req, res) {
     expression = `${expression} folder=${folder}`;
   }
 
-  if (userExpression) {
-    expression = `${expression} ${userExpression}`;
+  if (tags) {
+    if (Array.isArray(tags)) {
+      expression = `${expression} AND ${tags.map((tag) => 'tags=' + tag).join(' AND ')}`;
+    } else {
+      expression = `${expression} AND tags=${tags}`;
+    }
   }
 
   let results;

@@ -1,0 +1,12 @@
+@import "@styles/settings/__settings";
+@import "@styles/util/__util";
+
+.sidebarTitle {
+  color: white;
+  font-size: 2.2em;
+  margin: 0 0 0.2em;
+
+  @include smaller-than-tablet() {
+    font-size: 1.5em;
+  }
+}

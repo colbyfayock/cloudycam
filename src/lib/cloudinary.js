@@ -1,15 +1,33 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 
-import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
+import { timeout } from '@lib/util';
+
+import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_EFFECT_PROPERTIES, CLOUDINARY_PROPERTIES } from '@data/cloudinary';
 
 const cld = new Cloudinary({
   cloud: {
     cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   },
   url: {
-    secure: true,
+    analytics: false,
   },
 });
+
+/**
+ * constructCloudinaryUrl
+ */
+
+export function constructCloudinaryUrl({ publicId, transformations = [], format = 'auto', quality = 'auto' }) {
+  const image = cld.image(publicId);
+
+  transformations?.forEach((transformation) => {
+    image.addTransformation(transformation);
+  });
+
+  image.format(format).delivery(`q_${quality}`);
+
+  return image.toURL();
+}
 
 /**
  * uploadToCloudinary
@@ -20,89 +38,129 @@ export async function uploadToCloudinary(image, options = {}) {
     method: 'POST',
     body: JSON.stringify({
       image,
+      uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
       ...options,
     }),
   }).then((r) => r.json());
 }
 
 /**
- * constructCldUrl
+ * checkStatus
  */
 
-export function constructCldUrl(options = {}) {
-  const { publicId: userPublicId, width, height, filters, event, applyWatermark = true } = options;
-  const publicId = userPublicId.replace('/', ':');
-  const hasFilters = Object.keys(filters).length > 0;
+export async function checkStatus(results) {
+  const resource = await fetch(`/api/cloudinary/resource/?publicId=${results.public_id}`).then((r) => r.json());
 
-  const cloudImage = cld.image(`${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`);
+  const infoState = getInfoStateFromResource(resource);
 
-  cloudImage.addVariable(`$imgWidth_${width}`);
-  cloudImage.addVariable(`$imgHeight_${height}`);
-
-  // Resized image with base auto optimization settings
-
-  cloudImage.resize('w_$imgWidth,h_$imgHeight').format('auto').quality('auto');
-
-  // Add the photo as an overlay giving us more flexibility with how we arrange it on the canvas
-  // particularly for crops and framing
-
-  const baseTransformations =
-    hasFilters &&
-    Object.keys(filters)
-      .map((key) => filters[key])
-      .filter(({ baseTransformations }) => !!baseTransformations)
-      .flatMap(({ baseTransformations }) => baseTransformations);
-
-  const baseTransformationsString = baseTransformations.length > 0 && `,${baseTransformations.join('/')}`;
-
-  cloudImage.addTransformation(`l_${publicId},w_$imgWidth,h_$imgHeight${baseTransformationsString || ''}`);
-
-  // If filters are applied, work through them and add each one
-
-  if (hasFilters) {
-    Object.keys(filters).forEach((filterKey) => {
-      const filter = filters[filterKey];
-
-      filter.transformations?.forEach((transformation) => {
-        if (typeof transformation === 'function') {
-          transformation = transformation({ options });
-        }
-        cloudImage.addTransformation(transformation);
-      });
-
-      filter.effects?.forEach((effect) => {
-        cloudImage.effect(effect);
-      });
-    });
+  if (Array.isArray(infoState) && infoState.includes('pending')) {
+    await timeout(500);
+    return await checkStatus(results);
   }
 
-  // Cloudycam Logo
+  return resource;
+}
 
-  if (applyWatermark) {
-    cloudImage.addTransformation(
-      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63,g_south_east,x_0,y_10`
-    );
-    cloudImage.addTransformation(
-      `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47,g_south_east,x_10,y_18,b_red`
-    );
-  }
+/**
+ * getInfoStateFromResource
+ */
 
-  if (event) {
-    const hashtags = ['CloudyCam'];
+export function getInfoStateFromResource(results) {
+  return (
+    results?.info &&
+    Object.keys(results.info).flatMap((jobKey) => {
+      return Object.keys(results.info[jobKey]).map((toolKey) => results.info[jobKey][toolKey].status);
+    })
+  );
+}
 
-    if (Array.isArray(event.hashtags) && event.hashtags.length > 0) {
-      event.hashtags.forEach((tag) => hashtags.push(tag));
+/**
+ * createHashtagBadgeTransformations
+ */
+
+export function createHashtagBadgeTransformations(hashtags) {
+  if (!Array.isArray(hashtags) || hashtags.length === 0) return [];
+
+  const hashtagsString = hashtags.map((tag) => `%23${tag}`).join('   ');
+
+  return [
+    // Add the text overlay first as transparent text, this will help us
+    // create the dynamic sizing of the box
+
+    `l_text:Source Sans Pro_28_bold:${hashtagsString},co_white,o_0`,
+
+    // Add the color block behind "nested" so that it can take advantage of relative sizing
+
+    `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,w_1.2,h_2.0,fl_region_relative/fl_layer_apply,g_north_west,x_0,y_0`,
+
+    // Add the actual text
+
+    `l_text:Source Sans Pro_28_bold:${hashtagsString},co_white,c_fit,w_1.0,fl_region_relative/fl_layer_apply`,
+
+    // "Close" the transparent text transformation and apply positioning
+
+    'fl_layer_apply,g_north_west,x_0,y_23',
+  ];
+}
+
+/**
+ * createLogoBadgeTransformations
+ */
+
+export function createLogoBadgeTransformations() {
+  return [
+    `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63/fl_layer_apply,g_south_east,x_0,y_10`,
+    `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47/fl_layer_apply,x_10,y_18,g_south_east`,
+  ];
+}
+
+/**
+ * parseTransformationStringToReadable
+ */
+
+export function parseTransformationStringToReadable(transformation) {
+  const segments = transformation.split(',');
+  return segments.map((segment, index) => {
+    const matches = segment.match(/([a-zA-Z]+)_([a-zA-Z0-9_:\-.]+)/);
+
+    if (!matches) {
+      return {
+        id: `${segment}-${index}`,
+        name: 'Other',
+        value: segment,
+      };
     }
 
-    cloudImage.addTransformation(
-      `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,${
-        event.hashtags ? 'w_310' : 'w_160'
-      },h_42,g_north_west,x_0,y_10`
-    );
-    cloudImage.addTransformation(
-      `l_text:Source Sans Pro_22_bold:${hashtags.map((tag) => '%23' + tag).join('  ')},g_north_west,x_10,y_23,co_white`
-    );
+    const [, id, value] = matches;
+    const property = CLOUDINARY_PROPERTIES.find((prop) => prop.id === id);
+
+    return {
+      ...property,
+      value,
+    };
+  });
+}
+
+/**
+ * parseEffectsStringToReadable
+ */
+
+export function parseEffectsStringToReadable(transformation) {
+  const matches = transformation.match(/([a-zA-Z]+):([a-zA-Z0-9_:\-.]+)/);
+
+  if (!matches) {
+    return {
+      id: transformation,
+      name: 'Other',
+      value: transformation,
+    };
   }
 
-  return cloudImage.toURL();
+  const [, id, value] = matches;
+  const property = CLOUDINARY_EFFECT_PROPERTIES.find((prop) => prop.id === id);
+
+  return {
+    ...property,
+    value,
+  };
 }

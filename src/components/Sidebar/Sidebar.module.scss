@@ -1,0 +1,25 @@
+@import "@styles/settings/__settings";
+@import "@styles/util/__util";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $color-blue-50;
+  flex-grow: 1;
+  background-color: $color-cloudinary-blue-dark;
+  padding: 1.5em;
+
+  @include smaller-than-tablet() {
+    text-align: center;
+  }
+
+  p {
+    font-size: 1.4em;
+
+    @include smaller-than-tablet() {
+      font-size: 1em;
+      margin-bottom: 0.3em;
+    }
+  }
+}

@@ -1,141 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { v2 as cloudinary } from 'cloudinary';
-import { FaCamera, FaTwitter, FaSave, FaSpinner } from 'react-icons/fa';
+import { FaCamera, FaTwitter } from 'react-icons/fa';
 
+import {
+  constructCloudinaryUrl,
+  parseTransformationStringToReadable,
+  parseEffectsStringToReadable,
+} from '@lib/cloudinary';
 import { createTweetAction, openTweet } from '@lib/social';
 import * as gtag from '@lib/gtag';
 
 import { useApp } from '@hooks/useApp';
 
-import Layout from '@components/Layout';
 import Section from '@components/Section';
 import Container from '@components/Container';
+import Sidebar from '@components/Sidebar';
+import SidebarTitle from '@components/SidebarTitle';
+import Controls from '@components/Controls';
+import Control from '@components/Control';
 import Button from '@components/Button';
+import CldImage from '@components/CldImage';
 
 import { CLOUDINARY_UPLOADS_FOLDER, CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 import { events } from '@data/events';
+import { CAMERA_WIDTH, CAMERA_HEIGHT } from '@data/camera';
 
 import styles from '@styles/Share.module.scss';
 
-const HOST = process.env.NEXT_PUBLIC_URL;
-
-const PROPERTIES = [
-  {
-    id: 'c',
-    name: 'Crop / Resize',
-    description: 'Changes the size of the delivered asset according to the requested width & height dimensions.',
-  },
-  {
-    id: 'e',
-    name: 'Effect',
-    description: 'Applies the specified effect to an asset.',
-  },
-  {
-    id: 'fl',
-    name: 'Flag',
-    description: 'Alters the regular behavior of another transformation or the overall delivery behavior.',
-  },
-  {
-    id: 'g',
-    name: 'Gravity',
-    description: 'Determines which part of an asset to focus on.',
-  },
-  {
-    id: 'h',
-    name: 'Height',
-    description: 'Determines the height of a transformed asset or an overlay.',
-  },
-  {
-    id: 'l',
-    name: 'Layer',
-    description: 'Applies a layer over the base asset, also known as an overlay.',
-  },
-  {
-    id: 'r',
-    name: 'Round Corners',
-    description: 'Rounds the corners of an image or video.',
-  },
-  {
-    id: 'u',
-    name: 'Underlay',
-    description: 'Applies an image layer under the base image or video.',
-  },
-  {
-    id: 'w',
-    name: 'Width',
-    description: 'Determines the width of a transformed asset or an overlay.',
-  },
-  {
-    id: 'x',
-    name: 'X Coordinate',
-    description: 'Adjusts the starting location or offset of the corresponding transformation action on the X axis.',
-  },
-  {
-    id: 'y',
-    name: 'Y Coordinate',
-    description: 'Adjusts the starting location or offset of the corresponding transformation action on the Y axis.',
-  },
-];
-
-const EFFECT_PROPERTIES = [
-  {
-    id: 'art',
-    name: 'Art',
-    description: 'Applies the selected artistic filter.',
-  },
-];
-
-function parseTransformationStringToReadable(transformation) {
-  const segments = transformation.split(',');
-  return segments.map((segment, index) => {
-    const matches = segment.match(/([a-zA-Z]+)_([a-zA-Z0-9_:\-.]+)/);
-
-    if (!matches) {
-      return {
-        id: `${segment}-${index}`,
-        name: 'Other',
-        value: segment,
-      };
-    }
-
-    const [, id, value] = matches;
-    const property = PROPERTIES.find((prop) => prop.id === id);
-
-    return {
-      ...property,
-      value,
-    };
-  });
-}
-
-function parseEffectsStringToReadable(transformation) {
-  const matches = transformation.match(/([a-zA-Z]+):([a-zA-Z0-9_:\-.]+)/);
-
-  if (!matches) {
-    return {
-      id: transformation,
-      name: 'Other',
-      value: transformation,
-    };
-  }
-
-  const [, id, value] = matches;
-  const property = EFFECT_PROPERTIES.find((prop) => prop.id === id);
-
-  return {
-    ...property,
-    value,
-  };
-}
-
 export default function Share({ resource, original, filters, ogImageUrl }) {
+  const cloudinarySectionRef = useRef();
   const router = useRouter();
 
-  const { eventId } = useApp();
+  const { eventId, host } = useApp();
   const event = events[eventId || 'default'];
+
+  const shareUrl = host && `${host}${router.asPath}`;
+  const downloadUrl = constructCloudinaryUrl({
+    publicId: resource.public_id,
+    format: 'jpg',
+  });
 
   const [downloadData, updateDownloadData] = useState();
 
@@ -144,7 +50,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
       // Once the page loads, attempt to download the image and convert it
       // to a blob to allow for easy download
 
-      const data = await fetch(resource.secure_url);
+      const data = await fetch(downloadUrl);
       const blob = await data.blob();
       const objectUrl = URL.createObjectURL(blob);
 
@@ -152,13 +58,17 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
         blob,
         objectUrl,
       });
+    })();
+  }, [downloadUrl]);
 
-      // Also attempt to pre-load the OG image URL to hopefully help issues
-      // with Twitter not correctly loading images on first share
+  // Attempt to pre-load the OG image URL to hopefully help issues
+  // with Twitter not correctly loading images on first share
 
+  useEffect(() => {
+    (async function run() {
       await fetch(ogImageUrl);
     })();
-  }, []);
+  }, [ogImageUrl]);
 
   /**
    * handleOnTwitterClick
@@ -180,7 +90,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
         'Create your transformations below 👇',
         ...(event.hashtags ? ['', event.hashtags.map((hashtag) => `#${hashtag}`).join(' ')] : []),
         '',
-        `${HOST || window?.location.origin}${router.asPath}`,
+        shareUrl,
       ],
       related: ['Cloudinary'],
     });
@@ -188,10 +98,38 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
     openTweet({
       message: twitterAction,
     });
+
+    handleOnShare();
+  }
+
+  /**
+   * handleOnMailClick
+   */
+
+  // function handleOnMailClick(e) {
+  //   e.preventDefault();
+
+  //   gtag.event({
+  //     action: 'click',
+  //     category: 'share',
+  //     label: 'mail',
+  //   });
+
+  //   handleOnShare();
+  // }
+
+  /**
+   * handleOnMailClick
+   */
+
+  function handleOnShare() {
+    cloudinarySectionRef.current.scrollIntoView({
+      behavior: 'smooth',
+    });
   }
 
   return (
-    <Layout className={styles.sharePage}>
+    <div className={styles.sharePage}>
       <Head>
         <title>CloudyCam</title>
         <meta name="description" content="From Cloudinary" />
@@ -205,52 +143,76 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
         <meta property="twitter:card" content="summary_large_image" />
       </Head>
 
-      <Section className={styles.shareSection}>
-        <Container className={styles.shareContainer}>
-          <div className={styles.imageTransformed}>
-            <p>
-              <img src={resource.secure_url} alt="Transformed Image" />
-            </p>
-          </div>
-
-          <div className={styles.content}>
-            <ul className={styles.actions}>
-              <li>
+      <Section className={styles.cameraHeroSection}>
+        <Container className={styles.cameraHeroContainer}>
+          <CldImage
+            className={styles.camera}
+            src={resource.public_id}
+            width={CAMERA_WIDTH}
+            height={CAMERA_HEIGHT}
+            alt="Transfomered by Cloudinary"
+          />
+          <Sidebar>
+            <SidebarTitle className={styles.sidebarTitle}>Share Your Creation</SidebarTitle>
+            <Controls className={styles.shareControls}>
+              <Control>
                 <Button color="twitter-blue" iconPosition="left" shape="capsule-tall" onClick={handleOnTwitterClick}>
-                  <FaTwitter /> Share on Twitter
+                  <FaTwitter />
+                  <span>Twitter</span>
                 </Button>
-              </li>
-            </ul>
-            <ul className={`${styles.actions} ${styles.actionsSecondary}`}>
-              <li>
+              </Control>
+              {/* <Control>
+                <Button color="cloudinary-orange" iconPosition="left" shape="capsule-tall" onClick={handleOnMailClick}>
+                  <span>Email</span>
+                </Button>
+              </Control> */}
+              <Control>
                 <Button
                   href={downloadData?.objectUrl}
-                  color="blue-800"
+                  color="cloudinary-blue"
                   iconPosition="left"
-                  shape="capsule"
+                  shape="capsule-tall"
+                  onClick={handleOnShare}
                   download
                   target="_blank"
                   disabled={!downloadData?.objectUrl}
-                  data-is-loading={!downloadData?.objectUrl}
                 >
-                  {!downloadData?.objectUrl && <FaSpinner />}
-                  {downloadData?.objectUrl && <FaSave />}
-                  Download
+                  <span>Download</span>
                 </Button>
-              </li>
-              <li>
-                <Link href="/camera" passHref={true}>
-                  <Button color="blue-800" iconPosition="left" shape="capsule">
-                    <FaCamera /> New Photo
-                  </Button>
-                </Link>
-              </li>
-            </ul>
-          </div>
+              </Control>
+            </Controls>
+            <SidebarTitle className={styles.sidebarTitle}>Open on your Device</SidebarTitle>
+            <p className={styles.shareQr}>
+              {shareUrl && (
+                <CldImage
+                  src={`qr/${encodeURIComponent(shareUrl)}`}
+                  width="600"
+                  height="600"
+                  format="svg"
+                  rawTransformations={['e_bgremoval:rgb:ffffff', 'e_colorize:100,co_white', 'e_vectorize:detail:1.0']}
+                />
+              )}
+            </p>
+          </Sidebar>
         </Container>
       </Section>
 
-      <Section className={styles.cloudinarySection}>
+      <Section className={styles.newPhotoSection}>
+        <Container className={styles.newPhotoContainer}>
+          <h2>Want to take a new one?</h2>
+          <ul>
+            <li>
+              <Link href={eventId && eventId !== 'default' ? `/${eventId}` : '/camera'} passHref={true}>
+                <Button color="cloudinary-yellow" iconPosition="left" shape="capsule">
+                  <FaCamera /> New Photo
+                </Button>
+              </Link>
+            </li>
+          </ul>
+        </Container>
+      </Section>
+
+      <Section ref={cloudinarySectionRef} className={styles.cloudinarySection}>
         <Container className={styles.cloudinary}>
           <div className={styles.cloudinaryContent}>
             <h2 className={styles.cloudinaryHeadline}>Incredible media transformations made simple</h2>
@@ -437,7 +399,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
           </p>
         </Container>
       </Section>
-    </Layout>
+    </div>
   );
 }
 

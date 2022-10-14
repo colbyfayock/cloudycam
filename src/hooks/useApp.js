@@ -4,6 +4,10 @@ import { DEFAULT_EVENT_ID } from '@data/events';
 
 const STATE_KEY = 'CLOUDYCAM';
 
+const DEFAULT_STATE = {
+  host: process.env.NEXT_PUBLIC_URL,
+};
+
 export const AppContext = createContext();
 
 export const AppProvider = ({ children, eventId }) => {
@@ -14,7 +18,7 @@ export const AppProvider = ({ children, eventId }) => {
 };
 
 export function useAppState({ eventId: initialEventId = DEFAULT_EVENT_ID }) {
-  const [state, setState] = useState();
+  const [state, setState] = useState(DEFAULT_STATE);
 
   // Hydrate existing state
 
@@ -27,7 +31,7 @@ export function useAppState({ eventId: initialEventId = DEFAULT_EVENT_ID }) {
     }
 
     setState(initialState);
-  }, []);
+  }, [initialEventId]);
 
   // Store state updates on change
 
@@ -35,6 +39,19 @@ export function useAppState({ eventId: initialEventId = DEFAULT_EVENT_ID }) {
     if (!state) return;
     window.localStorage.setItem(STATE_KEY, JSON.stringify(state));
   }, [state]);
+
+  // Get the host if it doesn't exist when the page loads
+
+  useEffect(() => {
+    if (!state.host) {
+      setState((prev) => {
+        return {
+          ...prev,
+          host: window?.location.origin,
+        };
+      });
+    }
+  }, [state.host]);
 
   /**
    * setEventId

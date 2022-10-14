@@ -1,39 +1,20 @@
 @import "@styles/settings/__settings";
 
-.homeContainer {
-  p {
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+.homeHeroSection {
+  padding-top: 0;
+  margin-top: 0;
 }
 
-.try {
-  margin-top: 2em;
-
-  .tryButton {
-    height: 3em;
-  }
-}
-
-.tryButton {
-  width: 100%;
-  font-size: 1.2em;
-
-  svg {
-    color: $color-cloudinary-yellow-500;
-  }
-}
-
-.instructions {
-  color: $color-gray-600;
-  text-align: center;
+.homeImageContainer {
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 3em;
 }
 
 .imageGrid {
   display: grid;
-  grid-gap: 0.5em;
-  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0;
+  grid-template-columns: repeat(3, 1fr);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -45,4 +26,28 @@
   img {
     display: block;
   }
+}
+
+.try {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.tryButton {
+  font-size: 1.2em;
+
+  svg {
+    color: $color-cloudinary-yellow-500;
+  }
+}
+
+.instructions {
+  // max-width: 30em;
+  color: $color-gray-600;
+  text-align: center;
+  font-size: 1.2em;
+  line-height: 1.4;
+  margin: 0 auto;
 }

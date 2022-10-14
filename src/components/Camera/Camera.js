@@ -29,7 +29,7 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
   const imgRef = useRef();
   const [imgState, setImgState] = useState(DEFAULT_IMG_STATE);
 
-  const { ref, image, isActive, capture, reset, onUserMedia } = useCamera();
+  const { ref, image, state, error, capture, reset, onUserMedia, onUserMediaError } = useCamera();
 
   const src = defaultSrc || image;
 
@@ -73,16 +73,33 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
           aspectRatio: `${CAMERA_WIDTH} / ${CAMERA_HEIGHT}`,
         }}
       >
-        <div className={styles.stage} data-is-active-webcam={isActive} {...imgStateProps}>
+        <div
+          className={styles.stage}
+          data-is-active-webcam={state.active}
+          data-is-error-webcam={state.error}
+          {...imgStateProps}
+        >
           {src && <img ref={imgRef} src={src} alt="Webcam Photo" />}
-          {!src && (
+          {!src && !state.error && (
             <Webcam
               ref={ref}
               videoConstraints={videoConstraints}
               width={CAMERA_WIDTH}
               height={CAMERA_HEIGHT}
               onUserMedia={onUserMedia}
+              onUserMediaError={onUserMediaError}
             />
+          )}
+          {state.error && error && (
+            <div className={styles.stageError}>
+              <p className={styles.stageErrorName}>
+                <strong>{error}</strong>
+              </p>
+              <p className={styles.stageErrorMessage}>
+                Uh oh, we&apos;re having trouble loading your camera. Try seeing if your browser is blocking it
+                otherwise try another browser.
+              </p>
+            </div>
           )}
         </div>
       </div>
