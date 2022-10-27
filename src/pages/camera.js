@@ -42,7 +42,13 @@ import styles from '@styles/Camera.module.scss';
 export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   useEffect(() => {
     document.addEventListener('keydown', (event) => {
-      console.log('event', event);
+      console.log('keydown event', event);
+    });
+    document.addEventListener('click', (event) => {
+      console.log('click event', event);
+    });
+    document.addEventListener('pointerup', (event) => {
+      console.log('pointerup event', event);
     });
   }, []);
 
