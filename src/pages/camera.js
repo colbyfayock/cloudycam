@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
@@ -39,6 +40,12 @@ import { events } from '@data/events';
 import styles from '@styles/Camera.module.scss';
 
 export default function PageCamera({ eventId: defaultEventId, eventImages }) {
+  useEffect(() => {
+    document.addEventListener('keydown', (event) => {
+      console.log('event', event);
+    });
+  }, []);
+
   const router = useRouter();
 
   const { eventId = defaultEventId } = useApp();
@@ -250,6 +257,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
           <Container className={styles.cameraHeroContainer}>
             {!allowCapture && (
               <CldImage
+                className={styles.camera}
                 src={activePublicId}
                 width={CAMERA_WIDTH}
                 height={CAMERA_HEIGHT}
@@ -282,13 +290,16 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                         shape="capsule"
                         iconPosition="left"
                         onClick={handleOnShare}
-                        disabled={stateShare?.loading || stateShare?.loaded}
+                        disabled={activeFilters.length === 0}
                         data-is-loading={stateShare?.loading || stateShare?.loaded}
                       >
                         {(stateMain?.loading || stateShare?.loading || stateShare?.loaded) && <FaSpinner />}
                         {!stateShare?.loading && !stateShare?.loaded && <FaShare />}
                         <span>Share</span>
                       </Button>
+                      {activeFilters.length === 0 && (
+                        <p className={styles.controlNote}>Add a filter or randomize to get started!</p>
+                      )}
                     </Control>
                     <Control>
                       <Button onClick={handleOnRemix} shape="link" iconPosition="left">

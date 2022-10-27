@@ -29,6 +29,13 @@
 
 .controlShare {
   margin-bottom: 1em;
+
+  .controlNote {
+    color: $color-cloudinary-yellow-500;
+    font-size: 1.1em;
+    font-style: italic;
+    text-align: center;
+  }
 }
 
 // Camera page content
