@@ -15,6 +15,46 @@ export const events = {
 
   // Events
 
+  allthingsopen: {
+    register: {
+      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['AllThingsOpen'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'allthingsopen',
+      medium: 'event',
+      campaign: 'allthingsopen2022_booth',
+    },
+  },
+
+  AllThingsOpen: {
+    register: {
+      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['AllThingsOpen'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'allthingsopen',
+      medium: 'event',
+      campaign: 'allthingsopen2022_booth',
+    },
+  },
+
   canariasjs: {
     register: {
       link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
@@ -175,6 +215,46 @@ export const events = {
     },
   },
 
+  jamstackconf: {
+    register: {
+      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['JamstackConf'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'jamstackconf',
+      medium: 'event',
+      campaign: 'jamstackconf2022_booth',
+    },
+  },
+
+  JamstackConf: {
+    register: {
+      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['JamstackConf'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'jamstackconf',
+      medium: 'event',
+      campaign: 'jamstackconf2022_booth',
+    },
+  },
+
   magnoliajs: {
     register: {
       link: 'https://forms.monday.com/forms/ccaf953547ab67a089f3f7a7d39fac05?r=use1',
@@ -272,6 +352,46 @@ export const events = {
       source: 'smashingfreiburg',
       medium: 'event',
       campaign: 'smashingfreiburg2022_booth',
+    },
+  },
+
+  techbash: {
+    register: {
+      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['TechBash'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'techbash',
+      medium: 'event',
+      campaign: 'techbash2022_booth',
+    },
+  },
+
+  TechBash: {
+    register: {
+      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['TechBash'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'techbash',
+      medium: 'event',
+      campaign: 'techbash2022_booth',
     },
   },
 
