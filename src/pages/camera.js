@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner } from 'react-icons/fa';
+import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner, FaStopwatch } from 'react-icons/fa';
 
 import { useApp } from '@hooks/useApp';
 import { useCamera } from '@hooks/useCamera';
@@ -40,23 +40,30 @@ import { events } from '@data/events';
 
 import styles from '@styles/Camera.module.scss';
 
-export default function PageCamera({ eventId: defaultEventId, eventImages }) {
-  useEffect(() => {
-    document.addEventListener('keydown', (event) => {
-      console.log('keydown event', event);
-    });
-    document.addEventListener('click', (event) => {
-      console.log('click event', event);
-    });
-    document.addEventListener('pointerup', (event) => {
-      console.log('pointerup event', event);
-    });
-    document.addEventListener('onvolumechange', (event) => {
-      console.log('onvolumechange event', event);
-    });
-  }, []);
+function delay({ total, callbackInterval, callback }) {
+  let time = 0;
 
+  function _delay() {
+    setTimeout(() => {
+      time = time + callbackInterval;
+
+      callback(time);
+
+      if (time < total) {
+        _delay();
+      }
+    }, callbackInterval);
+  }
+
+  callback(time);
+  _delay();
+}
+
+export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   const router = useRouter();
+
+  const [delayTimer, setDelayTimer] = useState();
+  const activeTimer = !isNaN(delayTimer);
 
   const { eventId = defaultEventId } = useApp();
   const event = events[eventId];
@@ -180,6 +187,26 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   });
 
   /**
+   * handleDelayCapture
+   * @description Triggers after 5 seconds
+   */
+
+  async function handleDelayCapture() {
+    delay({
+      total: 5000,
+      callbackInterval: 1000,
+      callback: (time) => {
+        setDelayTimer(5000 - time);
+
+        if (time >= 5000) {
+          capture();
+          setDelayTimer(undefined);
+        }
+      },
+    });
+  }
+
+  /**
    * handleOnShare
    * @description Triggers an upload of the current state of transformations
    */
@@ -289,9 +316,28 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                   <p>We&apos;ll give you filters and effects powered by Cloudinary that you can add to your photo.</p>
                   <Controls data-can-capture={allowCapture}>
                     <Control>
-                      <Button onClick={capture} color="cloudinary-yellow" shape="capsule" iconPosition="left">
+                      <Button
+                        onClick={capture}
+                        color="cloudinary-yellow"
+                        shape="capsule"
+                        iconPosition="left"
+                        disabled={activeTimer}
+                      >
                         <FaCamera />
                         <span>Capture</span>
+                      </Button>
+                    </Control>
+                    <Control>
+                      <Button
+                        onClick={handleDelayCapture}
+                        color="cloudinary-blue"
+                        shape="capsule"
+                        iconPosition="left"
+                        disabled={activeTimer}
+                      >
+                        <FaStopwatch />
+                        {!activeTimer && <span>Capture in 5</span>}
+                        {activeTimer && <span>{delayTimer / 1000}</span>}
                       </Button>
                     </Control>
                   </Controls>

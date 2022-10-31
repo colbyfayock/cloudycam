@@ -72,6 +72,11 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
 
           return (
             <TabPanel key={type.id} className={styles.effectsPanel}>
+              {!typeIsActive && (
+                <p className={styles.effectsPanelLoading}>
+                  Still loading... check back in a few. It&apos;s worth the wait!
+                </p>
+              )}
               <ul className={styles.filters}>
                 <li>
                   <button
