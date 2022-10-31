@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ALL_FILTERS, FILTER_TYPES, FILTER_ID_NONE } from '@data/filters';
 
@@ -13,6 +13,12 @@ export function useFilters({ backgroundReady }) {
       active: !!activeFilters[filter.id],
     };
   });
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, []);
 
   /**
    * toggle

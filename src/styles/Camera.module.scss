@@ -19,6 +19,9 @@
 }
 
 .camera {
+  background: linear-gradient(120deg, $color-gray-100 30%, white 50%, $color-gray-50 70%);
+  background-size: 400%;
+  animation: loading 2s linear infinite;
   @include tablet-or-larger() {
     flex-shrink: 0;
     max-width: 720px;

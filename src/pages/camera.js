@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner, FaStopwatch } from 'react-icons/fa';
@@ -65,12 +65,23 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   const [delayTimer, setDelayTimer] = useState();
   const activeTimer = !isNaN(delayTimer);
 
-  const { eventId = defaultEventId } = useApp();
+  const { eventId } = useApp({ eventId: defaultEventId });
   const event = events[eventId];
 
   const { image, hash, capture, reset: resetCamera } = useCamera();
 
   let activePublicId = image;
+
+  // Clean up all images and effects when changing pages
+
+  useEffect(() => {
+    return () => {
+      resetMain();
+      resetTransparent();
+      resetCamera();
+      resetFilters();
+    };
+  }, [router.pathname]);
 
   // Once we have an image stored, attempt to upload it to Cloudinary
 
@@ -356,7 +367,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                         data-is-loading={stateShare?.loading || stateShare?.loaded}
                       >
                         {(stateMain?.loading || stateShare?.loading || stateShare?.loaded) && <FaSpinner />}
-                        {!stateShare?.loading && !stateShare?.loaded && <FaShare />}
+                        {!stateMain?.loading && !stateShare?.loading && !stateShare?.loaded && <FaShare />}
                         <span>Share</span>
                       </Button>
                       {activeFilters.length === 0 && (

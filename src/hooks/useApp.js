@@ -1,7 +1,5 @@
 import { useState, createContext, useContext, useEffect } from 'react';
 
-import { DEFAULT_EVENT_ID } from '@data/events';
-
 const STATE_KEY = 'CLOUDYCAM';
 
 const DEFAULT_STATE = {
@@ -17,7 +15,7 @@ export const AppProvider = ({ children, eventId }) => {
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;
 };
 
-export function useAppState({ eventId: initialEventId = DEFAULT_EVENT_ID }) {
+export function useAppState({ eventId: initialEventId }) {
   const [state, setState] = useState(DEFAULT_STATE);
 
   // Hydrate existing state
@@ -26,7 +24,7 @@ export function useAppState({ eventId: initialEventId = DEFAULT_EVENT_ID }) {
     const data = window.localStorage.getItem(STATE_KEY);
     const initialState = data !== null ? JSON.parse(data) : {};
 
-    if (initialState.eventId !== initialEventId) {
+    if (typeof initialState.eventId === 'undefined') {
       initialState.eventId = initialEventId;
     }
 

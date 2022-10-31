@@ -98,6 +98,7 @@ export function useCloudinaryUpload(options) {
       setState(DEFAULT_STATE);
       return;
     }
+
     upload({ image, publicId });
   }, [image, publicId]);
 

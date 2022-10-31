@@ -68,6 +68,10 @@
   max-width: 10em;
   margin-right: auto;
   margin-left: auto;
+
+  & > span {
+    display: block;
+  }
 }
 
 /* NEW PHOTO */

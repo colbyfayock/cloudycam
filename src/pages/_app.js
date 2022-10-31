@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import * as gtag from '@lib/gtag';
 import { AppProvider } from '@hooks/useApp';
 import { CameraProvider } from '@hooks/useCamera';
+import { DEFAULT_EVENT_ID } from '@data/events';
 
 import '@styles/globals.scss';
 
@@ -17,7 +18,7 @@ function MyApp({ Component, pageProps }) {
   // `src/pages/[eventId].js` to allow URL based
   // ID configuration
 
-  const { eventId } = pageProps;
+  const { eventId = DEFAULT_EVENT_ID } = pageProps;
 
   useEffect(() => {
     const handleRouteChange = (url) => {
