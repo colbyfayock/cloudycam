@@ -51,6 +51,9 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
     document.addEventListener('pointerup', (event) => {
       console.log('pointerup event', event);
     });
+    document.addEventListener('onvolumechange', (event) => {
+      console.log('onvolumechange event', event);
+    });
   }, []);
 
   const router = useRouter();
