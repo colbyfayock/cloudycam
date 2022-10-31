@@ -16,6 +16,7 @@ export const events = {
   // Events
 
   allthingsopen: {
+    logo: 'ato-logo-2022-white',
     register: {
       link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
       text: 'Get Your Free Account',
@@ -36,6 +37,7 @@ export const events = {
   },
 
   AllThingsOpen: {
+    logo: 'ato-logo-2022-white',
     register: {
       link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
       text: 'Get Your Free Account',

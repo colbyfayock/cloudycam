@@ -13,6 +13,7 @@ import {
   constructCloudinaryUrl,
   createHashtagBadgeTransformations,
   createLogoBadgeTransformations,
+  createEventLogoTransformations,
 } from '@lib/cloudinary';
 import { sortByKey } from '@lib/util';
 
@@ -146,6 +147,12 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   createLogoBadgeTransformations(event?.hashtags).forEach((transformation) => {
     activeTransformations.push(transformation);
   });
+
+  if (event?.logo) {
+    createEventLogoTransformations(event.logo).forEach((transformation) => {
+      activeTransformations.push(transformation);
+    });
+  }
 
   const src = constructCloudinaryUrl({
     publicId: activePublicId,

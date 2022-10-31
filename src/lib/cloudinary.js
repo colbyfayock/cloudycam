@@ -113,6 +113,13 @@ export function createLogoBadgeTransformations() {
     `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47/fl_layer_apply,x_10,y_18,g_south_east`,
   ];
 }
+/**
+ * createEventLogoTransformations
+ */
+
+export function createEventLogoTransformations(logo) {
+  return [`l_${CLOUDINARY_ASSETS_FOLDER}:${logo},h_80/fl_layer_apply,x_14,y_18,g_south_west`];
+}
 
 /**
  * parseTransformationStringToReadable
