@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -43,21 +43,19 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
     format: 'jpg',
   });
 
-  const [downloadData, updateDownloadData] = useState();
+  // const [downloadData, updateDownloadData] = useState();
 
   useEffect(() => {
     (async function run() {
       // Once the page loads, attempt to download the image and convert it
       // to a blob to allow for easy download
-
-      const data = await fetch(downloadUrl);
-      const blob = await data.blob();
-      const objectUrl = URL.createObjectURL(blob);
-
-      updateDownloadData({
-        blob,
-        objectUrl,
-      });
+      // const data = await fetch(downloadUrl);
+      // const blob = await data.blob();
+      // const objectUrl = URL.createObjectURL(blob);
+      // updateDownloadData({
+      //   blob,
+      //   objectUrl,
+      // });
     })();
   }, [downloadUrl]);
 
@@ -166,7 +164,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
                   <span>Email</span>
                 </Button>
               </Control> */}
-              <Control>
+              {/* <Control>
                 <Button
                   href={downloadData?.objectUrl}
                   color="cloudinary-blue"
@@ -179,7 +177,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
                 >
                   <span>Download</span>
                 </Button>
-              </Control>
+              </Control> */}
             </Controls>
             <SidebarTitle className={styles.sidebarTitle}>Open on your Device</SidebarTitle>
             <p className={styles.shareQr}>
