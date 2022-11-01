@@ -22,11 +22,11 @@ export const FILTER_TYPES = [
     checkActive: ({ transparent }) => !!transparent?.public_id,
     applyOrder: 1,
   },
-  {
-    id: 'more',
-    title: 'More',
-    applyOrder: 4,
-  },
+  // {
+  //   id: 'more',
+  //   title: 'More',
+  //   applyOrder: 4,
+  // },
   // {
   //   id: 'crops',
   //   title: 'Crops',
