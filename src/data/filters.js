@@ -168,18 +168,18 @@ export const FILTERS_BACKGROUNDS = [
   //     `u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
   //   ],
   // },
-  {
-    id: 'ato-earth',
-    title: 'ATO Earth',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-earth,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'ato-astronaut',
-    title: 'ATO Astronaut',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-astronaut,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
+  // {
+  //   id: 'ato-earth',
+  //   title: 'ATO Earth',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-earth,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'ato-astronaut',
+  //   title: 'ATO Astronaut',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-astronaut,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
   {
     id: 'moon',
     title: 'Moon',
