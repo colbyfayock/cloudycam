@@ -181,6 +181,12 @@ export const FILTERS_BACKGROUNDS = [
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-astronaut,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   // },
   {
+    id: 'jamstack-conf',
+    title: 'Jamstack Conf',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jamstack-conf,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',

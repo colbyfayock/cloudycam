@@ -218,6 +218,7 @@ export const events = {
   },
 
   jamstackconf: {
+    logo: 'jamstack-logo-white',
     register: {
       link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
       text: 'Get Your Free Account',
@@ -238,6 +239,7 @@ export const events = {
   },
 
   JamstackConf: {
+    logo: 'jamstack-logo-white',
     register: {
       link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
       text: 'Get Your Free Account',

@@ -118,7 +118,7 @@ export function createLogoBadgeTransformations() {
  */
 
 export function createEventLogoTransformations(logo) {
-  return [`l_${CLOUDINARY_ASSETS_FOLDER}:${logo},h_80/fl_layer_apply,x_14,y_18,g_south_west`];
+  return [`l_${CLOUDINARY_ASSETS_FOLDER}:${logo},h_60/fl_layer_apply,x_14,y_18,g_south_west`];
 }
 
 /**
