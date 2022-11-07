@@ -234,7 +234,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
 
     const { public_id } = results;
 
-    router.push(`/share/${public_id.replace(CLOUDINARY_UPLOADS_FOLDER + '/', '')}`);
+    router.push(`/share/${public_id.replace(CLOUDINARY_UPLOADS_FOLDER + '/', '')}?eventId=${eventId}`);
   }
 
   /**

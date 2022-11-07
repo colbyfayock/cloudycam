@@ -34,7 +34,10 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
   const cloudinarySectionRef = useRef();
   const router = useRouter();
 
-  const { eventId, host } = useApp();
+  const { eventId: appEventId, host } = useApp();
+
+  const eventId = router.query?.eventId || appEventId;
+
   const event = events[eventId || 'default'];
 
   const shareUrl = host && `${host}${router.asPath}`;

@@ -24,7 +24,7 @@ export function useAppState({ eventId: initialEventId }) {
     const data = window.localStorage.getItem(STATE_KEY);
     const initialState = data !== null ? JSON.parse(data) : {};
 
-    if (typeof initialState.eventId === 'undefined') {
+    if (initialState.eventId !== initialEventId) {
       initialState.eventId = initialEventId;
     }
 
