@@ -13,6 +13,28 @@ export const events = {
     },
   },
 
+  // Cloudinary
+
+  devx: {
+    register: {
+      link: 'https://cloudinary.com/',
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CloudinaryDevX'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cloudinarydevx',
+      medium: 'event',
+      campaign: 'cloudinarydevx2022_booth',
+    },
+  },
+
   // Events
 
   allthingsopen: {
