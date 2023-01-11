@@ -43,6 +43,14 @@ export const FILTERS_EFFECTS = [
     ],
   },
   {
+    id: 'unicorn-horn',
+    title: 'Unicorn Horn',
+    type: 'effects',
+    transformations: [
+      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-horn,c_scale,fl_region_relative,h_3.5/fl_layer_apply,fl_no_overflow,g_adv_face`,
+    ],
+  },
+  {
     id: 'vader',
     title: 'Darth Vader',
     type: 'effects',
@@ -186,23 +194,37 @@ export const FILTERS_BACKGROUNDS = [
   //   type: 'backgrounds',
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jamstack-conf,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   // },
+  // {
+  //   id: 'hanukkah-menorah',
+  //   title: 'Hanukkah Menorah',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:hanukkah-menorah,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'snowy-night',
+  //   title: 'Snowy Night',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:snowy-night,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'holiday-lights',
+  //   title: 'Holiday Lights',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:holiday-lights,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
   {
-    id: 'hanukkah-menorah',
-    title: 'Hanukkah Menorah',
+    id: 'codemash-stage',
+    title: 'CodeMash Stage',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:hanukkah-menorah,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:codemash-stage,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
-    id: 'snowy-night',
-    title: 'Snowy Night',
+    id: 'kalahari-ohio-water-park',
+    title: 'Kalahari Water Park',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:snowy-night,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'holiday-lights',
-    title: 'Holiday Lights',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:holiday-lights,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:kalahari-ohio-water-park,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
+    ],
   },
   {
     id: 'moon',
@@ -251,6 +273,12 @@ export const FILTERS_BACKGROUNDS = [
     title: 'Matrix',
     type: 'backgrounds',
     transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
+  {
+    id: 'psychedelic',
+    title: 'Psychedelic',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:psychedelic,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
 ];
 
@@ -340,6 +368,6 @@ export const ALL_FILTERS = [
   ...FILTERS_STYLES,
   ...FILTERS_EFFECTS,
   ...FILTERS_BACKGROUNDS,
-  ...FILTERS_MORE,
+  // ...FILTERS_MORE,
   ...FILTERS_CROPS,
 ];

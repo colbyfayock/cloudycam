@@ -1,9 +1,11 @@
 export const DEFAULT_EVENT_ID = 'default';
 
+export const DEFAULT_REGISTER_LINK = 'https://forms.monday.com/forms/ed819e3e85b33eb54f3c92689cfab71f';
+
 export const events = {
   [DEFAULT_EVENT_ID]: {
     register: {
-      link: 'https://cloudinary.com/users/register/free',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     utm: {
@@ -17,7 +19,7 @@ export const events = {
 
   devx: {
     register: {
-      link: 'https://cloudinary.com/',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['CloudinaryDevX'],
@@ -40,7 +42,7 @@ export const events = {
   allthingsopen: {
     logo: 'ato-logo-2022-white',
     register: {
-      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['AllThingsOpen'],
@@ -61,7 +63,7 @@ export const events = {
   AllThingsOpen: {
     logo: 'ato-logo-2022-white',
     register: {
-      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['AllThingsOpen'],
@@ -81,7 +83,7 @@ export const events = {
 
   canariasjs: {
     register: {
-      link: 'https://forms.monday.com/forms/e5f543d53ee8de0441cf133d13df553b',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['JSDayCAN2022'],
@@ -101,7 +103,7 @@ export const events = {
 
   cascadiajs: {
     register: {
-      link: 'https://forms.monday.com/forms/12805bc122ea5719f365205e4ac364b5',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['CascadiaJS'],
@@ -121,7 +123,7 @@ export const events = {
 
   CascadiaJS: {
     register: {
-      link: 'https://forms.monday.com/forms/12805bc122ea5719f365205e4ac364b5',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['CascadiaJS'],
@@ -141,7 +143,7 @@ export const events = {
 
   cityjsbrazil: {
     register: {
-      link: 'https://forms.monday.com/forms/e1ad68a7699011ccfd2514a8d47a3aa3',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['CityJSBrazil'],
@@ -161,7 +163,7 @@ export const events = {
 
   cityjssg: {
     register: {
-      link: 'https://forms.monday.com/forms/a436cb3952b83eb35a340d50324b5d24',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['CITYJSSingapore'],
@@ -181,7 +183,7 @@ export const events = {
 
   CityJSSG: {
     register: {
-      link: 'https://forms.monday.com/forms/a436cb3952b83eb35a340d50324b5d24',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['CITYJSSingapore'],
@@ -199,9 +201,54 @@ export const events = {
     },
   },
 
+  codemash: {
+    logo: {
+      publicId: 'codemash-1000-logo',
+      height: 140,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CodeMash'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'codemash',
+      medium: 'event',
+      campaign: 'codemash2023_booth',
+    },
+  },
+
+  CodeMash: {
+    logo: 'codemash-1000-logo',
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['codemash'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'codemash',
+      medium: 'event',
+      campaign: 'codemash2023_booth',
+    },
+  },
+
   frontconf: {
     register: {
-      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['frontzurich'],
@@ -221,7 +268,7 @@ export const events = {
 
   FrontConf: {
     register: {
-      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['frontzurich'],
@@ -242,7 +289,7 @@ export const events = {
   jamstackconf: {
     logo: 'jamstack-logo-white',
     register: {
-      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['JamstackConf'],
@@ -263,7 +310,7 @@ export const events = {
   JamstackConf: {
     logo: 'jamstack-logo-white',
     register: {
-      link: 'https://forms.monday.com/forms/2514b0d2baa6e117d0f03a52621c09ab',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['JamstackConf'],
@@ -283,7 +330,7 @@ export const events = {
 
   magnoliajs: {
     register: {
-      link: 'https://forms.monday.com/forms/ccaf953547ab67a089f3f7a7d39fac05?r=use1',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['MagnoliaJS'],
@@ -303,7 +350,7 @@ export const events = {
 
   MagnoliaJS: {
     register: {
-      link: 'https://forms.monday.com/forms/ccaf953547ab67a089f3f7a7d39fac05?r=use1',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['MagnoliaJS'],
@@ -323,7 +370,7 @@ export const events = {
 
   reactnorway: {
     register: {
-      link: 'https://forms.monday.com/forms/7bd7cd423d8de10732d891cf845445bc',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['ReactNorway'],
@@ -343,7 +390,7 @@ export const events = {
 
   smashingfreiburg: {
     register: {
-      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['smashingconf'],
@@ -363,7 +410,7 @@ export const events = {
 
   SmashingFreiburg: {
     register: {
-      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['smashingconf'],
@@ -383,7 +430,7 @@ export const events = {
 
   techbash: {
     register: {
-      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['TechBash'],
@@ -403,7 +450,7 @@ export const events = {
 
   TechBash: {
     register: {
-      link: 'https://forms.monday.com/forms/3d7a47a625bfa17e3159b27284be6791',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['TechBash'],
@@ -423,7 +470,7 @@ export const events = {
 
   vueconfus: {
     register: {
-      link: 'https://forms.monday.com/forms/1a5c33d75181a0968c7b297f3f12bd3b',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['vueconfus'],
@@ -443,7 +490,7 @@ export const events = {
 
   VueConfUS: {
     register: {
-      link: 'https://forms.monday.com/forms/1a5c33d75181a0968c7b297f3f12bd3b',
+      link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
     hashtags: ['vueconfus'],
