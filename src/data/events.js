@@ -328,6 +328,54 @@ export const events = {
     },
   },
 
+  jsconfchile: {
+    logo: {
+      publicId: 'jsconfchile-600x600-logo',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['JSConfChile'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'jsconfchile',
+      medium: 'event',
+      campaign: 'jsconfchile2023_booth',
+    },
+  },
+
+  JSConfChile: {
+    logo: {
+      publicId: 'jsconfchile-600x600-logo',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['JSConfChile'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'jsconfchile',
+      medium: 'event',
+      campaign: 'jsconfchile2023_booth',
+    },
+  },
+
   magnoliajs: {
     register: {
       link: DEFAULT_REGISTER_LINK,

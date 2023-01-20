@@ -212,20 +212,20 @@ export const FILTERS_BACKGROUNDS = [
   //   type: 'backgrounds',
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:holiday-lights,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   // },
-  {
-    id: 'codemash-stage',
-    title: 'CodeMash Stage',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:codemash-stage,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'kalahari-ohio-water-park',
-    title: 'Kalahari Water Park',
-    type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:kalahari-ohio-water-park,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
-    ],
-  },
+  // {
+  //   id: 'codemash-stage',
+  //   title: 'CodeMash Stage',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:codemash-stage,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'kalahari-ohio-water-park',
+  //   title: 'Kalahari Water Park',
+  //   type: 'backgrounds',
+  //   transformations: [
+  //     `u_${CLOUDINARY_ASSETS_FOLDER}:kalahari-ohio-water-park,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
+  //   ],
+  // },
   {
     id: 'moon',
     title: 'Moon',
