@@ -227,6 +227,20 @@ export const FILTERS_BACKGROUNDS = [
   //   ],
   // },
   {
+    id: 'chile-santiago',
+    title: 'Chile Santiago',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:chile-santiago,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
+  {
+    id: 'chile-easter-island',
+    title: 'Easter Island',
+    type: 'backgrounds',
+    transformations: [
+      `u_${CLOUDINARY_ASSETS_FOLDER}:chile-easter-island,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
+    ],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
