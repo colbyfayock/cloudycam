@@ -416,6 +416,54 @@ export const events = {
     },
   },
 
+  ngindia: {
+    // logo: {
+    //   publicId: 'ngindia-600x600-logo',
+    //   height: 80,
+    // },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['ngindia'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'ngindia',
+      medium: 'event',
+      campaign: 'ngindia2023_booth',
+    },
+  },
+
+  NGIndia: {
+    // logo: {
+    //   publicId: 'ngindia-600x600-logo',
+    //   height: 80,
+    // },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['ngindia'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'ngindia',
+      medium: 'event',
+      campaign: 'ngindia2023_booth',
+    },
+  },
+
   reactnorway: {
     register: {
       link: DEFAULT_REGISTER_LINK,
