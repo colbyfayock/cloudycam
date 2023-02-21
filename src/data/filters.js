@@ -226,19 +226,31 @@ export const FILTERS_BACKGROUNDS = [
   //     `u_${CLOUDINARY_ASSETS_FOLDER}:kalahari-ohio-water-park,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
   //   ],
   // },
+  // {
+  //   id: 'chile-santiago',
+  //   title: 'Chile Santiago',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:chile-santiago,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'chile-easter-island',
+  //   title: 'Easter Island',
+  //   type: 'backgrounds',
+  //   transformations: [
+  //     `u_${CLOUDINARY_ASSETS_FOLDER}:chile-easter-island,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
+  //   ],
+  // },
   {
-    id: 'chile-santiago',
-    title: 'Chile Santiago',
+    id: 'india-gate',
+    title: 'India Gate',
     type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:chile-santiago,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-gate,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
-    id: 'chile-easter-island',
-    title: 'Easter Island',
+    id: 'india-flag',
+    title: 'India Flag',
     type: 'backgrounds',
-    transformations: [
-      `u_${CLOUDINARY_ASSETS_FOLDER}:chile-easter-island,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
-    ],
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-flag,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
     id: 'moon',

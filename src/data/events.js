@@ -417,15 +417,15 @@ export const events = {
   },
 
   ngindia: {
-    // logo: {
-    //   publicId: 'ngindia-600x600-logo',
-    //   height: 80,
-    // },
+    logo: {
+      publicId: 'ngindia-logo',
+      height: 80,
+    },
     register: {
       link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
-    hashtags: ['ngindia'],
+    hashtags: ['ngIndia'],
     incentive: {
       text: 'extra 3 credits',
       moreInfo: {
@@ -441,15 +441,15 @@ export const events = {
   },
 
   NGIndia: {
-    // logo: {
-    //   publicId: 'ngindia-600x600-logo',
-    //   height: 80,
-    // },
+    logo: {
+      publicId: 'ngindia-logo',
+      height: 80,
+    },
     register: {
       link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
-    hashtags: ['ngindia'],
+    hashtags: ['ngIndia'],
     incentive: {
       text: 'extra 3 credits',
       moreInfo: {
