@@ -170,6 +170,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   });
 
   if (event?.logo) {
+    console.log('asdf');
     createEventLogoTransformations(event.logo).forEach((transformation) => {
       activeTransformations.push(transformation);
     });

@@ -37,6 +37,54 @@ export const events = {
     },
   },
 
+  usersummitlondon: {
+    logo: {
+      publicId: 'user-summit-london-logo',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CloudinaryDevX'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cloudinarydevx',
+      medium: 'event',
+      campaign: 'cloudinaryusersummitlondon2023_booth',
+    },
+  },
+
+  UserSummitLondon: {
+    logo: {
+      publicId: 'user-summit-london-logo',
+      height: 140,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CloudinaryDevX'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cloudinarydevx',
+      medium: 'event',
+      campaign: 'cloudinaryusersummitlondon2023_booth',
+    },
+  },
+
   // Events
 
   allthingsopen: {
