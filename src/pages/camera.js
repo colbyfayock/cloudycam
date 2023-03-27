@@ -96,6 +96,12 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
     context: {
       event_id: eventId,
     },
+    transformation: [
+      {
+        width: 1024,
+        crop: 'scale',
+      },
+    ],
   });
 
   // const dataMain = {
@@ -117,6 +123,12 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
     options: {
       background_removal: 'cloudinary_ai',
     },
+    transformation: [
+      {
+        width: 1024,
+        crop: 'scale',
+      },
+    ],
   });
 
   // const dataTransparent = {
@@ -170,7 +182,6 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   });
 
   if (event?.logo) {
-    console.log('asdf');
     createEventLogoTransformations(event.logo).forEach((transformation) => {
       activeTransformations.push(transformation);
     });

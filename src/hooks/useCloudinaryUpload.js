@@ -56,6 +56,7 @@ export function useCloudinaryUpload(options) {
           public_id: uploadPublicId,
           ...options.options,
         },
+        transformation: options.transformation,
       });
 
       const infoState = getInfoStateFromResource(results);
