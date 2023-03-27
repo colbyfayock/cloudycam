@@ -46,7 +46,7 @@ export const events = {
       link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
-    hashtags: ['CloudinaryDevX'],
+    hashtags: ['CloudinaryUserSummit'],
     incentive: {
       text: 'extra 3 credits',
       moreInfo: {
@@ -70,7 +70,7 @@ export const events = {
       link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
     },
-    hashtags: ['CloudinaryDevX'],
+    hashtags: ['CloudinaryUserSummit'],
     incentive: {
       text: 'extra 3 credits',
       moreInfo: {
@@ -206,6 +206,54 @@ export const events = {
       source: 'cityjsbrazil',
       medium: 'event',
       campaign: 'cityjsbrazil_booth',
+    },
+  },
+
+  cityjs: {
+    logo: {
+      publicId: 'cityjs-worldseries-logo-394x394',
+      height: 120,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CityJS'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cityjs',
+      medium: 'event',
+      campaign: 'cityjs_booth',
+    },
+  },
+
+  CityJS: {
+    logo: {
+      publicId: 'cityjs-worldseries-logo-394x394',
+      height: 120,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['CityJS'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cityjs',
+      medium: 'event',
+      campaign: 'cityjs_booth',
     },
   },
 

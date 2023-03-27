@@ -265,6 +265,12 @@ export const FILTERS_BACKGROUNDS = [
     transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-flags,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   },
   {
+    id: 'london-bridge',
+    title: 'London Bridge',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-bridge,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
