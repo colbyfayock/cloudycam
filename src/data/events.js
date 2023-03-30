@@ -209,7 +209,7 @@ export const events = {
     },
   },
 
-  cityjs: {
+  cityjslondon: {
     logo: {
       publicId: 'cityjs-worldseries-logo-394x394',
       height: 120,
@@ -227,13 +227,13 @@ export const events = {
       },
     },
     utm: {
-      source: 'cityjs',
+      source: 'cityjslondon',
       medium: 'event',
-      campaign: 'cityjs_booth',
+      campaign: 'cityjslondon_booth',
     },
   },
 
-  CityJS: {
+  CityJSLondon: {
     logo: {
       publicId: 'cityjs-worldseries-logo-394x394',
       height: 120,
@@ -251,9 +251,9 @@ export const events = {
       },
     },
     utm: {
-      source: 'cityjs',
+      source: 'cityjslondon',
       medium: 'event',
-      campaign: 'cityjs_booth',
+      campaign: 'cityjslondon_booth',
     },
   },
 
