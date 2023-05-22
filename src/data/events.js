@@ -342,6 +342,54 @@ export const events = {
     },
   },
 
+  devdayseurope: {
+    logo: {
+      publicId: 'devdays-logo-1000x216_ybrgzn',
+      height: 60,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['devdayseurope'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'devdayseurope',
+      medium: 'event',
+      campaign: 'devdayseurope_booth',
+    },
+  },
+
+  DevDaysEurop: {
+    logo: {
+      publicId: 'devdays-logo-1000x216_ybrgzn',
+      height: 60,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['devdayseurope'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'devdayseurope',
+      medium: 'event',
+      campaign: 'devdayseurope_booth',
+    },
+  },
+
   frontconf: {
     register: {
       link: DEFAULT_REGISTER_LINK,

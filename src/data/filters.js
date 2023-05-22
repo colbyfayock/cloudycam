@@ -252,24 +252,24 @@ export const FILTERS_BACKGROUNDS = [
   //   type: 'backgrounds',
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-flag,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   // },
-  {
-    id: 'london-clock',
-    title: 'London Clock',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-clock,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'london-flags',
-    title: 'London Flags',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-flags,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'london-bridge',
-    title: 'London Bridge',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-bridge,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
+  // {
+  //   id: 'london-clock',
+  //   title: 'London Clock',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-clock,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'london-flags',
+  //   title: 'London Flags',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-flags,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'london-bridge',
+  //   title: 'London Bridge',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-bridge,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
   {
     id: 'moon',
     title: 'Moon',
