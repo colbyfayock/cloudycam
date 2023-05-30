@@ -520,6 +520,54 @@ export const events = {
     },
   },
 
+  jsconfindia: {
+    logo: {
+      publicId: 'jsconfindia-logo-225x255_y186nx',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['jsconfindia'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'jsconfindia',
+      medium: 'event',
+      campaign: 'jsconfindia2023_booth',
+    },
+  },
+
+  JSConfIndia: {
+    logo: {
+      publicId: 'jsconfindia-logo-225x255_y186nx',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['jsconfindia'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'jsconfindia',
+      medium: 'event',
+      campaign: 'jsconfindia2023_booth',
+    },
+  },
+
   magnoliajs: {
     register: {
       link: DEFAULT_REGISTER_LINK,
