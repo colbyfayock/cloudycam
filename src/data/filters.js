@@ -240,18 +240,18 @@ export const FILTERS_BACKGROUNDS = [
   //     `u_${CLOUDINARY_ASSETS_FOLDER}:chile-easter-island,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
   //   ],
   // },
-  {
-    id: 'india-gate',
-    title: 'India Gate',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-gate,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'india-flag',
-    title: 'India Flag',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-flag,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
+  // {
+  //   id: 'india-gate',
+  //   title: 'India Gate',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-gate,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
+  // {
+  //   id: 'india-flag',
+  //   title: 'India Flag',
+  //   type: 'backgrounds',
+  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-flag,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  // },
   // {
   //   id: 'london-clock',
   //   title: 'London Clock',
@@ -270,6 +270,18 @@ export const FILTERS_BACKGROUNDS = [
   //   type: 'backgrounds',
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-bridge,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   // },
+  {
+    id: 'singapore-gardens',
+    title: 'Singapore Gardens',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-gardens,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
+  {
+    id: 'singapore-merlion',
+    title: 'Singapore Merlion',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-merlion,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
   {
     id: 'moon',
     title: 'Moon',

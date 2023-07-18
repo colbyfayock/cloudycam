@@ -257,7 +257,11 @@ export const events = {
     },
   },
 
-  cityjssg: {
+  cityjssg2023: {
+    logo: {
+      publicId: 'cityjs-worldseries-logo-394x394',
+      height: 120,
+    },
     register: {
       link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
@@ -273,11 +277,15 @@ export const events = {
     utm: {
       source: 'cityjssg',
       medium: 'event',
-      campaign: 'cityjssg2022_booth',
+      campaign: 'cityjssg2023_booth',
     },
   },
 
-  CityJSSG: {
+  CityJSSG2023: {
+    logo: {
+      publicId: 'cityjs-worldseries-logo-394x394',
+      height: 120,
+    },
     register: {
       link: DEFAULT_REGISTER_LINK,
       text: 'Get Your Free Account',
@@ -293,7 +301,7 @@ export const events = {
     utm: {
       source: 'cityjssg',
       medium: 'event',
-      campaign: 'cityjssg2022_booth',
+      campaign: 'cityjssg2023_booth',
     },
   },
 
