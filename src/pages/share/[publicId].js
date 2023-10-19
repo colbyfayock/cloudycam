@@ -34,7 +34,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
   const cloudinarySectionRef = useRef();
   const router = useRouter();
 
-  const { eventId: appEventId, host } = useApp();
+  const { eventId: appEventId, host, mode } = useApp();
 
   const eventId = router.query?.eventId || appEventId;
 
@@ -154,34 +154,43 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
             alt="Transfomered by Cloudinary"
           />
           <Sidebar>
-            <SidebarTitle className={styles.sidebarTitle}>Share Your Creation</SidebarTitle>
-            <Controls className={styles.shareControls}>
-              <Control>
-                <Button color="twitter-blue" iconPosition="left" shape="capsule-tall" onClick={handleOnTwitterClick}>
-                  <FaTwitter />
-                  <span>Twitter</span>
-                </Button>
-              </Control>
-              {/* <Control>
-                <Button color="cloudinary-orange" iconPosition="left" shape="capsule-tall" onClick={handleOnMailClick}>
-                  <span>Email</span>
-                </Button>
-              </Control> */}
-              {/* <Control>
-                <Button
-                  href={downloadData?.objectUrl}
-                  color="cloudinary-blue"
-                  iconPosition="left"
-                  shape="capsule-tall"
-                  onClick={handleOnShare}
-                  download
-                  target="_blank"
-                  disabled={!downloadData?.objectUrl}
-                >
-                  <span>Download</span>
-                </Button>
-              </Control> */}
-            </Controls>
+            {mode !== 'photobooth' && (
+              <>
+                <SidebarTitle className={styles.sidebarTitle}>Share Your Creation</SidebarTitle>
+                <Controls className={styles.shareControls}>
+                  <Control>
+                    <Button
+                      color="twitter-blue"
+                      iconPosition="left"
+                      shape="capsule-tall"
+                      onClick={handleOnTwitterClick}
+                    >
+                      <FaTwitter />
+                      <span>Twitter</span>
+                    </Button>
+                  </Control>
+                  {/* <Control>
+                  <Button color="cloudinary-orange" iconPosition="left" shape="capsule-tall" onClick={handleOnMailClick}>
+                    <span>Email</span>
+                  </Button>
+                </Control> */}
+                  {/* <Control>
+                  <Button
+                    href={downloadData?.objectUrl}
+                    color="cloudinary-blue"
+                    iconPosition="left"
+                    shape="capsule-tall"
+                    onClick={handleOnShare}
+                    download
+                    target="_blank"
+                    disabled={!downloadData?.objectUrl}
+                  >
+                    <span>Download</span>
+                  </Button>
+                </Control> */}
+                </Controls>
+              </>
+            )}
             <SidebarTitle className={styles.sidebarTitle}>Open on your Device</SidebarTitle>
             <p className={styles.shareQr}>
               {shareUrl && (
