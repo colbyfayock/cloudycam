@@ -85,6 +85,52 @@ export const events = {
     },
   },
 
+  usersummitsanjose: {
+    logo: {
+      publicId: 'user_summit_SJ_logo-white_q3fzir',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cloudinarydevx',
+      medium: 'event',
+      campaign: 'cloudinaryusersummitsanjose2023_booth',
+    },
+  },
+
+  UserSummitSanJose: {
+    logo: {
+      publicId: 'user_summit_SJ_logo-white_q3fzir',
+      height: 140,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'cloudinarydevx',
+      medium: 'event',
+      campaign: 'cloudinaryusersummitsanjose2023_booth',
+    },
+  },
+
   // Events
 
   allthingsopen: {
