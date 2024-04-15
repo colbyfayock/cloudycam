@@ -175,6 +175,54 @@ export const events = {
     },
   },
 
+  braziljs: {
+    logo: {
+      publicId: 'braziljsconf24_vpnqjt',
+      height: 80,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['BrazilJSConf'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'braziljs',
+      medium: 'event',
+      campaign: 'braziljs_booth',
+    },
+  },
+
+  BrazilJS: {
+    logo: {
+      publicId: 'braziljsconf24_vpnqjt',
+      height: 120,
+    },
+    register: {
+      link: DEFAULT_REGISTER_LINK,
+      text: 'Get Your Free Account',
+    },
+    hashtags: ['BrazilJSConf'],
+    incentive: {
+      text: 'extra 3 credits',
+      moreInfo: {
+        text: 'what are credits?',
+        link: 'https://cloudinary.com/pricing/compare-plans',
+      },
+    },
+    utm: {
+      source: 'braziljs',
+      medium: 'event',
+      campaign: 'braziljs_booth',
+    },
+  },
+
   canariasjs: {
     register: {
       link: DEFAULT_REGISTER_LINK,
