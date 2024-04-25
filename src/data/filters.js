@@ -283,6 +283,12 @@ export const FILTERS_BACKGROUNDS = [
   //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-merlion,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
   // },
   {
+    id: 'araujo-braziljs',
+    title: 'Araújo Vianna',
+    type: 'backgrounds',
+    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:araujo-braziljs,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
+  },
+  {
     id: 'moon',
     title: 'Moon',
     type: 'backgrounds',
