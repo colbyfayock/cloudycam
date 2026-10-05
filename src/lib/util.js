@@ -1,12 +1,17 @@
-import crypto from 'crypto';
-
 /**
  * createHashFromString
+ * @description Uses the Web Crypto API (available in all modern browsers and Node 20+)
+ * so we don't rely on a bundler polyfill for Node's `crypto` module. Truncated to
+ * 32 hex characters to keep public IDs the same length as the previous MD5 hashes.
  */
 
 export async function createHashFromString(data) {
   if (!data) throw new Error('Failed to create hash. Data undefined.');
-  return await crypto.createHash('md5').update(data).digest('hex');
+  const buffer = await globalThis.crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+  return Array.from(new Uint8Array(buffer))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('')
+    .slice(0, 32);
 }
 
 /**
