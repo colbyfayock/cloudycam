@@ -1,4 +1,7 @@
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
+import { imageLayer, faceOverlay, backgroundUnderlay } from '@lib/layers';
+
+const asset = (publicId) => `${CLOUDINARY_ASSETS_FOLDER}/${publicId}`;
 
 export const FILTER_ID_NONE = 'NONE';
 
@@ -39,7 +42,10 @@ export const FILTERS_EFFECTS = [
     title: 'Unicorn',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-mask,c_scale,h_3.3,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_0.03,y_-0.14,a_-15`,
+      faceOverlay(asset('unicorn-mask'), {
+        transformations: ['c_scale', 'h_3.3'],
+        apply: ['x_0.03', 'y_-0.14', 'a_-15'],
+      }),
     ],
   },
   {
@@ -47,7 +53,10 @@ export const FILTERS_EFFECTS = [
     title: 'Unicorn Horn',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:unicorn-horn,c_scale,fl_region_relative,h_3.5/fl_layer_apply,fl_no_overflow,g_adv_face`,
+      faceOverlay(asset('unicorn-horn'), {
+        transformations: ['c_scale', 'h_3.5'],
+        multiple: false,
+      }),
     ],
   },
   {
@@ -55,7 +64,10 @@ export const FILTERS_EFFECTS = [
     title: 'Darth Vader',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:vader-helmet,c_scale,h_2.0,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,x_0.01,y_-0.05`,
+      faceOverlay(asset('vader-helmet'), {
+        transformations: ['c_scale', 'h_2.0'],
+        apply: ['x_0.01', 'y_-0.05'],
+      }),
     ],
   },
   {
@@ -63,7 +75,9 @@ export const FILTERS_EFFECTS = [
     title: 'Guy Fawkes',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:guy-fawkes,c_scale,h_1.35,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces`,
+      faceOverlay(asset('guy-fawkes'), {
+        transformations: ['c_scale', 'h_1.35'],
+      }),
     ],
   },
   {
@@ -71,7 +85,9 @@ export const FILTERS_EFFECTS = [
     title: 'Dali',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:dali,c_scale,w_1.65,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces`,
+      faceOverlay(asset('dali'), {
+        transformations: ['c_scale', 'w_1.65'],
+      }),
     ],
   },
   {
@@ -79,7 +95,10 @@ export const FILTERS_EFFECTS = [
     title: 'Deal With It',
     type: 'effects',
     transformations: [
-      `l_${CLOUDINARY_ASSETS_FOLDER}:deal-with-it,c_scale,w_1.0,fl_region_relative/fl_layer_apply,fl_no_overflow,g_adv_faces,y_-0.07`,
+      faceOverlay(asset('deal-with-it'), {
+        transformations: ['c_scale', 'w_1.0'],
+        apply: ['y_-0.07'],
+      }),
     ],
   },
   {
@@ -98,250 +117,62 @@ export const FILTERS_STYLES = [
   { type: 'styles', id: 'vectorize', title: 'Vectorize', transformations: ['e_vectorize:3:0.5:0.1'] },
 ];
 
+/**
+ * background
+ * @description Background filters fill the frame behind the background-removed photo
+ */
+
+function background({ id, title, publicId = id, ...rest }) {
+  return {
+    id,
+    title,
+    type: 'backgrounds',
+    transformations: [backgroundUnderlay(asset(publicId))],
+    ...rest,
+  };
+}
+
 export const FILTERS_BACKGROUNDS = [
-  // {
-  //   id: 'cityjs',
-  //   title: 'City JS',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cityjs,c_fill,w_1.0,h_1.0,fl_relative`],
-  //   allowedEvents: [
-  //     'cityjsbrazil'
-  //   ]
-  // },
-  // {
-  //   id: 'jsdaycanarias-stage',
-  //   title: 'JSDay Canarias',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-stage,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'jsdaycanarias-audience',
-  //   title: 'JSDay Canarias',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jsdaycanarias-audience,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'tenerife',
-  //   title: 'Tenerife',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:tenerife,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'vueconf-beach',
-  //   title: 'VueConf Beach',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:vueconf-beach,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'vueconf-stage',
-  //   title: 'VueConf Stage',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:vueconf-stage,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'reactnorway-stage',
-  //   title: 'React Norway',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:reactnorway-stage,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'reactnorway-larvik',
-  //   title: 'Larvik',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:reactnorway-larvik,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'cityjssg-singapore',
-  //   title: 'Singapore',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-towers,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'cascadiajs',
-  //   title: 'CascadiaJS',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:cascadiajs,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'bend-or',
-  //   title: 'Bend, OR',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:bend-or,c_fill,w_1.0,h_1.0,fl_relative`],
-  // },
-  // {
-  //   id: 'mississippi-capitol',
-  //   title: 'Mississippi Capitol',
-  //   type: 'backgrounds',
-  //   transformations: [
-  //     `u_${CLOUDINARY_ASSETS_FOLDER}:mississippi-capitol,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
-  //   ],
-  // },
-  // {
-  //   id: 'ato-earth',
-  //   title: 'ATO Earth',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-earth,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'ato-astronaut',
-  //   title: 'ATO Astronaut',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:ato-astronaut,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'jamstack-conf',
-  //   title: 'Jamstack Conf',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:jamstack-conf,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'hanukkah-menorah',
-  //   title: 'Hanukkah Menorah',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:hanukkah-menorah,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'snowy-night',
-  //   title: 'Snowy Night',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:snowy-night,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'holiday-lights',
-  //   title: 'Holiday Lights',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:holiday-lights,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'codemash-stage',
-  //   title: 'CodeMash Stage',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:codemash-stage,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'kalahari-ohio-water-park',
-  //   title: 'Kalahari Water Park',
-  //   type: 'backgrounds',
-  //   transformations: [
-  //     `u_${CLOUDINARY_ASSETS_FOLDER}:kalahari-ohio-water-park,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
-  //   ],
-  // },
-  // {
-  //   id: 'chile-santiago',
-  //   title: 'Chile Santiago',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:chile-santiago,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'chile-easter-island',
-  //   title: 'Easter Island',
-  //   type: 'backgrounds',
-  //   transformations: [
-  //     `u_${CLOUDINARY_ASSETS_FOLDER}:chile-easter-island,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`,
-  //   ],
-  // },
-  // {
-  //   id: 'india-gate',
-  //   title: 'India Gate',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-gate,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'india-flag',
-  //   title: 'India Flag',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:india-flag,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'london-clock',
-  //   title: 'London Clock',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-clock,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'london-flags',
-  //   title: 'London Flags',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-flags,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'london-bridge',
-  //   title: 'London Bridge',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:london-bridge,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'singapore-gardens',
-  //   title: 'Singapore Gardens',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-gardens,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  // {
-  //   id: 'singapore-merlion',
-  //   title: 'Singapore Merlion',
-  //   type: 'backgrounds',
-  //   transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:singapore-merlion,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  // },
-  {
-    id: 'araujo-braziljs',
-    title: 'Araújo Vianna',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:araujo-braziljs,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'moon',
-    title: 'Moon',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:moon-earth,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'this-is-fine',
-    title: 'This Is Fine',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:this_is_fine,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'mario',
-    title: 'Mario',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:mario,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'the-office',
-    title: 'The Office',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:the_office,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'whats-going-on',
-    title: "What's going on?",
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:whats-going-on,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'beach',
-    title: 'Beach',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:beach,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'pixel-canvas',
-    title: 'Pixel Canvas',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:pixel-canvas,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'matrix',
-    title: 'Matrix',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:matrix,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
-  {
-    id: 'psychedelic',
-    title: 'Psychedelic',
-    type: 'backgrounds',
-    transformations: [`u_${CLOUDINARY_ASSETS_FOLDER}:psychedelic,c_fill,w_1.0,h_1.0,fl_relative/fl_layer_apply`],
-  },
+  // Past event backgrounds, uncomment to bring one back
+  // background({ id: 'cityjs', title: 'City JS', allowedEvents: ['cityjsbrazil'] }),
+  // background({ id: 'jsdaycanarias-stage', title: 'JSDay Canarias' }),
+  // background({ id: 'jsdaycanarias-audience', title: 'JSDay Canarias' }),
+  // background({ id: 'tenerife', title: 'Tenerife' }),
+  // background({ id: 'vueconf-beach', title: 'VueConf Beach' }),
+  // background({ id: 'vueconf-stage', title: 'VueConf Stage' }),
+  // background({ id: 'reactnorway-stage', title: 'React Norway' }),
+  // background({ id: 'reactnorway-larvik', title: 'Larvik' }),
+  // background({ id: 'cityjssg-singapore', title: 'Singapore', publicId: 'singapore-towers' }),
+  // background({ id: 'cascadiajs', title: 'CascadiaJS' }),
+  // background({ id: 'bend-or', title: 'Bend, OR' }),
+  // background({ id: 'mississippi-capitol', title: 'Mississippi Capitol' }),
+  // background({ id: 'ato-earth', title: 'ATO Earth' }),
+  // background({ id: 'ato-astronaut', title: 'ATO Astronaut' }),
+  // background({ id: 'jamstack-conf', title: 'Jamstack Conf' }),
+  // background({ id: 'hanukkah-menorah', title: 'Hanukkah Menorah' }),
+  // background({ id: 'snowy-night', title: 'Snowy Night' }),
+  // background({ id: 'holiday-lights', title: 'Holiday Lights' }),
+  // background({ id: 'codemash-stage', title: 'CodeMash Stage' }),
+  // background({ id: 'kalahari-ohio-water-park', title: 'Kalahari Water Park' }),
+  // background({ id: 'chile-santiago', title: 'Chile Santiago' }),
+  // background({ id: 'chile-easter-island', title: 'Easter Island' }),
+  // background({ id: 'india-gate', title: 'India Gate' }),
+  // background({ id: 'india-flag', title: 'India Flag' }),
+  // background({ id: 'london-clock', title: 'London Clock' }),
+  // background({ id: 'london-flags', title: 'London Flags' }),
+  // background({ id: 'london-bridge', title: 'London Bridge' }),
+  // background({ id: 'singapore-gardens', title: 'Singapore Gardens' }),
+  // background({ id: 'singapore-merlion', title: 'Singapore Merlion' }),
+  background({ id: 'araujo-braziljs', title: 'Araújo Vianna' }),
+  background({ id: 'moon', title: 'Moon', publicId: 'moon-earth' }),
+  background({ id: 'this-is-fine', title: 'This Is Fine', publicId: 'this_is_fine' }),
+  background({ id: 'mario', title: 'Mario' }),
+  background({ id: 'the-office', title: 'The Office', publicId: 'the_office' }),
+  background({ id: 'whats-going-on', title: "What's going on?" }),
+  background({ id: 'beach', title: 'Beach' }),
+  background({ id: 'pixel-canvas', title: 'Pixel Canvas' }),
+  background({ id: 'matrix', title: 'Matrix' }),
+  background({ id: 'psychedelic', title: 'Psychedelic' }),
 ];
 
 export const FILTERS_MORE = [
@@ -353,7 +184,9 @@ export const FILTERS_MORE = [
       base: 'c_thumb,g_faces,h_480,w_360',
       applied: 'g_north_west,x_170,y_130',
     },
-    finalTransformations: [`l_${CLOUDINARY_ASSETS_FOLDER}:friends_frame,w_1.0,h_1.0,fl_region_relative/fl_layer_apply`],
+    finalTransformations: [
+      imageLayer(asset('friends_frame'), { transformations: ['fl_region_relative', 'h_1.0', 'w_1.0'] }),
+    ],
   },
   // {
   //   id: 'pop',

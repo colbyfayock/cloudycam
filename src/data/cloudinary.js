@@ -5,7 +5,23 @@ export const CLOUDINARY_TAG_ASSET_ORIGINAL = 'cloudycam-asset-original';
 export const CLOUDINARY_TAG_ASSET_TRANSPARENT = 'cloudycam-asset-transparent';
 export const CLOUDINARY_TAG_ASSET_TRANSFORMATION = 'cloudycam-asset-transformation';
 
+// Face-anchored filters use Advanced Facial Attribute Detection (g_adv_face/g_adv_faces) for
+// accurate placement, which requires that add-on on the Cloudinary account. Set
+// NEXT_PUBLIC_CLOUDINARY_ADV_FACE="false" to fall back to built-in face detection (g_face/g_faces).
+
+export const CLOUDINARY_ADV_FACE_ENABLED = process.env.NEXT_PUBLIC_CLOUDINARY_ADV_FACE !== 'false';
+
 export const CLOUDINARY_PROPERTIES = [
+  {
+    id: 'a',
+    name: 'Angle',
+    description: 'Rotates an asset or layer by the specified degrees.',
+  },
+  {
+    id: 'co',
+    name: 'Color',
+    description: 'Sets the color for text layers and effects like colorize.',
+  },
   {
     id: 'c',
     name: 'Crop / Resize',
@@ -35,6 +51,11 @@ export const CLOUDINARY_PROPERTIES = [
     id: 'l',
     name: 'Layer',
     description: 'Applies a layer over the base asset, also known as an overlay.',
+  },
+  {
+    id: 'o',
+    name: 'Opacity',
+    description: 'Adjusts the opacity of an asset or layer.',
   },
   {
     id: 'r',

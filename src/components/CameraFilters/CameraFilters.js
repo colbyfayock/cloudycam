@@ -2,12 +2,14 @@ import dynamic from 'next/dynamic';
 // https://github.com/reactjs/react-tabs/issues/56#issuecomment-791029642
 const Tabs = dynamic(
   import('react-tabs').then((mod) => mod.Tabs),
-  { ssr: false }
+  { ssr: false },
 );
 import { Tab, TabList, TabPanel } from 'react-tabs';
 import { FaBan } from 'react-icons/fa';
 
 import CldImage from '@components/CldImage';
+
+import { createBaseImageTransformations } from '@lib/cloudinary';
 
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 import { FILTER_ID_NONE } from '@data/filters';
@@ -99,7 +101,7 @@ const CameraFilters = ({ className, filters, types, srcMain, srcTransparent, onF
                 </li>
                 {typeFilters.map((filter) => {
                   const activeTransformations = [
-                    `l_${activePublicId?.replaceAll('/', ':')},w_1.0,h_1.0,fl_region_relative/fl_layer_apply`,
+                    ...createBaseImageTransformations(activePublicId),
                     ...(filter?.transformations || []),
                   ];
 

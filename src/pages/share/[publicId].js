@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { v2 as cloudinary } from 'cloudinary';
 import { FaCamera, FaTwitter } from 'react-icons/fa';
@@ -12,6 +11,7 @@ import {
 } from '@lib/cloudinary';
 import { createTweetAction, openTweet } from '@lib/social';
 import * as gtag from '@lib/gtag';
+import { toLayerPublicId } from '@lib/layers';
 
 import { useApp } from '@hooks/useApp';
 
@@ -212,11 +212,14 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
           <h2>Want to take a new one?</h2>
           <ul>
             <li>
-              <Link href={eventId && eventId !== 'default' ? `/${eventId}` : '/camera'} passHref={true}>
-                <Button color="cloudinary-yellow" iconPosition="left" shape="capsule">
-                  <FaCamera /> New Photo
-                </Button>
-              </Link>
+              <Button
+                href={eventId && eventId !== 'default' ? `/${eventId}` : '/camera'}
+                color="cloudinary-yellow"
+                iconPosition="left"
+                shape="capsule"
+              >
+                <FaCamera /> New Photo
+              </Button>
             </li>
           </ul>
         </Container>
@@ -339,10 +342,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
                               <ul key={transformation} className={styles.transformation}>
                                 {definitions.map((definition) => {
                                   return (
-                                    <li
-                                      key={`${filterTitle}-${definition.id || definition.value}`}
-                                      className={styles.definition}
-                                    >
+                                    <li key={`${filterTitle}-${definition.key}`} className={styles.definition}>
                                       <p className={styles.definitionDetails}>
                                         <strong className={styles.definitionTitle}>{definition.name}:</strong>
                                         <code
@@ -368,10 +368,7 @@ export default function Share({ resource, original, filters, ogImageUrl }) {
                                 {definitions.map((definition) => {
                                   const effectDefinition = parseEffectsStringToReadable(definition.value);
                                   return (
-                                    <li
-                                      key={`${filterTitle}-${definition.id || definition.value}`}
-                                      className={styles.definition}
-                                    >
+                                    <li key={`${filterTitle}-${definition.key}`} className={styles.definition}>
                                       <p className={styles.definitionDetails}>
                                         <strong className={styles.definitionTitle}>{effectDefinition.name}:</strong>
                                         <code
@@ -452,7 +449,7 @@ export async function getStaticProps({ params }) {
         quality: 'auto',
       },
       {
-        overlay: resource.public_id.replace('/', ':'),
+        overlay: toLayerPublicId(resource.public_id),
       },
       {
         flags: 'layer_apply',

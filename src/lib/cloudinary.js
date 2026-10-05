@@ -1,6 +1,7 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 
 import { timeout } from '@lib/util';
+import { imageLayer, textLayer, baseImageLayer } from '@lib/layers';
 
 import { CLOUDINARY_ASSETS_FOLDER, CLOUDINARY_EFFECT_PROPERTIES, CLOUDINARY_PROPERTIES } from '@data/cloudinary';
 
@@ -24,7 +25,7 @@ export function constructCloudinaryUrl({ publicId, transformations = [], format 
     image.addTransformation(transformation);
   });
 
-  image.format(format).delivery(`q_${quality}`);
+  image.format(format).quality(quality);
 
   return image.toURL();
 }
@@ -33,32 +34,55 @@ export function constructCloudinaryUrl({ publicId, transformations = [], format 
  * uploadToCloudinary
  */
 
-export async function uploadToCloudinary(image, options = {}) {
-  return await fetch('/api/cloudinary/upload', {
+export async function uploadToCloudinary(image, options = {}, { signal } = {}) {
+  const response = await fetch('/api/cloudinary/upload', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       image,
-      uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
       ...options,
     }),
-  }).then((r) => r.json());
+    signal,
+  });
+
+  const results = await response.json();
+
+  if (!response.ok) {
+    throw new Error(results?.message || `Failed to upload image (${response.status})`);
+  }
+
+  return results;
 }
 
 /**
  * checkStatus
  */
 
-export async function checkStatus(results) {
-  const resource = await fetch(`/api/cloudinary/resource/?publicId=${results.public_id}`).then((r) => r.json());
+export async function checkStatus(results, { signal, interval = 500, maxAttempts = 120 } = {}) {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    signal?.throwIfAborted();
 
-  const infoState = getInfoStateFromResource(resource);
+    const response = await fetch(`/api/cloudinary/resource?publicId=${encodeURIComponent(results.public_id)}`, {
+      signal,
+    });
+    const resource = await response.json();
 
-  if (Array.isArray(infoState) && infoState.includes('pending')) {
-    await timeout(500);
-    return await checkStatus(results);
+    if (!response.ok) {
+      throw new Error(resource?.message || `Failed to get resource (${response.status})`);
+    }
+
+    const infoState = getInfoStateFromResource(resource);
+
+    if (!Array.isArray(infoState) || !infoState.includes('pending')) {
+      return resource;
+    }
+
+    await timeout(interval);
   }
 
-  return resource;
+  throw new Error('Timed out waiting for resource processing to complete');
 }
 
 /**
@@ -75,31 +99,56 @@ export function getInfoStateFromResource(results) {
 }
 
 /**
+ * createBaseImageTransformations
+ * @description Layers the photo over itself at full size so that background underlays
+ * and effects stack in a predictable order
+ */
+
+export function createBaseImageTransformations(publicId) {
+  if (!publicId) return [];
+  return [baseImageLayer(publicId)];
+}
+
+/**
  * createHashtagBadgeTransformations
  */
 
 export function createHashtagBadgeTransformations(hashtags) {
   if (!Array.isArray(hashtags) || hashtags.length === 0) return [];
 
-  const hashtagsString = hashtags.map((tag) => `%23${tag}`).join('   ');
+  const hashtagsText = hashtags.map((tag) => `#${tag}`).join('   ');
+
+  const font = {
+    text: hashtagsText,
+    fontFamily: 'Source Sans Pro',
+    fontSize: 28,
+    fontStyles: ['bold'],
+  };
 
   return [
-    // Add the text overlay first as transparent text, this will help us
-    // create the dynamic sizing of the box
+    // Add the text overlay first as transparent text, this will help us create the dynamic
+    // sizing of the box. The color block and visible text are nested inside of it so that
+    // they can take advantage of sizing relative to the text.
 
-    `l_text:Source Sans Pro_28_bold:${hashtagsString},co_white,o_0`,
-
-    // Add the color block behind "nested" so that it can take advantage of relative sizing
-
-    `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:F05354,w_1.2,h_2.0,fl_region_relative/fl_layer_apply,g_north_west,x_0,y_0`,
-
-    // Add the actual text
-
-    `l_text:Source Sans Pro_28_bold:${hashtagsString},co_white,c_fit,w_1.0,fl_region_relative/fl_layer_apply`,
-
-    // "Close" the transparent text transformation and apply positioning
-
-    'fl_layer_apply,g_north_west,x_0,y_23',
+    textLayer(
+      {
+        ...font,
+        params: ['co_white', 'o_0'],
+      },
+      {
+        nested: [
+          imageLayer(`${CLOUDINARY_ASSETS_FOLDER}/white-1x1`, {
+            transformations: ['e_colorize', 'co_rgb:F05354', 'w_1.2', 'h_2.0', 'fl_region_relative'],
+            apply: ['g_north_west', 'x_0', 'y_0'],
+          }),
+          textLayer({
+            ...font,
+            params: ['co_white', 'c_fit', 'w_1.0', 'fl_region_relative'],
+          }),
+        ],
+        apply: ['g_north_west', 'x_0', 'y_23'],
+      },
+    ),
   ];
 }
 
@@ -109,10 +158,17 @@ export function createHashtagBadgeTransformations(hashtags) {
 
 export function createLogoBadgeTransformations() {
   return [
-    `l_${CLOUDINARY_ASSETS_FOLDER}:white-1x1,e_colorize,co_rgb:3448C5,w_243,h_63/fl_layer_apply,g_south_east,x_0,y_10`,
-    `l_${CLOUDINARY_ASSETS_FOLDER}:cloudycam-logo-white,w_220,h_47/fl_layer_apply,x_10,y_18,g_south_east`,
+    imageLayer(`${CLOUDINARY_ASSETS_FOLDER}/white-1x1`, {
+      transformations: ['e_colorize', 'co_rgb:3448C5', 'w_243', 'h_63'],
+      apply: ['g_south_east', 'x_0', 'y_10'],
+    }),
+    imageLayer(`${CLOUDINARY_ASSETS_FOLDER}/cloudycam-logo-white`, {
+      transformations: ['w_220', 'h_47'],
+      apply: ['g_south_east', 'x_10', 'y_18'],
+    }),
   ];
 }
+
 /**
  * createEventLogoTransformations
  */
@@ -125,7 +181,10 @@ export function createEventLogoTransformations(options) {
     };
   }
   return [
-    `l_${CLOUDINARY_ASSETS_FOLDER}:${options.publicId},h_${options.height}/fl_layer_apply,x_14,y_18,g_south_west`,
+    imageLayer(`${CLOUDINARY_ASSETS_FOLDER}/${options.publicId}`, {
+      transformations: [`h_${options.height}`],
+      apply: ['g_south_west', 'x_14', 'y_18'],
+    }),
   ];
 }
 
@@ -134,13 +193,17 @@ export function createEventLogoTransformations(options) {
  */
 
 export function parseTransformationStringToReadable(transformation) {
-  const segments = transformation.split(',');
+  // Layers span multiple components (l_id/params/fl_layer_apply), so split on both
+  // component (/) and parameter (,) separators
+
+  const segments = transformation.split(/[/,]/).filter(Boolean);
   return segments.map((segment, index) => {
     const matches = segment.match(/([a-zA-Z]+)_([a-zA-Z0-9_:\-.]+)/);
 
     if (!matches) {
       return {
-        id: `${segment}-${index}`,
+        key: `${segment}-${index}`,
+        id: segment,
         name: 'Other',
         value: segment,
       };
@@ -150,7 +213,10 @@ export function parseTransformationStringToReadable(transformation) {
     const property = CLOUDINARY_PROPERTIES.find((prop) => prop.id === id);
 
     return {
+      name: id,
       ...property,
+      key: `${id}_${value}-${index}`,
+      id,
       value,
     };
   });
