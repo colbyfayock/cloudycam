@@ -1,4 +1,6 @@
-@import "@styles/settings/__settings";
+@use "@styles/settings/__settings" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap");
 
 html,
 body {
@@ -32,4 +34,17 @@ p {
   left: -9999px;
   width: 0;
   height: 0;
+}
+
+// Respect reduced motion preferences for loading shimmers and spinners
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

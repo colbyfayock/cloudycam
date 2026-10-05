@@ -1,32 +1,40 @@
-import { useCallback } from 'react';
 import useSWR from 'swr';
 
 import Camera from './camera';
 
 import { events } from '@data/events';
-import { CLOUDINARY_UPLOADS_FOLDER, CLOUDINARY_TAG_ASSET_TRANSFORMATION } from '@data/cloudinary';
+import { CLOUDINARY_TAG_ASSET_TRANSFORMATION } from '@data/cloudinary';
 
 const eventIds = Object.keys(events);
 
-export default function EventHome(props) {
-  const memoizedCallback = useCallback(
-    async (url) => {
-      const { resources, total_count } = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
-          folder: CLOUDINARY_UPLOADS_FOLDER,
-          tags: [`event-${props.eventId}`, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
-        }),
-      }).then((res) => res.json());
-      return {
-        resources,
-        totalCount: total_count,
-      };
+async function fetchEventImages([url, eventId]) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    [props.eventId]
-  );
+    body: JSON.stringify({
+      tags: [`event-${eventId}`, CLOUDINARY_TAG_ASSET_TRANSFORMATION],
+    }),
+  });
 
-  const { data = {} } = useSWR('/api/cloudinary/resources', memoizedCallback);
+  if (!response.ok) {
+    throw new Error(`Failed to load event images (${response.status})`);
+  }
+
+  const { resources, total_count } = await response.json();
+
+  return {
+    resources,
+    totalCount: total_count,
+  };
+}
+
+export default function EventHome(props) {
+  // Include the event in the SWR key so each event's gallery is cached separately. Skip
+  // fetching while a fallback page is rendering without an event ID.
+
+  const { data = {} } = useSWR(props.eventId ? ['/api/cloudinary/resources', props.eventId] : null, fetchEventImages);
   const { resources } = data;
 
   const eventImages =

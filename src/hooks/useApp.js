@@ -18,61 +18,46 @@ export const AppProvider = ({ children, eventId }) => {
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;
 };
 
-let isHydrated = false;
+function readStoredState() {
+  try {
+    const data = window.localStorage.getItem(STATE_KEY);
+    return data !== null ? JSON.parse(data) : {};
+  } catch {
+    // Private browsing, blocked storage, or corrupted data shouldn't break the app
+    return {};
+  }
+}
 
-export function useAppState({ eventId: initialEventId }) {
+export function useAppState({ eventId: pageEventId }) {
   const [state, setState] = useState();
 
-  // // Hydrate existing state
+  // Hydrate existing state from localStorage after mount so server and client renders match.
+  // This syncs from an external store once, so setting state here is intentional.
 
   useEffect(() => {
-    if (isHydrated) return;
-
-    isHydrated = true;
-
-    const data = window.localStorage.getItem(STATE_KEY);
-    const initialState = data !== null ? JSON.parse(data) : {};
-
-    if (initialEventId && initialState.eventId !== initialEventId) {
-      initialState.eventId = initialEventId;
-    }
-
+    const storedState = readStoredState();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState({
       ...DEFAULT_STATE,
-      ...initialState,
+      ...storedState,
+      host: storedState.host || DEFAULT_STATE.host || window.location.origin,
     });
   }, []);
 
-  // If the initial event ID changes, reflect in state
+  // An event ID from the page URL always wins over the stored one
 
-  useState(() => {
-    setState((prev) => {
-      return {
-        ...prev,
-        eventId: initialEventId,
-      };
-    });
-  }, [initialEventId]);
+  const eventId = pageEventId || state?.eventId;
 
   // Store state updates on change
 
   useEffect(() => {
     if (!state) return;
-    window.localStorage.setItem(STATE_KEY, JSON.stringify(state));
-  }, [state]);
-
-  // Get the host if it doesn't exist when the page loads
-
-  useEffect(() => {
-    if (!state?.host) {
-      setState((prev) => {
-        return {
-          ...prev,
-          host: window?.location.origin,
-        };
-      });
+    try {
+      window.localStorage.setItem(STATE_KEY, JSON.stringify({ ...state, eventId }));
+    } catch {
+      // Ignore storage being unavailable
     }
-  }, [state?.host]);
+  }, [state, eventId]);
 
   /**
    * setEventId
@@ -104,6 +89,7 @@ export function useAppState({ eventId: initialEventId }) {
     setEventId,
     setMode,
     ...state,
+    eventId,
   };
 }
 

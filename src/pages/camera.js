@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useEffectEvent } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { FaCamera, FaTimes, FaUndo, FaShare, FaMagic, FaSpinner, FaStopwatch } from 'react-icons/fa';
@@ -7,10 +7,12 @@ import { useApp } from '@hooks/useApp';
 import { useCamera } from '@hooks/useCamera';
 import { useCloudinaryUpload } from '@hooks/useCloudinaryUpload';
 import { useFilters } from '@hooks/useFilters';
+import { useCountdown } from '@hooks/useCountdown';
 
 import { event as pushEvent } from '@lib/gtag';
 import {
   constructCloudinaryUrl,
+  createBaseImageTransformations,
   createHashtagBadgeTransformations,
   createLogoBadgeTransformations,
   createEventLogoTransformations,
@@ -40,48 +42,24 @@ import { events } from '@data/events';
 
 import styles from '@styles/Camera.module.scss';
 
-function delay({ total, callbackInterval, callback }) {
-  let time = 0;
-
-  function _delay() {
-    setTimeout(() => {
-      time = time + callbackInterval;
-
-      callback(time);
-
-      if (time < total) {
-        _delay();
-      }
-    }, callbackInterval);
-  }
-
-  callback(time);
-  _delay();
-}
+const CAPTURE_DELAY = 5000;
 
 export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   const router = useRouter();
 
-  const [delayTimer, setDelayTimer] = useState();
-  const activeTimer = !isNaN(delayTimer);
-
   const { eventId } = useApp({ eventId: defaultEventId });
   const event = events[eventId];
 
-  const { image, hash, capture, reset: resetCamera } = useCamera();
+  const { image, hash, capture, reset: resetCamera, state: cameraState } = useCamera();
 
-  let activePublicId = image;
-
-  // Clean up all images and effects when changing pages
-
-  useEffect(() => {
-    return () => {
-      resetMain();
-      resetTransparent();
-      resetCamera();
-      resetFilters();
-    };
-  }, [router.pathname]);
+  const {
+    remaining: delayTimer,
+    active: activeTimer,
+    start: startDelayTimer,
+    cancel: cancelDelayTimer,
+  } = useCountdown({
+    onComplete: capture,
+  });
 
   // Once we have an image stored, attempt to upload it to Cloudinary
 
@@ -160,11 +138,9 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
 
   // Determine the final active public ID that will be used to then construct the Cloudinary URL
 
-  activePublicId = hasBackgroundFilter ? dataTransparent?.public_id : dataMain?.public_id;
+  const activePublicId = hasBackgroundFilter ? dataTransparent?.public_id : dataMain?.public_id;
 
-  const activeTransformations = [
-    `l_${activePublicId?.replaceAll('/', ':')},w_1.0,h_1.0,fl_region_relative/fl_layer_apply`,
-  ];
+  const activeTransformations = [...createBaseImageTransformations(activePublicId)];
 
   sortByKey(types, 'applyOrder').forEach(({ id }) => {
     const filter = activeFilters.find((filter) => filter.type === id);
@@ -210,23 +186,33 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
   });
 
   /**
+   * resetAll
+   * @description Clears the photo, uploads, filters, and any pending timed capture
+   */
+
+  function resetAll() {
+    cancelDelayTimer();
+    resetMain();
+    resetTransparent();
+    resetCamera();
+    resetFilters();
+  }
+
+  // Clean up all images and effects when changing pages
+
+  const onLeavePage = useEffectEvent(resetAll);
+
+  useEffect(() => {
+    return () => onLeavePage();
+  }, [router.pathname]);
+
+  /**
    * handleDelayCapture
    * @description Triggers after 5 seconds
    */
 
-  async function handleDelayCapture() {
-    delay({
-      total: 5000,
-      callbackInterval: 1000,
-      callback: (time) => {
-        setDelayTimer(5000 - time);
-
-        if (time >= 5000) {
-          capture();
-          setDelayTimer(undefined);
-        }
-      },
-    });
+  function handleDelayCapture() {
+    startDelayTimer(CAPTURE_DELAY);
   }
 
   /**
@@ -235,14 +221,25 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
    */
 
   async function handleOnShare() {
-    const results = await uploadShare({
-      image: src,
-      publicId: hash && `${hash}-transformation`,
-      context: {
-        original_public_id: dataMain?.public_id,
-        cloudycam_filters: JSON.stringify(activeFilters),
-      },
-    });
+    let results;
+
+    try {
+      results = await uploadShare({
+        image: src,
+        publicId: hash && `${hash}-transformation`,
+        context: {
+          original_public_id: dataMain?.public_id,
+          cloudycam_filters: JSON.stringify(activeFilters),
+        },
+      });
+    } catch (e) {
+      console.error('Failed to share image', e);
+      return;
+    }
+
+    // Upload was cancelled (reset or navigation) before it finished
+
+    if (!results?.public_id) return;
 
     const { public_id } = results;
 
@@ -258,7 +255,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
     pushEvent({
       action: 'click',
       category: 'camera',
-      label: `toggle | ${filterId} | ${filterType} | ${filters[filterId] ? 'off' : 'on'}`,
+      label: `toggle | ${filterId} | ${filterType} | ${filters.find(({ id }) => id === filterId)?.active ? 'off' : 'on'}`,
     });
   }
 
@@ -300,10 +297,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
    */
 
   function handleOnReset() {
-    resetMain();
-    resetTransparent();
-    resetCamera();
-    resetFilters();
+    resetAll();
 
     pushEvent({
       action: 'click',
@@ -330,7 +324,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                 rawTransformations={activeTransformations}
               />
             )}
-            {allowCapture && <Camera className={styles.camera} src={src} controls={false} />}
+            {allowCapture && <Camera className={styles.camera} controls={false} />}
 
             <Sidebar>
               {allowCapture && (
@@ -344,7 +338,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                         color="cloudinary-yellow"
                         shape="capsule"
                         iconPosition="left"
-                        disabled={activeTimer}
+                        disabled={activeTimer || !cameraState.active}
                       >
                         <FaCamera />
                         <span>Capture</span>
@@ -356,7 +350,7 @@ export default function PageCamera({ eventId: defaultEventId, eventImages }) {
                         color="cloudinary-blue"
                         shape="capsule"
                         iconPosition="left"
-                        disabled={activeTimer}
+                        disabled={activeTimer || !cameraState.active}
                       >
                         <FaStopwatch />
                         {!activeTimer && <span>Capture in 5</span>}

@@ -1,5 +1,5 @@
-@import "@styles/settings/__settings";
-@import "@styles/util/__util";
+@use "@styles/settings/__settings" as *;
+@use "@styles/util/__util" as *;
 
 .cameraHeroSection {
   padding: 0;
@@ -21,7 +21,16 @@
 .camera {
   background: linear-gradient(120deg, $color-gray-100 30%, white 50%, $color-gray-50 70%);
   background-size: 400%;
-  animation: loading 2s linear infinite;
+
+  // Only animate while something is actually loading: the Cloudinary image (CldImage) or the
+  // camera stream starting up. An always-on background-position animation forces a repaint
+  // every frame behind the live video and finished photos.
+
+  &[data-image-loading="true"],
+  &:has([data-is-active-webcam="false"][data-is-error-webcam="false"]) {
+    animation: loading 2s linear infinite;
+  }
+
   @include tablet-or-larger() {
     flex-shrink: 0;
     max-width: 720px;

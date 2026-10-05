@@ -1,67 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CldImage as NextCldImage } from 'next-cloudinary';
 
 import { CLOUDINARY_ASSETS_FOLDER } from '@data/cloudinary';
 
 import styles from './CldImage.module.scss';
 
-const DEFAULT_STATE = {
-  loading: true,
-};
+const PLACEHOLDER_PUBLIC_ID = `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`;
 
-const CldImage = ({ className, onLoadingComplete, loading = false, ...props }) => {
+const CldImage = ({ className, onLoad, onError, loading = false, src, rawTransformations, alt = '', ...props }) => {
   let componentClassName = styles.cldImage;
 
   if (className) {
     componentClassName = `${componentClassName} ${className}`;
   }
 
-  const [state, setState] = useState(DEFAULT_STATE);
-  const key = `${props.src}/${props.rawTransformations?.map((transform) => transform).join('/')}`;
+  const imageSrc = src || PLACEHOLDER_PUBLIC_ID;
+  const imageRawTransformations = src ? rawTransformations : [];
 
-  useEffect(() => {
-    setState({
-      loading,
-    });
-  }, [loading]);
+  // Remounting on URL changes resets the underlying image. Loading state is derived from which
+  // URL last finished loading rather than toggled in effects, so the shimmer animation can't get
+  // stuck on when a cached image loads, or when `loading` flips after the image is already done.
 
-  useEffect(() => {
-    if (!props.src) return;
-    setState({
-      loading: true,
-    });
-  }, [props.src, key, loading]);
+  const key = [imageSrc, ...(imageRawTransformations || [])].join('/');
+  const [loadedKey, setLoadedKey] = useState();
+  const isLoading = loading || loadedKey !== key;
 
-  const stateProps = {};
+  /**
+   * handleOnLoad
+   */
 
-  Object.keys(state).forEach((stateKey) => {
-    stateProps[`data-image-${stateKey}`] = state[stateKey];
-  });
+  function handleOnLoad(event) {
+    setLoadedKey(key);
 
-  if (!props.src) {
-    props.src = `${CLOUDINARY_ASSETS_FOLDER}/transparent-1x1`;
-    props.rawTransformations = [];
+    if (typeof onLoad === 'function') {
+      onLoad(event);
+    }
   }
 
   /**
-   * handleOnLoadingComplete
+   * handleOnError
+   * @description Stop the loading animation for broken images. Returning nothing lets
+   * next-cloudinary keep polling if Cloudinary is still processing the image.
    */
 
-  function handleOnLoadingComplete(data) {
-    if (loading) return;
+  function handleOnError(event) {
+    setLoadedKey(key);
 
-    setState({
-      loading: false,
-    });
-
-    if (typeof onLoadingComplete === 'function') {
-      onLoadingComplete(data);
+    if (typeof onError === 'function') {
+      return onError(event);
     }
   }
 
   return (
-    <span className={componentClassName} {...stateProps}>
-      <NextCldImage key={key} {...props} onLoadingComplete={handleOnLoadingComplete} />
+    <span className={componentClassName} data-image-loading={isLoading}>
+      <NextCldImage
+        key={key}
+        src={imageSrc}
+        rawTransformations={imageRawTransformations}
+        alt={alt}
+        {...props}
+        onLoad={handleOnLoad}
+        onError={handleOnError}
+      />
     </span>
   );
 };
