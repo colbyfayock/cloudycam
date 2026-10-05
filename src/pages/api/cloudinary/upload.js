@@ -1,6 +1,15 @@
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from 'cloudinary';
 
 import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import {
+  ValidationError,
+  isAllowedImageSource,
+  parseJsonBody,
+  sanitizeContext,
+  sanitizeTags,
+  sanitizeTransformation,
+  sanitizeUploadOptions,
+} from '@lib/api';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -10,29 +19,44 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const {
-    image,
-    folder = CLOUDINARY_UPLOADS_FOLDER,
-    context,
-    tags,
-    uploadPreset,
-    transformation,
-    options,
-  } = JSON.parse(req.body);
-
-  const uploadOptions = {
-    folder,
-    ...options,
-    upload_preset: uploadPreset,
-    transformation,
-  };
-
-  if (context) {
-    uploadOptions.context = context;
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    res.status(405).json({ message: 'Method not allowed' });
+    return;
   }
 
-  if (Array.isArray(tags)) {
-    uploadOptions.tags = tags;
+  let uploadOptions;
+  let image;
+
+  try {
+    const body = parseJsonBody(req.body);
+
+    image = body.image;
+
+    if (!isAllowedImageSource(image)) {
+      throw new ValidationError('Invalid image');
+    }
+
+    uploadOptions = {
+      ...sanitizeUploadOptions(body.options),
+      // Always upload into the uploads folder, regardless of what the client asks for
+      folder: CLOUDINARY_UPLOADS_FOLDER,
+      upload_preset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
+    };
+
+    const transformation = sanitizeTransformation(body.transformation);
+    const context = sanitizeContext(body.context);
+    const tags = sanitizeTags(body.tags);
+
+    if (transformation) uploadOptions.transformation = transformation;
+    if (context) uploadOptions.context = context;
+    if (tags) uploadOptions.tags = tags;
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      res.status(400).json({ message: e.message });
+      return;
+    }
+    throw e;
   }
 
   let results;

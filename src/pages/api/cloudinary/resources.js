@@ -1,6 +1,7 @@
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from 'cloudinary';
 
 import { CLOUDINARY_UPLOADS_FOLDER } from '@data/cloudinary';
+import { ValidationError, parseJsonBody, sanitizeTags } from '@lib/api';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -9,21 +10,30 @@ cloudinary.config({
   secure: true,
 });
 
+const DEFAULT_MAX_RESULTS = 50;
+const MAX_RESULTS_LIMIT = 100;
+
 export default async function handler(req, res) {
-  const { maxResults, folder = CLOUDINARY_UPLOADS_FOLDER, tags } = req.body ? JSON.parse(req.body) : {};
+  let expression;
+  let maxResults;
 
-  let expression = '';
+  try {
+    const body = parseJsonBody(req.body);
+    const tags = sanitizeTags(body.tags);
 
-  if (folder) {
-    expression = `${expression} folder=${folder}`;
-  }
+    // Searches are limited to the uploads folder and tags are validated before being
+    // interpolated, so clients can't widen the search expression
 
-  if (tags) {
-    if (Array.isArray(tags)) {
-      expression = `${expression} AND ${tags.map((tag) => 'tags=' + tag).join(' AND ')}`;
-    } else {
-      expression = `${expression} AND tags=${tags}`;
+    expression = [`folder=${CLOUDINARY_UPLOADS_FOLDER}`, ...(tags || []).map((tag) => `tags=${tag}`)].join(' AND ');
+
+    maxResults = Number.parseInt(body.maxResults, 10);
+    maxResults = Number.isNaN(maxResults) ? DEFAULT_MAX_RESULTS : Math.min(Math.max(maxResults, 1), MAX_RESULTS_LIMIT);
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      res.status(400).json({ message: e.message });
+      return;
     }
+    throw e;
   }
 
   let results;

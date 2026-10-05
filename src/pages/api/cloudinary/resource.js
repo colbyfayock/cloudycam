@@ -1,4 +1,6 @@
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from 'cloudinary';
+
+import { ValidationError, sanitizeUploadPublicId } from '@lib/api';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -8,7 +10,17 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  const { publicId } = req.query || {};
+  let publicId;
+
+  try {
+    publicId = sanitizeUploadPublicId(req.query?.publicId);
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      res.status(400).json({ message: e.message });
+      return;
+    }
+    throw e;
+  }
 
   let results;
 
