@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import { FaCamera } from 'react-icons/fa';
 
 import Layout from '@components/Layout';
@@ -42,12 +41,10 @@ export default function Home() {
         </Container>
         <Container>
           <p className={styles.try}>
-            <Link href="/camera" passHref={true}>
-              <Button className={styles.tryButton} shape="capsule" iconPosition="left">
-                <FaCamera />
-                Snap a Photo
-              </Button>
-            </Link>
+            <Button href="/camera" className={styles.tryButton} shape="capsule" iconPosition="left">
+              <FaCamera />
+              Snap a Photo
+            </Button>
           </p>
           <p className={styles.instructions}>
             Take a selfie, add some effects using{' '}

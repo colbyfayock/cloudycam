@@ -10,11 +10,9 @@ const Header = () => {
     <header className={styles.header}>
       <Container className={styles.headerContainer}>
         <p className={styles.headerTitle}>
-          <Link href="/">
-            <a className={styles.headerLogo}>
-              <LogoCloudyCam />
-              <span className="sr-only">CloudyCam</span>
-            </a>
+          <Link href="/" className={styles.headerLogo}>
+            <LogoCloudyCam />
+            <span className="sr-only">CloudyCam</span>
           </Link>
         </p>
       </Container>

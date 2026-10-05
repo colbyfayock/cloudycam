@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import Link from 'next/link';
 import styles from './Button.module.scss';
 
 const Button = (props, ref) => {
@@ -18,6 +19,16 @@ const Button = (props, ref) => {
     'data-icon-size': iconSize,
     ...rest,
   };
+
+  // Internal routes use client-side navigation, external links are plain anchors
+
+  if (typeof href === 'string' && href.startsWith('/')) {
+    return (
+      <Link ref={ref} href={href} {...buttonProps}>
+        {children}
+      </Link>
+    );
+  }
 
   if (href) {
     return (
