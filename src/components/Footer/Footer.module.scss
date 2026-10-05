@@ -1,4 +1,5 @@
-@import "@styles/settings/__settings";
+@use "sass:color";
+@use "@styles/settings/__settings" as *;
 
 .footer {
   width: 100%;
@@ -70,7 +71,7 @@
 }
 
 .footerLegal {
-  color: lighten($color-footer-background, 70);
+  color: color.adjust($color-footer-background, $lightness: 70%);
   font-size: 0.8em;
 
   a {

@@ -1,5 +1,5 @@
-@import "@styles/settings/__settings";
-@import "@styles/util/__util";
+@use "@styles/settings/__settings" as *;
+@use "@styles/util/__util" as *;
 
 .controls {
   display: flex;

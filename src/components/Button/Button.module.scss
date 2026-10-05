@@ -1,4 +1,5 @@
-@import "@styles/settings/__settings";
+@use "sass:color";
+@use "@styles/settings/__settings" as *;
 
 .button {
   display: inline-flex;
@@ -18,12 +19,12 @@
   cursor: pointer;
 
   &:hover {
-    background-color: lighten($color-button-background, 10);
+    background-color: color.adjust($color-button-background, $lightness: 10%);
   }
 
   &:disabled {
     color: rgba(white, 0.5);
-    background-color: lighten($color-button-background, 10);
+    background-color: color.adjust($color-button-background, $lightness: 10%);
     cursor: default;
     opacity: 0.6;
   }
@@ -34,11 +35,11 @@
     background-color: $color-red;
 
     &:hover {
-      background-color: lighten($color-red, 10);
+      background-color: color.adjust($color-red, $lightness: 10%);
     }
 
     &:disabled {
-      background-color: desaturate($color-red, 10);
+      background-color: color.adjust($color-red, $saturation: -10%);
     }
   }
 
@@ -46,11 +47,11 @@
     background-color: $color-blue-800;
 
     &:hover {
-      background-color: lighten($color-blue-800, 10);
+      background-color: color.adjust($color-blue-800, $lightness: 10%);
     }
 
     &:disabled {
-      background-color: desaturate($color-blue-800, 10);
+      background-color: color.adjust($color-blue-800, $saturation: -10%);
     }
   }
 
@@ -59,12 +60,12 @@
     background-color: $color-cloudinary-yellow-500;
 
     &:hover {
-      background-color: lighten($color-cloudinary-yellow-500, 10);
+      background-color: color.adjust($color-cloudinary-yellow-500, $lightness: 10%);
     }
 
     &:disabled {
       color: rgba(black, 0.4);
-      background-color: desaturate($color-cloudinary-yellow-500, 10);
+      background-color: color.adjust($color-cloudinary-yellow-500, $saturation: -10%);
     }
   }
 
@@ -73,11 +74,11 @@
     background-color: $color-cloudinary-orange;
 
     &:hover {
-      background-color: lighten($color-cloudinary-orange, 10);
+      background-color: color.adjust($color-cloudinary-orange, $lightness: 10%);
     }
 
     &:disabled {
-      background-color: desaturate($color-cloudinary-orange, 10);
+      background-color: color.adjust($color-cloudinary-orange, $saturation: -10%);
     }
 
     &[data-shape="link"] {
@@ -90,11 +91,11 @@
     background-color: $color-cloudinary-aqua;
 
     &:hover {
-      background-color: lighten($color-cloudinary-aqua, 10);
+      background-color: color.adjust($color-cloudinary-aqua, $lightness: 10%);
     }
 
     &:disabled {
-      background-color: desaturate($color-cloudinary-aqua, 10);
+      background-color: color.adjust($color-cloudinary-aqua, $saturation: -10%);
     }
 
     &[data-shape="link"] {
@@ -106,11 +107,11 @@
     background-color: $color-twitter-blue;
 
     &:hover {
-      background-color: lighten($color-twitter-blue, 10);
+      background-color: color.adjust($color-twitter-blue, $lightness: 10%);
     }
 
     &:disabled {
-      background-color: desaturate($color-twitter-blue, 10);
+      background-color: color.adjust($color-twitter-blue, $saturation: -10%);
     }
   }
 

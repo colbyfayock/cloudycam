@@ -1,4 +1,4 @@
-@import "@styles/settings/__settings";
+@use "@styles/settings/__settings" as *;
 
 .homeHeroSection {
   padding-top: 0;
