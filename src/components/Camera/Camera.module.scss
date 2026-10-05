@@ -1,5 +1,5 @@
-@import "@styles/settings/__settings";
-@import "@styles/util/__util";
+@use "@styles/settings/__settings" as *;
+@use "@styles/util/__util" as *;
 
 .camera {
   display: flex;
@@ -23,43 +23,44 @@
   height: 100%;
   margin: auto;
 
-  &[data-is-active-webcam="false"][data-is-error-webcam="false"],
-  &[data-img-loading="true"] {
-    &:before {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      content: "";
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  &[data-img-loading="true"] {
-    img {
-      opacity: 0.5;
-    }
-  }
-
-  video,
   img {
     display: block;
     position: relative;
     z-index: 2;
     width: 100%;
     height: auto;
+    transition: opacity 0.2s;
+  }
+
+  &[data-img-loading="true"] img {
+    opacity: 0.5;
   }
 }
 
-.stageError {
+// Fill the square stage and crop the camera's native aspect ratio (usually 16:9 or 4:3)
+// the same way captureVideoFrame does, so what you see is what gets captured
+
+.video {
+  display: block;
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background-color: $color-gray-50;
+}
+
+.stageError {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 1em;
+  background-color: white;
 
   p {
     max-width: 20em;

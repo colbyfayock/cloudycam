@@ -1,69 +1,35 @@
-import { useState, useRef, useEffect } from 'react';
-import Webcam from 'react-webcam';
+import { useState, useCallback } from 'react';
 
 import Button from '@components/Button';
 
-import { useCamera } from '@hooks/useCamera';
+import { useCamera, useCameraStream } from '@hooks/useCamera';
 
 import { CAMERA_WIDTH, CAMERA_HEIGHT } from '@data/camera';
 
 import styles from './Camera.module.scss';
 
-const videoConstraints = {
-  width: {
-    min: CAMERA_WIDTH,
-  },
-  height: {
-    min: CAMERA_HEIGHT,
-  },
-  aspectRatio: CAMERA_WIDTH / CAMERA_HEIGHT,
-};
-
-const DEFAULT_IMG_STATE = {
-  loading: false,
-  loaded: false,
-  error: false,
-};
-
 const Camera = ({ className, src: defaultSrc, controls = true }) => {
-  const imgRef = useRef();
-  const [imgState, setImgState] = useState(DEFAULT_IMG_STATE);
-
-  const { ref, image, state, error, capture, reset, onUserMedia, onUserMediaError } = useCamera();
+  const { ref, image, state, error: streamError, capture, reset, onUserMedia } = useCamera();
 
   const src = defaultSrc || image;
 
+  // Only hold the camera open while we're actually showing the live preview
+
+  const { supportError, retry } = useCameraStream({ enabled: !src });
+
+  const error = supportError || (state.error && streamError);
+
+  // Track which src has finished loading rather than toggling a boolean in an effect, so a
+  // cached image that loads before hydration can't leave the loading animation stuck on
+
+  const [loadedSrc, setLoadedSrc] = useState();
+  const imgLoading = !!src && loadedSrc !== src;
+
+  const imgRef = useCallback((img) => {
+    if (img?.complete && img.naturalWidth > 0) setLoadedSrc(img.getAttribute('src'));
+  }, []);
+
   const cameraClassName = [styles.camera, className].filter((c) => !!c).join(' ');
-
-  useEffect(() => {
-    if (!imgRef.current || !defaultSrc) {
-      setImgState(DEFAULT_IMG_STATE);
-      return;
-    }
-
-    setImgState({
-      loading: true,
-      loaded: false,
-      error: false,
-    });
-
-    imgRef.current.onload = function () {
-      setImgState({
-        loading: false,
-        loaded: true,
-        error: false,
-      });
-    };
-  }, [defaultSrc]);
-
-  // Construct props to use as data attributes that allow the ability to target different
-  // loading states with styling
-
-  const imgStateProps = {};
-
-  Object.keys(imgState).forEach((stateKey) => {
-    imgStateProps[`data-img-${stateKey}`] = imgState[stateKey];
-  });
 
   return (
     <div className={cameraClassName}>
@@ -76,29 +42,45 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
         <div
           className={styles.stage}
           data-is-active-webcam={state.active}
-          data-is-error-webcam={state.error}
-          {...imgStateProps}
+          data-is-error-webcam={!!error}
+          data-img-loading={imgLoading}
+          data-img-loaded={!!src && !imgLoading}
         >
-          {src && <img ref={imgRef} src={src} alt="Webcam Photo" />}
-          {!src && !state.error && (
-            <Webcam
-              ref={ref}
-              videoConstraints={videoConstraints}
-              width={CAMERA_WIDTH}
-              height={CAMERA_HEIGHT}
-              onUserMedia={onUserMedia}
-              onUserMediaError={onUserMediaError}
+          {src && (
+            <img
+              ref={imgRef}
+              src={src}
+              alt="Webcam Photo"
+              onLoad={(e) => setLoadedSrc(e.currentTarget.getAttribute('src'))}
+              onError={(e) => setLoadedSrc(e.currentTarget.getAttribute('src'))}
             />
           )}
-          {state.error && error && (
-            <div className={styles.stageError}>
+          {!src && (
+            <video
+              ref={ref}
+              className={styles.video}
+              width={CAMERA_WIDTH}
+              height={CAMERA_HEIGHT}
+              onLoadedData={onUserMedia}
+              autoPlay
+              muted
+              playsInline
+              disablePictureInPicture
+            />
+          )}
+          {!src && error && (
+            <div className={styles.stageError} role="alert">
               <p className={styles.stageErrorName}>
-                <strong>{error}</strong>
+                <strong>{error.name}</strong>
               </p>
-              <p className={styles.stageErrorMessage}>
-                Uh oh, we&apos;re having trouble loading your camera. Try seeing if your browser is blocking it
-                otherwise try another browser.
-              </p>
+              <p className={styles.stageErrorMessage}>{error.message}</p>
+              {!supportError && (
+                <p>
+                  <Button onClick={retry} color="cloudinary-blue" shape="capsule">
+                    Try again
+                  </Button>
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -108,7 +90,9 @@ const Camera = ({ className, src: defaultSrc, controls = true }) => {
         <div className={styles.controls}>
           <ul>
             <li>
-              <Button onClick={capture}>Capture photo</Button>
+              <Button onClick={capture} disabled={!state.active}>
+                Capture photo
+              </Button>
             </li>
             <li>
               <Button onClick={reset} color="red">
